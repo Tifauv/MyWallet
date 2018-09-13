@@ -5,7 +5,14 @@ WalletPageForm {
 
 	property var wallet: undefined
 
-	walletName: wallet !== undefined ? wallet.name : "Sample wallet"
-	accountsCount: qsTr("%1 accounts").arg(wallet !== undefined ? wallet.accounts.count : 0)
+	title: adaptTitle(wallet !== undefined ? wallet.accounts.count : 0)
 	accounts.model: wallet !== undefined ? wallet.accounts : []
+
+	function adaptTitle(count) {
+		switch (count) {
+		    case 0: return qsTr("Empty");
+			case 1: return qsTr("1 account");
+			default: return qsTr("%1 accounts").arg(count)
+		}
+	}
 }

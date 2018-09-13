@@ -2,7 +2,7 @@ import QtQuick 2.4
 
 Item {
 	width: 440
-	height: 32
+	height: 48
 
 	property alias nameTxt: accountName
 	property alias loginTxt: accountLogin
@@ -15,26 +15,29 @@ Item {
 
 		Text {
 			id: accountName
-			y: 8
+			color: "#657b83"
 			text: qsTr("Account name")
-			anchors.verticalCenter: parent.verticalCenter
-			verticalAlignment: Text.AlignBottom
+			anchors.bottom: accountLogin.top
+			anchors.bottomMargin: 2
+			anchors.topMargin: 6
+			anchors.top: parent.top
+			verticalAlignment: Text.AlignVCenter
 			font.bold: false
 			anchors.left: parent.left
-			anchors.leftMargin: 6
+			anchors.leftMargin: 8
 			font.pixelSize: 16
 		}
 
 		Text {
 			id: accountLogin
 			y: 11
-			color: "#535353"
+			color: "#93a1a1"
 			text: qsTr("Login")
-			anchors.bottomMargin: 1
-			verticalAlignment: Text.AlignBottom
-			anchors.left: accountName.right
+			anchors.bottomMargin: 6
+			anchors.bottom: parent.bottom
 			anchors.leftMargin: 12
-			anchors.bottom: accountName.bottom
+			verticalAlignment: Text.AlignVCenter
+			anchors.left: accountName.left
 			font.pixelSize: 12
 		}
 	}

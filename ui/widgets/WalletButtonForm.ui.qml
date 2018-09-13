@@ -34,7 +34,6 @@ Item {
 		id: textLabel
 		color: "#839496"
 		text: "Wallet name"
-		styleColor: "#839496"
 		font.pointSize: 10
 		verticalAlignment: Text.AlignVCenter
 		anchors.left: colorIcon.right
