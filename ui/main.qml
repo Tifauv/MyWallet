@@ -20,12 +20,25 @@ Window {
 		anchors.top: parent.top
 
 		walletsModel: model
-		onWalletSelected: {
-			model.select(index);
-			console.log("Wallet '" + name + "':" + index + " selected.")
-		}
+		onWalletSelected: loadWallet(index)
 
 		onCreateWallet: console.log("Wallet creation requested.")
 		onShowSettings: console.log("Settings page opening requested.")
+	}
+
+	WalletPanel {
+		id: walletPage
+		anchors.left: sidebar.right
+		anchors.right: parent.right
+		anchors.top: parent.top
+		anchors.bottom: parent.bottom
+	}
+
+	/**
+	 *
+	 */
+	function loadWallet(index) {
+		model.select(index);
+		walletPage.wallet = model.get(index)
 	}
 }

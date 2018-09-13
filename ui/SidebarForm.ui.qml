@@ -5,7 +5,7 @@ import "widgets"
 Item {
 	id: sidebar
 	width: 200
-	height: 400
+	height: 480
 
 	property alias wallets: walletsList
 	property alias newWallet: newWalletButton
@@ -18,43 +18,39 @@ Item {
 		anchors.fill: parent
 	}
 
-	Column {
-		id: wallets
-		anchors.topMargin: 8
+	Text {
+		id: title
+		x: 8
+		color: "#a57706"
+		text: qsTr("Wallets")
+		anchors.top: parent.top
+		anchors.topMargin: 6
+		font.letterSpacing: 2
+		font.weight: Font.Thin
+		anchors.right: parent.right
+		anchors.rightMargin: 8
+		anchors.left: parent.left
+		anchors.leftMargin: 8
+		font.pixelSize: 22
+	}
+
+	ListView {
+		id: walletsList
+		x: 8
 		anchors.bottom: actions.top
+		anchors.top: title.bottom
+		spacing: 2
 		anchors.right: parent.right
 		anchors.left: parent.left
-		anchors.top: parent.top
-		spacing: 2
-
-		Text {
-			id: title
-			color: "#a57706"
-			text: qsTr("Wallets")
-			font.letterSpacing: 2
-			font.weight: Font.Thin
-			anchors.right: parent.right
-			anchors.rightMargin: 8
-			anchors.left: parent.left
-			anchors.leftMargin: 8
-			font.pixelSize: 22
+		clip: true
+		model: WalletsModel {
 		}
-
-		ListView {
-			id: walletsList
-			spacing: 2
-			anchors.right: parent.right
+		delegate: WalletButton {
+			color: model.color
+			name: model.name
+			selected: model.selected
 			anchors.left: parent.left
-			clip: true
-			model: WalletsModel {
-			}
-			delegate: WalletButton {
-				color: model.color
-				name: model.name
-				selected: model.selected
-				anchors.left: parent.left
-				anchors.right: parent.right
-			}
+			anchors.right: parent.right
 		}
 	}
 

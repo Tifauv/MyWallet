@@ -9,54 +9,90 @@ ListModel {
 		name: "AIFE"
 		color: "#2176c7"
 		selected: false
+		accounts: [
+			ListElement {
+				name: "PPR"
+				login: "domain\\username"
+			},
+			ListElement {
+				name: "PRD"
+				login: "domain\\username"
+			}
+		]
 	}
 
 	ListElement {
 		name: "APHP"
 		color: "#738a05"
 		selected: false
+		accounts: []
 	}
 
 	ListElement {
 		name: "Auxylium"
 		color: "#b11c24"
 		selected: false
+		accounts: []
 	}
 
 	ListElement {
 		name: "CA-TS"
 		color: "#738a05"
 		selected: false
+		accounts: [
+			ListElement {
+				name: "Standard"
+				login: "domain\\username"
+			}
+		]
 	}
 
 	ListElement {
 		name: "CNOP"
 		color: "#738a05"
 		selected: false
+		accounts: []
 	}
 
 	ListElement {
 		name: "CNRS"
 		color: "#259286"
 		selected: false
+		accounts: [
+			ListElement {
+				name: "CyberArk"
+				login: "AD-BS\\A454593"
+			},
+			ListElement {
+				name: "PMAD"
+				login: "OUTSOURCING\\A454593"
+			},
+			ListElement {
+				name: "SAaCon - iam"
+				login: "A454593"
+			}
+		]
 	}
 
 	ListElement {
 		name: "Neptune"
 		color: "#2176c7"
 		selected: false
+		accounts: []
 	}
 
 	ListElement {
 		name: "SAIL"
 		color: "#c61c6f"
 		selected: false
+		accounts: []
 	}
 
 	ListElement {
 		name: "Deleted"
 		color: "transparent"
 		selected: false
+		accounts: []
 	}
 
 

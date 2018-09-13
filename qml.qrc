@@ -6,5 +6,9 @@
         <file>ui/WalletsModel.qml</file>
         <file>ui/widgets/WalletButton.qml</file>
         <file>ui/widgets/WalletButtonForm.ui.qml</file>
+        <file>ui/WalletPanel.qml</file>
+        <file>ui/WalletPanelForm.ui.qml</file>
+        <file>ui/widgets/PageHeader.qml</file>
+        <file>ui/widgets/PageHeaderForm.ui.qml</file>
     </qresource>
 </RCC>
