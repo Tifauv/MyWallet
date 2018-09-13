@@ -30,6 +30,14 @@ Item {
 			anchors.right: parent.right
 			anchors.left: parent.left
 			anchors.bottom: parent.bottom
+
+			delegate: AccountView {
+				anchors.left: parent.left
+				anchors.right: parent.right
+
+				name: model.name
+				login: model.login
+			}
 		}
 	}
 }

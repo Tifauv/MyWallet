@@ -26,7 +26,7 @@ Window {
 		onShowSettings: console.log("Settings page opening requested.")
 	}
 
-	WalletPanel {
+	WalletPage {
 		id: walletPage
 		anchors.left: sidebar.right
 		anchors.right: parent.right
