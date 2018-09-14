@@ -43,8 +43,6 @@ Item {
 		anchors.right: parent.right
 		anchors.left: parent.left
 		clip: true
-		model: WalletsModel {
-		}
 		delegate: WalletButton {
 			color: model.color
 			name: model.name

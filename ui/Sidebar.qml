@@ -1,8 +1,8 @@
 import QtQuick 2.4
+import "../models"
 import "widgets"
 
 SidebarForm {
-
 	property var walletsModel: WalletsModel {}
 	signal walletSelected(string name, int index)
 	signal createWallet()

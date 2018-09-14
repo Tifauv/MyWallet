@@ -1,5 +1,6 @@
 import QtQuick 2.9
 import QtQuick.Window 2.2
+import "../models"
 
 Window {
 	id: window
@@ -36,6 +37,7 @@ Window {
 
 	// Autoselect the first wallet
 	Component.onCompleted: loadWallet(0)
+
 
 	/**
 	 * Selects the wallet at the given index in the model.
