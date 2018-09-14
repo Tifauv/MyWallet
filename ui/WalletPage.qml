@@ -4,10 +4,10 @@ import "widgets"
 WalletPageForm {
 	property var wallet: undefined
 
-	header.mainText: adaptTitle(wallet !== undefined ? wallet.accounts.count : 0)
+	title: adaptTitle(wallet !== undefined ? wallet.accounts.count : 0)
 	accounts.model: wallet !== undefined ? wallet.accounts : []
 
-	header.button.onClicked: console.log("Menu for wallet '" + wallet.name + "' requested.")
+	menuButton.onClicked: console.log("Menu for wallet '" + wallet.name + "' requested.")
 
 	function adaptTitle(count) {
 		switch (count) {

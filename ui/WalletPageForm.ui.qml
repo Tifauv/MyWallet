@@ -1,41 +1,34 @@
 import QtQuick 2.4
 import "widgets"
+import QtQuick.Controls 2.2
 
-Item {
+Page {
+	id: page
 	width: 440
 	height: 480
+	title: "Page Title"
+	background: Rectangle {
+		color: "#fdf6e3"
+	}
 
-	property alias header: headerbar
+	header: PageHeader {
+		id: headerbar
+		mainText: page.title
+	}
+
+	property alias menuButton: headerbar.button
 	property alias accounts: list
 
-	Rectangle {
-		id: background
+	ListView {
+		id: list
+		clip: true
 		anchors.fill: parent
-		color: "#fdf6e3"
-		border.width: 0
-
-		PageHeader {
-			id: headerbar
-			anchors.top: parent.top
-			anchors.right: parent.right
+		delegate: AccountView {
 			anchors.left: parent.left
-		}
-
-		ListView {
-			id: list
-			clip: true
-			anchors.top: headerbar.bottom
 			anchors.right: parent.right
-			anchors.left: parent.left
-			anchors.bottom: parent.bottom
 
-			delegate: AccountView {
-				anchors.left: parent.left
-				anchors.right: parent.right
-
-				name: model.name
-				login: model.login
-			}
+			name: model.name
+			login: model.login
 		}
 	}
 }
