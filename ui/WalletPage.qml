@@ -2,11 +2,12 @@ import QtQuick 2.4
 import "widgets"
 
 WalletPageForm {
-
 	property var wallet: undefined
 
-	title: adaptTitle(wallet !== undefined ? wallet.accounts.count : 0)
+	header.mainText: adaptTitle(wallet !== undefined ? wallet.accounts.count : 0)
 	accounts.model: wallet !== undefined ? wallet.accounts : []
+
+	header.button.onClicked: console.log("Menu for wallet '" + wallet.name + "' requested.")
 
 	function adaptTitle(count) {
 		switch (count) {

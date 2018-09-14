@@ -5,7 +5,7 @@ Item {
 	width: 440
 	height: 480
 
-	property alias title: headerbar.mainTitle
+	property alias header: headerbar
 	property alias accounts: list
 
 	Rectangle {
@@ -16,7 +16,6 @@ Item {
 
 		PageHeader {
 			id: headerbar
-			height: 32
 			anchors.top: parent.top
 			anchors.right: parent.right
 			anchors.left: parent.left

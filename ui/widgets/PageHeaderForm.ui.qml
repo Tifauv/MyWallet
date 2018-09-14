@@ -1,20 +1,19 @@
 import QtQuick 2.4
+import QtQuick.Controls 2.2
 
-Item {
+ToolBar {
 	id: headerbar
 	width: 440
-	height: 32
-
-	property alias title: title
-
-	Rectangle {
-		id: background
+	height: optionsBtn.implicitHeight
+	background: Rectangle {
 		color: "#eee8d5"
-		anchors.fill: parent
 	}
 
+	property alias title: titleTxt
+	property alias button: optionsBtn
+
 	Text {
-		id: title
+		id: titleTxt
 		color: "#657b83"
 		text: qsTr("Title")
 		anchors.bottom: parent.bottom
@@ -25,5 +24,13 @@ Item {
 		anchors.left: parent.left
 		anchors.leftMargin: 8
 		font.pixelSize: 14
+	}
+
+	ToolButton {
+		id: optionsBtn
+		anchors.right: parent.right
+		text: "\u2630"
+		anchors.verticalCenter: parent.verticalCenter
+		font.pixelSize: Qt.application.font.pixelSize * 1.6
 	}
 }
