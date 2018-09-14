@@ -22,20 +22,6 @@ ListModel {
 	}
 
 	ListElement {
-		name: "APHP"
-		color: "#738a05"
-		selected: false
-		accounts: []
-	}
-
-	ListElement {
-		name: "Auxylium"
-		color: "#b11c24"
-		selected: false
-		accounts: []
-	}
-
-	ListElement {
 		name: "CA-TS"
 		color: "#738a05"
 		selected: false
@@ -45,13 +31,6 @@ ListModel {
 				login: "domain\\username"
 			}
 		]
-	}
-
-	ListElement {
-		name: "CNOP"
-		color: "#738a05"
-		selected: false
-		accounts: []
 	}
 
 	ListElement {
@@ -72,13 +51,6 @@ ListModel {
 				login: "A454593"
 			}
 		]
-	}
-
-	ListElement {
-		name: "Neptune"
-		color: "#2176c7"
-		selected: false
-		accounts: []
 	}
 
 	ListElement {
