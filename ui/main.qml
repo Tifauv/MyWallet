@@ -34,11 +34,19 @@ Window {
 		anchors.bottom: parent.bottom
 	}
 
+	// Autoselect the first wallet
+	Component.onCompleted: loadWallet(0)
+
 	/**
+	 * Selects the wallet at the given index in the model.
+	 * If the model is empty, or the index is outside [0, model.count[, nothing is done.
 	 *
+	 * @param index  the index of the wallet to select
 	 */
 	function loadWallet(index) {
-		model.select(index);
-		walletPage.wallet = model.get(index)
+		if (model.count > 0 && index >= 0 && index < model.count) {
+			model.select(index);
+			walletPage.wallet = model.get(index)
+		}
 	}
 }
