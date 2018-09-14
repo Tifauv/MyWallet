@@ -1,6 +1,6 @@
 import QtQuick 2.4
-import "widgets"
 import QtQuick.Controls 2.2
+import "widgets"
 
 Page {
 	id: page
