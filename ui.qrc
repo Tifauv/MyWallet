@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>models/WalletsModel.qml</file>
         <file>ui/main.qml</file>
         <file>ui/Sidebar.qml</file>
         <file>ui/SidebarForm.ui.qml</file>

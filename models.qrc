@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>models/WalletsModel.qml</file>
+    </qresource>
+</RCC>
