@@ -6,26 +6,15 @@ WalletPageForm {
 	id: page
 	property var wallet: undefined
 
-	title: adaptTitle(wallet !== undefined ? wallet.accounts.count : 0)
+	title: wallet !== undefined ? wallet.name : qsTr("Wallet name")
+	countTxt.text: adaptCount(wallet !== undefined ? wallet.accounts.count : 0)
 	accounts.model: wallet !== undefined ? wallet.accounts : []
 
-	menuButton.onClicked: {
-		console.log("Menu for wallet '" + wallet.name + "' requested.");
-		pageDrawer.open()
-	}
-
-	Drawer {
-		id: pageDrawer
-		height: accounts.height
-		width: page.width * 0.33
-		edge: Qt.RightEdge
-		y: header.height
-	}
 
 	/**
-	 * Adapts the page title to the number of elements in the wallet.
+	 * Adapts the accounts count to the number of elements in the wallet.
 	 */
-	function adaptTitle(count) {
+	function adaptCount(count) {
 		switch (count) {
 		    case 0: return qsTr("Empty");
 			case 1: return qsTr("1 account");

@@ -6,29 +6,40 @@ Page {
 	id: page
 	width: 440
 	height: 480
-	title: "Page Title"
-	background: Rectangle {
-		color: "#fdf6e3"
+	title: qsTr("Wallet")
+
+	property alias countTxt: accountCount
+
+	footer: Rectangle {
+		height: 24
+		color: "#eee8d5"
+
+		Label {
+			id: accountCount
+			text: qsTr("n accounts")
+			anchors.bottom: parent.bottom
+			anchors.bottomMargin: 4
+			anchors.top: parent.top
+			anchors.topMargin: 4
+			verticalAlignment: Text.AlignVCenter
+			anchors.left: parent.left
+			anchors.leftMargin: 8
+		}
 	}
 
-	header: PageHeader {
-		id: headerbar
-		mainText: page.title
-	}
-
-	property alias menuButton: headerbar.button
 	property alias accounts: list
 
 	ListView {
 		id: list
 		clip: true
 		anchors.fill: parent
-		delegate: AccountView {
-			anchors.left: parent.left
-			anchors.right: parent.right
+		delegate: ItemDelegate {
+			width: parent.width
 
-			name: model.name
-			login: model.login
+			contentItem: AccountView {
+				name: model.name
+				login: model.login
+			}
 		}
 	}
 }

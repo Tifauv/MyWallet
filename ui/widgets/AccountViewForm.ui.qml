@@ -1,8 +1,9 @@
-import QtQuick 2.4
+import QtQuick 2.9
+import QtQuick.Controls 2.2
 
 Item {
 	width: 440
-	height: 48
+	implicitHeight: 48
 
 	property alias nameTxt: accountName
 	property alias loginTxt: accountLogin
@@ -13,9 +14,8 @@ Item {
 		border.width: 0
 		anchors.fill: parent
 
-		Text {
+		Label {
 			id: accountName
-			color: "#657b83"
 			text: qsTr("Account name")
 			anchors.bottom: accountLogin.top
 			anchors.bottomMargin: 2
@@ -28,7 +28,7 @@ Item {
 			font.pixelSize: 16
 		}
 
-		Text {
+		Label {
 			id: accountLogin
 			y: 11
 			color: "#93a1a1"

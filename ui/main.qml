@@ -1,38 +1,113 @@
 import QtQuick 2.9
-import QtQuick.Window 2.2
+import QtQuick.Controls 2.2
 import "../models"
+import "widgets"
 
-Window {
+ApplicationWindow {
 	id: window
 	visible: true
 	width: 640
 	height: 480
-	title: qsTr("Hello World")
+	title: qsTr("Wallets")
+
+	readonly property bool inPortrait: window.width < window.height
 
 	WalletsModel {
-		id: model
+		id: wallets
 	}
 
-	Sidebar {
+	ToolBar {
+		id: overlayHeader
+
+		z: 1
+		width: parent.width
+		parent: window.overlay
+		implicitHeight: 40
+
+		Label {
+			id: appName
+
+			anchors.left: parent.left
+			anchors.leftMargin: 8
+			anchors.verticalCenter: parent.verticalCenter
+
+			text: qsTr("Wallet \"%1\"").arg(page.title)
+			font.letterSpacing: 2
+			font.weight: Font.Thin
+			font.pixelSize: 22
+
+		}
+
+		ToolButton {
+			id: menuBtn
+
+			anchors.right: parent.right
+			anchors.verticalCenter: parent.verticalCenter
+
+			text: "\u2630"
+			font.pixelSize: Qt.application.font.pixelSize * 1.6
+			//contentItem.color: "#002b36"
+
+			onClicked: menu.open()
+
+			Menu {
+				id: menu
+				y: menuBtn.height
+
+				MenuItem { text: "New wallet..."    }
+				MenuItem { text: "Export wallet..." }
+				MenuItem { text: "Import wallet..." }
+				MenuItem { text: "Delete wallet"    }
+				MenuSeparator { }
+				MenuItem { text: "Settings"         }
+			}
+		}
+	}
+
+	Drawer {
 		id: sidebar
+
+		y: overlayHeader.height
 		width: 180
-		anchors.bottom: parent.bottom
-		anchors.left: parent.left
-		anchors.top: parent.top
+		height: window.height - overlayHeader.height
 
-		walletsModel: model
-		onWalletSelected: loadWallet(index)
+		modal: inPortrait
+		interactive: inPortrait
+		position: inPortrait ? 0 : 1
+		visible: !inPortrait
 
-		onCreateWallet: console.log("Wallet creation requested.")
-		onShowSettings: console.log("Settings page opening requested.")
+		ListView {
+			id: listView
+			anchors.fill: parent
+			clip: true
+
+			model: wallets
+
+			delegate: ItemDelegate {
+				width: parent.width
+
+				contentItem: WalletItem {
+					color: model.color
+					text: model.name
+				}
+
+				highlighted: ListView.isCurrentItem
+				onClicked: {
+					loadWallet(model.index)
+					listView.currentIndex = model.index
+				}
+			}
+
+			ScrollIndicator.vertical: ScrollIndicator { }
+		}
 	}
 
 	WalletPage {
-		id: walletPage
-		anchors.left: sidebar.right
-		anchors.right: parent.right
-		anchors.top: parent.top
-		anchors.bottom: parent.bottom
+		id: page
+
+		anchors.fill: parent
+		anchors.topMargin: overlayHeader.height
+		anchors.leftMargin: !inPortrait ? sidebar.width : undefined
 	}
 
 	// Autoselect the first wallet
@@ -46,9 +121,9 @@ Window {
 	 * @param index  the index of the wallet to select
 	 */
 	function loadWallet(index) {
-		if (model.count > 0 && index >= 0 && index < model.count) {
-			model.select(index);
-			walletPage.wallet = model.get(index)
+		if (wallets.count > 0 && index >= 0 && index < wallets.count) {
+			wallets.select(index);
+			page.wallet = wallets.get(index)
 		}
 	}
 }

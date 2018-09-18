@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>styles/Solarized/ToolBar.qml</file>
+        <file>styles/Solarized/Drawer.qml</file>
+        <file>styles/Solarized/Page.qml</file>
+        <file>styles/Solarized/Label.qml</file>
+        <file>styles/Solarized/ItemDelegate.qml</file>
+    </qresource>
+</RCC>
