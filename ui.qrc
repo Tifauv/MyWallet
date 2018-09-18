@@ -1,17 +1,11 @@
 <RCC>
     <qresource prefix="/">
+        <file>qtquickcontrols2.conf</file>
         <file>ui/main.qml</file>
-        <file>ui/Sidebar.qml</file>
-        <file>ui/SidebarForm.ui.qml</file>
-        <file>ui/widgets/WalletButton.qml</file>
-        <file>ui/widgets/WalletButtonForm.ui.qml</file>
+        <file>ui/WalletItem.qml</file>
         <file>ui/WalletPage.qml</file>
         <file>ui/WalletPageForm.ui.qml</file>
-        <file>ui/widgets/PageHeader.qml</file>
-        <file>ui/widgets/PageHeaderForm.ui.qml</file>
         <file>ui/widgets/AccountView.qml</file>
         <file>ui/widgets/AccountViewForm.ui.qml</file>
-        <file>qtquickcontrols2.conf</file>
-        <file>ui/WalletItem.qml</file>
     </qresource>
 </RCC>
