@@ -3,31 +3,33 @@ import QtQuick.Controls 2.2
 
 Item {
 	id: walletItem
-	width: 200
-	height: 32
+	implicitWidth: 200
+	implicitHeight: label.height
 
 	property alias color: icon.color
 	property alias text: label.text
+	property int padding: 8
+	property int spacing: 10
 
 	Rectangle {
 		id: icon
-		width: 16
-		height: 16
+		width: height
 		radius: 4
-		anchors.verticalCenter: parent.verticalCenter
+		anchors.bottom: label.bottom
+		anchors.top: label.top
 		border.width: 0
 		anchors.left: parent.left
-		anchors.leftMargin: 8
+		anchors.leftMargin: padding
 	}
 
 	Label {
 		id: label
 		text: "Wallet name"
-		anchors.verticalCenter: icon.verticalCenter
+		anchors.verticalCenter: parent.verticalCenter
 		verticalAlignment: Text.AlignVCenter
 		anchors.left: icon.right
-		anchors.leftMargin: 10
+		anchors.leftMargin: spacing
 		anchors.right: parent.right
-		anchors.rightMargin: 8
+		anchors.rightMargin: padding
 	}
 }
