@@ -1,7 +1,6 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
 import "../models"
-import "widgets"
 
 ApplicationWindow {
 	id: window
@@ -22,7 +21,7 @@ ApplicationWindow {
 		z: 1
 		width: parent.width
 		parent: window.overlay
-		implicitHeight: 40
+		implicitHeight: Math.max(appName.height, menuBtn.height)
 
 		Label {
 			id: appName

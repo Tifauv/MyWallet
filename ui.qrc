@@ -5,7 +5,7 @@
         <file>ui/WalletItem.qml</file>
         <file>ui/WalletPage.qml</file>
         <file>ui/WalletPageForm.ui.qml</file>
-        <file>ui/widgets/AccountView.qml</file>
-        <file>ui/widgets/AccountViewForm.ui.qml</file>
+        <file>ui/AccountView.qml</file>
+        <file>ui/AccountViewForm.ui.qml</file>
     </qresource>
 </RCC>

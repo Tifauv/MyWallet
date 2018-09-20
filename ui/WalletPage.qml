@@ -1,9 +1,8 @@
-import QtQuick 2.4
-import QtQuick.Controls 2.2
-import "widgets"
+import QtQuick 2.9
 
 WalletPageForm {
 	id: page
+
 	property var wallet: undefined
 
 	title: wallet !== undefined ? wallet.name : qsTr("Wallet name")
