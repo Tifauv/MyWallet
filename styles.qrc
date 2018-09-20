@@ -5,5 +5,7 @@
         <file>styles/Solarized/Page.qml</file>
         <file>styles/Solarized/Label.qml</file>
         <file>styles/Solarized/ItemDelegate.qml</file>
+        <file>styles/Solarized/Pane.qml</file>
+        <file>styles/Solarized/Theme.qml</file>
     </qresource>
 </RCC>

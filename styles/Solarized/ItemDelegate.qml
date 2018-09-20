@@ -1,4 +1,5 @@
 import QtQuick 2.9
+import QtQuick.Controls 2.2
 import QtQuick.Templates 2.2 as T
 
 T.ItemDelegate {
@@ -14,7 +15,7 @@ T.ItemDelegate {
 	background: Rectangle {
 		implicitWidth: 200
 		implicitHeight: 32
-		visible: control.down || control.highlighted || control.visualFocus || control.hovered
-		color: control.hovered ? "#30525b" : "#073642"
+		visible: control.down || control.highlighted || control.hovered
+		color: control.highlighted ? "#eee8d5" : "#fdf6e3"
 	}
 }
