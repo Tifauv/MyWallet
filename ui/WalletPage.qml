@@ -40,19 +40,19 @@ Page {
 		model: wallet !== undefined ? wallet.accounts : []
 
 		delegate: ItemDelegate {
+			id: accountDelegate
 			width: parent.width
+			hoverEnabled: true
 
 			contentItem: AccountView {
 				name: model.name
 				login: model.login
-				hovered: parent.hovered
+				hovered: accountDelegate.hovered
 
 				onDeleted: console.log("Asked to delete account '" + model.name + "' from wallet '" + wallet.name + "'")
 			}
 
-			onDoubleClicked: {
-				clipboard.setTextWithTimer(model.password, 15);
-			}
+			onDoubleClicked: clipboard.setTextWithTimer(model.password, 10)
 		}
 	}
 
