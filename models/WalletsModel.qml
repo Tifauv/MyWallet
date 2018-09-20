@@ -13,10 +13,12 @@ ListModel {
 			ListElement {
 				name: "PPR"
 				login: "domain\\username"
+				password: "AIFE-PPR-PWD"
 			},
 			ListElement {
 				name: "PRD"
 				login: "domain\\username"
+				password: "AIFE-PRD-PWD"
 			}
 		]
 	}
@@ -29,6 +31,7 @@ ListModel {
 			ListElement {
 				name: "Standard"
 				login: "domain\\username"
+				password: "CA--TS-Standard-PWD"
 			}
 		]
 	}
@@ -41,14 +44,17 @@ ListModel {
 			ListElement {
 				name: "CyberArk"
 				login: "AD-BS\\A454593"
+				password: "CNRS-CyberArk-PWD"
 			},
 			ListElement {
 				name: "PMAD"
 				login: "OUTSOURCING\\A454593"
+				password: "CNRS-PMAD-PWD"
 			},
 			ListElement {
 				name: "SAaCon - iam"
 				login: "A454593"
+				password: "CNRS-SAaCon-PWD"
 			}
 		]
 	}
