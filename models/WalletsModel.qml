@@ -3,8 +3,6 @@ import QtQuick 2.0
 ListModel {
 	id: wallets
 
-	property int selectedIndex: -1
-
 	ListElement {
 		name: "AIFE"
 		color: "#2176c7"
@@ -66,11 +64,5 @@ ListModel {
 		name: "Deleted"
 		color: "transparent"
 		accounts: []
-	}
-
-
-	function select(index) {
-		if (index !== selectedIndex)
-			selectedIndex = index;
 	}
 }

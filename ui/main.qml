@@ -120,9 +120,7 @@ ApplicationWindow {
 	 * @param index  the index of the wallet to select
 	 */
 	function loadWallet(index) {
-		if (wallets.count > 0 && index >= 0 && index < wallets.count) {
-			wallets.select(index);
+		if (wallets.count > 0 && index >= 0 && index < wallets.count)
 			page.wallet = wallets.get(index)
-		}
 	}
 }
