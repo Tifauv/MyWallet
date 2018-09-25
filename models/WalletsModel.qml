@@ -8,7 +8,6 @@ ListModel {
 	ListElement {
 		name: "AIFE"
 		color: "#2176c7"
-		selected: false
 		accounts: [
 			ListElement {
 				name: "PPR"
@@ -26,7 +25,6 @@ ListModel {
 	ListElement {
 		name: "CA-TS"
 		color: "#738a05"
-		selected: false
 		accounts: [
 			ListElement {
 				name: "Standard"
@@ -39,7 +37,6 @@ ListModel {
 	ListElement {
 		name: "CNRS"
 		color: "#259286"
-		selected: false
 		accounts: [
 			ListElement {
 				name: "CyberArk"
@@ -62,24 +59,18 @@ ListModel {
 	ListElement {
 		name: "SAIL"
 		color: "#c61c6f"
-		selected: false
 		accounts: []
 	}
 
 	ListElement {
 		name: "Deleted"
 		color: "transparent"
-		selected: false
 		accounts: []
 	}
 
 
 	function select(index) {
-		if (index !== selectedIndex) {
-			wallets.get(index).selected = true;
-			if (selectedIndex >= 0 && selectedIndex < wallets.count)
-				wallets.get(selectedIndex).selected = false;
+		if (index !== selectedIndex)
 			selectedIndex = index;
-		}
 	}
 }
