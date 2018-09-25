@@ -1,5 +1,6 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
+import Wallets 1.0
 import "../models"
 
 ApplicationWindow {
@@ -10,6 +11,10 @@ ApplicationWindow {
 	title: qsTr("Wallets")
 
 	readonly property bool inPortrait: window.width < window.height
+
+	Wallets {
+		id: plop
+	}
 
 	WalletsModel {
 		id: wallets

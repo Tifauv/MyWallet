@@ -11,7 +11,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Qt5 COMPONENTS Core Quick REQUIRED)
 find_package(KF5Wallet)
 
-add_executable(${PROJECT_NAME} "main.cpp" "Account.cpp" "Wallet.cpp" "WalletsModel.cpp" "QmlClipboardAdapter.cpp" "ui.qrc"
+add_executable(${PROJECT_NAME} "main.cpp" "Account.cpp" "Wallet.cpp" "ManagedWallets.cpp" "QmlClipboardAdapter.cpp" "ui.qrc"
 		"models.qrc" "styles.qrc")
 
 target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Quick KF5::Wallet)

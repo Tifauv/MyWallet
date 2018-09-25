@@ -58,10 +58,11 @@ int Wallet::count() const {
  * @brief Wallet::setName
  * @param p_name
  */
-void Wallet::setName(const QString& p_name) {
+Wallet* Wallet::setName(const QString& p_name) {
 	m_name = p_name;
 	qDebug() << "(i) [Wallet] Changed name to " << m_name;
 	emit nameChanged(m_name);
+	return this;
 }
 
 
@@ -69,10 +70,11 @@ void Wallet::setName(const QString& p_name) {
  * @brief Wallet::setTagColor
  * @param p_color
  */
-void Wallet::setTagColor(const QString& p_color) {
+Wallet* Wallet::setTagColor(const QString& p_color) {
 	m_tagColor = p_color;
 	qDebug() << "(i) [Wallet] Changed tag color to " << m_tagColor;
 	emit tagColorChanged(m_tagColor);
+	return this;
 }
 
 
@@ -163,12 +165,14 @@ bool Wallet::setData(const QModelIndex& p_index, const QVariant& p_value, int p_
  * @param p_account
  */
 void Wallet::insertRow(int p_row, Account* p_account) {
+	Q_ASSERT(p_account);
+
 	beginInsertRows(QModelIndex(), p_row, p_row);
 	connect(p_account, SIGNAL(nameChanged(QString)),     SLOT(handleDataChanged()));
 	connect(p_account, SIGNAL(loginChanged(QString)),    SLOT(handleDataChanged()));
 	connect(p_account, SIGNAL(passwordChanged(QString)), SLOT(handleDataChanged()));
 	m_accounts.insert(p_row, p_account);
-	p_account->setParent(this);
+	//p_account->setParent(this);
 	endInsertRows();
 	emit countChanged(rowCount());
 	qDebug() << "(i) [Wallet] Account " << p_account->name() << " inserted into wallet " << name() << " at position " << p_row;
@@ -178,13 +182,11 @@ void Wallet::insertRow(int p_row, Account* p_account) {
 /**
  * @brief Wallet::removeRow
  * @param p_row
- * @param p_parent
  * @return
  */
-bool Wallet::removeRow(int p_row, const QModelIndex& p_parent) {
-	Q_UNUSED(p_parent);
+Account* Wallet::removeRow(int p_row) {
 	if (p_row < 0 || p_row >= rowCount())
-		return false;
+		return nullptr;
 
 	beginRemoveRows(QModelIndex(), p_row, p_row);
 	Account* account = m_accounts.takeAt(p_row);
@@ -192,7 +194,7 @@ bool Wallet::removeRow(int p_row, const QModelIndex& p_parent) {
 	endRemoveRows();
 	emit countChanged(rowCount());
 	qDebug() << "(i) [Wallet] Account " << account->name() << " removed from wallet " << name();
-	return true;
+	return account;
 }
 
 

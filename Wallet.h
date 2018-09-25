@@ -28,8 +28,8 @@ public:
 	const QString& tagColor() const;
 	int count() const;
 
-	void setName(const QString& name);
-	void setTagColor(const QString& color);
+	Wallet* setName(const QString& name);
+	Wallet* setTagColor(const QString& color);
 
 	int rowCount(const QModelIndex& parent = QModelIndex()) const override;
 	QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
@@ -43,7 +43,7 @@ signals:
 
 public slots:
 	void insertRow(int row, Account* account);
-	bool removeRow(int row, const QModelIndex& parent = QModelIndex());
+	Account* removeRow(int row);
 
 protected:
 	QHash<int, QByteArray> roleNames() const override;
