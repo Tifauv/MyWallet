@@ -1,6 +1,7 @@
 #include "QmlClipboardAdapter.h"
 
 #include <QMimeData>
+#include <QtDebug>
 
 // CONSTRUCTOR
 QmlClipboardAdapter::QmlClipboardAdapter(QObject* p_parent) :
@@ -24,12 +25,14 @@ void QmlClipboardAdapter::setText(const QString& p_text) {
 	mimeData->setText(p_text);
 	mimeData->setData("x-kde-passwordManagerHint", QString("secret").toUtf8());
 	m_clipboard->setMimeData(mimeData, QClipboard::Clipboard);
+	qDebug() << "(i) [QmlClipboardAdapter] Text copied to Clipboard.";
 
 	if (m_clipboard->supportsSelection()) {
 		QMimeData* mimeData = new QMimeData();
 		mimeData->setText(p_text);
 		mimeData->setData("x-kde-passwordManagerHint", QString("secret").toUtf8());
 		m_clipboard->setMimeData(mimeData, QClipboard::Selection);
+		qDebug() << "(i) [QmlClipboardAdapter] Text copied to Selection.";
 	}
 }
 
@@ -39,7 +42,9 @@ void QmlClipboardAdapter::setText(const QString& p_text) {
  */
 void QmlClipboardAdapter::clear() {
 	m_clipboard->clear(QClipboard::Clipboard);
+	qDebug() << "(i) [QmlClipboardAdapter] Clipboard cleared.";
 	m_clipboard->clear(QClipboard::Selection);
+	qDebug() << "(i) [QmlClipboardAdapter] Selection cleared.";
 }
 
 
@@ -54,4 +59,5 @@ void QmlClipboardAdapter::clear() {
 void QmlClipboardAdapter::setTextWithTimer(const QString& p_text, uint p_seconds) {
 	setText(p_text);
 	m_timer->start(p_seconds * 1000);
+	qDebug() << "(i) [QmlClipboardAdapter] Text will be cleared in" << p_seconds << "seconds.";
 }
