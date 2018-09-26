@@ -47,26 +47,17 @@ const QString& Account::login() const {
 }
 
 
-/**
- * @brief Account::password
- * @return
- */
-const QString& Account::password() const {
-	qDebug() << "(i) [Account] ::password() is not yet implemented.";
-	return QString::null;
-}
-
-
 // SETTERS
 /**
  * @brief Account::setName
  * @param p_name
  */
-void Account::setName(const QString& p_name) {
+Account* Account::setName(const QString& p_name) {
 	m_name = p_name;
 	// TODO implement name change in the KWallet backend
 	qDebug() << "(i) [Account] ::setName() is not fully implemented yet.";
 	emit nameChanged(m_name);
+	return this;
 }
 
 
@@ -74,20 +65,10 @@ void Account::setName(const QString& p_name) {
  * @brief Account::setLogin
  * @param p_login
  */
-void Account::setLogin(const QString& p_login) {
+Account* Account::setLogin(const QString& p_login) {
 	m_login = p_login;
 	// TODO implement login change in the KWallet backend
 	qDebug() << "(i) [Account] ::setLogin() is not fully implemented yet.";
 	emit loginChanged(m_login);
-}
-
-
-/**
- * @brief Account::setPassword
- * @param password
- */
-void Account::setPassword(const QString &password) {
-	// TODO implement password change in the KWallet backend
-	qDebug() << "(i) [Account] ::setPassword() is not yet implemented.";
-	emit passwordChanged("Not yet implemented");
+	return this;
 }

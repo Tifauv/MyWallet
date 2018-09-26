@@ -96,32 +96,6 @@ ManagedWallets::ManagedWallets(QObject* p_parent) :
 	// Add the trash wallet for deleted accounts
 	auto trashWallet = new Wallet();
 	addWallet(trashWallet->setName(tr("Deleted"))->setTagColor("transparent"));
-
-	/*
-	// List the managed wallets
-	QMap<QString, QString> tagColors;
-	mainWallet->readMap("ManagedWallets", tagColors);
-	qDebug() << "(i) [ManagedWallets] Managed wallets:";
-	QMapIterator<QString, QString> i(tagColors);
-	while (i.hasNext()) {
-		i.next();
-		qDebug() << "(i) [ManagedWallets]   - Wallet " << qPrintable(i.key()) << " (tag " << qPrintable(i.value()) << ").";
-		auto wallet = new Wallet();
-		wallet->setName(i.key())->setTagColor(i.value());
-
-		// Retrieve the password of the wallet
-		QString password;
-		mainWallet->readPassword(wallet->name(), password);
-		qDebug() << "(i) [ManagedWallets]     Password: " << qPrintable(password);
-
-		// Open the new wallet
-		KWallet::Wallet* dataWallet = KWallet::Wallet::openWallet(wallet->name(), 0);
-		delete dataWallet;
-
-		// Add the wallet to the model
-		insertRow(rowCount(), wallet);
-	}
-	*/
 }
 
 

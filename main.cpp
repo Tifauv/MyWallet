@@ -6,6 +6,9 @@
 int main(int p_argc, char* p_argv[]) {
 	QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 	QGuiApplication app(p_argc, p_argv);
+	app.setApplicationName("Wallets");
+	app.setApplicationDisplayName("Wallets");
+	app.setApplicationVersion("0.1");
 
 	qmlRegisterType<QmlClipboardAdapter>("Wallets", 1, 0, "Clipboard");
 	qmlRegisterType<ManagedWallets>(     "Wallets", 1, 0, "Wallets"  );

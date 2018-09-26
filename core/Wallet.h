@@ -6,6 +6,9 @@
 #include <QAbstractListModel>
 #include "Account.h"
 
+/**
+ * @brief The Wallet class
+ */
 class Wallet : public QAbstractListModel {
 	Q_OBJECT
 
@@ -46,6 +49,7 @@ public slots:
 
 protected:
 	QHash<int, QByteArray> roleNames() const override;
+	int retrievePassword(Account& account, QString& password) const;
 
 private slots:
 	void handleDataChanged();

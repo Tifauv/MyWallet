@@ -21,10 +21,7 @@ public:
 
 	int count() const;
 
-	// Basic functionality:
 	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-
-	// Fetch data dynamically:
 	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
 signals:

@@ -1,5 +1,8 @@
 #include "Wallet.h"
+#include <QGuiApplication>
 #include <QtDebug>
+#include <KWallet/KWallet>
+
 
 // CONSTRUCTORS
 /**
@@ -89,6 +92,63 @@ void Wallet::addAccount(const QString& p_name, const QString& p_login) {
 }
 
 
+/**
+ * @brief Wallet::retrievePassword
+ * @param p_account
+ * @param p_password
+ *
+ * @return 0: no error ;
+ *         1: cannot open the application's wallet in KWallet ;
+ *         2: there is no folder named after this wallet in KWallet ;
+ *         3: there is no data for the requested account in this folder ;
+ *         4: the account's data lacks the 'current password identifier' field ;
+ *         5: there is no password named as the 'current password identifier'.
+ */
+int Wallet::retrievePassword(Account& p_account, QString& p_password) const {
+	KWallet::Wallet* backend = KWallet::Wallet::openWallet(QGuiApplication::applicationName(), 0);
+	if (backend == nullptr) {
+		qDebug() << "/!\\ [Wallet] Wallet '" << qPrintable(QGuiApplication::applicationName()) <<  "' could not be opened!";
+		return 1;
+	}
+
+	// Set the current folder
+	if (!backend->setFolder(name())) {
+		qDebug() << "/i\\ [Wallet] No folder named '" << qPrintable(name()) << "'!";
+		delete backend;
+		return 2;
+	}
+
+	// Retrieve the account data
+	QMap<QString, QString> accountData;
+	if (backend->readMap(p_account.name(), accountData) != 0) {
+		qDebug() << "/i\\ [Wallet] No account named '" << qPrintable(p_account.name()) << "' in folder '" << qPrintable(name()) << "'!";
+		delete backend;
+		return 3;
+	}
+
+	// Get the current password identifier
+	const QString& currentPwdId = accountData.value("password");
+	if (currentPwdId.isEmpty()) {
+		qDebug() << "/!\\ [Wallet] Account '" << p_account.name() << "' has no current password identifier!";
+		delete backend;
+		return 4;
+	}
+
+	// Get the current password
+	QString password;
+	if (backend->readPassword(currentPwdId, password) != 0) {
+		qDebug() << "/!\\ [Wallet] No password with id '" << currentPwdId << "'!";
+		delete backend;
+		return 5;
+	}
+
+	p_password = password;
+
+	delete backend;
+	return 0;
+}
+
+
 // MODEL/VIEW API
 /**
  * @brief Wallet::rowCount
@@ -107,8 +167,8 @@ int Wallet::rowCount(const QModelIndex& p_parent) const {
  */
 QHash<int, QByteArray> Wallet::roleNames() const {
 	QHash<int, QByteArray> names;
-	names[NameRole] = "name";
-	names[LoginRole] = "login";
+	names[NameRole]     = "name";
+	names[LoginRole]    = "login";
 	names[PasswordRole] = "password";
 	return names;
 }
@@ -132,10 +192,12 @@ QVariant Wallet::data(const QModelIndex& p_index, int p_role) const {
 	case LoginRole:
 		return account->login();
 	case PasswordRole:
-		return account->password();
-	default:
-		return QVariant();
+		QString password;
+		if (retrievePassword(*account, password) == 0)
+			return QVariant(password);
 	}
+
+	return QVariant();
 }
 
 
@@ -148,11 +210,9 @@ void Wallet::insertRow(int p_row, Account* p_account) {
 	Q_ASSERT(p_account);
 
 	beginInsertRows(QModelIndex(), p_row, p_row);
-	connect(p_account, SIGNAL(nameChanged(QString)),     SLOT(handleDataChanged()));
-	connect(p_account, SIGNAL(loginChanged(QString)),    SLOT(handleDataChanged()));
-	connect(p_account, SIGNAL(passwordChanged(QString)), SLOT(handleDataChanged()));
+	connect(p_account, SIGNAL(nameChanged(QString)),  SLOT(handleDataChanged()));
+	connect(p_account, SIGNAL(loginChanged(QString)), SLOT(handleDataChanged()));
 	m_accounts.insert(p_row, p_account);
-	//p_account->setParent(this);
 	endInsertRows();
 	emit countChanged(rowCount());
 	qDebug() << "(i) [Wallet] Account " << p_account->name() << " inserted into wallet " << name() << " at position " << p_row;
