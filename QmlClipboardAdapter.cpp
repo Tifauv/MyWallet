@@ -1,7 +1,6 @@
 #include "QmlClipboardAdapter.h"
 
-#include <QTimer>
-#include <iostream>
+#include <QMimeData>
 
 // CONSTRUCTOR
 QmlClipboardAdapter::QmlClipboardAdapter(QObject* p_parent) :
@@ -21,8 +20,17 @@ QObject(p_parent) {
  *            the text to copy to the clipboard
  */
 void QmlClipboardAdapter::setText(const QString& p_text) {
-	m_clipboard->setText(p_text, QClipboard::Clipboard);
-	m_clipboard->setText(p_text, QClipboard::Selection);
+	QMimeData* mimeData = new QMimeData();
+	mimeData->setText(p_text);
+	mimeData->setData("x-kde-passwordManagerHint", QString("secret").toUtf8());
+	m_clipboard->setMimeData(mimeData, QClipboard::Clipboard);
+
+	if (m_clipboard->supportsSelection()) {
+		QMimeData* mimeData = new QMimeData();
+		mimeData->setText(p_text);
+		mimeData->setData("x-kde-passwordManagerHint", QString("secret").toUtf8());
+		m_clipboard->setMimeData(mimeData, QClipboard::Selection);
+	}
 }
 
 
@@ -30,10 +38,8 @@ void QmlClipboardAdapter::setText(const QString& p_text) {
  * @brief Clears the clipboard.
  */
 void QmlClipboardAdapter::clear() {
-	std::cerr << ">> QmlClipboardAdapter::clear (text is " << qPrintable(m_clipboard->text()) << ")" << std::endl;
 	m_clipboard->clear(QClipboard::Clipboard);
 	m_clipboard->clear(QClipboard::Selection);
-	std::cerr << "<< QmlClipboardAdapter::clear (text is " << qPrintable(m_clipboard->text()) << ")" << std::endl;
 }
 
 
