@@ -84,6 +84,7 @@ ApplicationWindow {
 
 			delegate: ItemDelegate {
 				width: parent.width
+				hoverEnabled: true
 
 				contentItem: WalletItem {
 					color: model.color
