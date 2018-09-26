@@ -34,8 +34,8 @@ Page {
 
 	ListView {
 		id: list
-		clip: true
 		anchors.fill: parent
+		clip: true
 
 		model: wallet !== undefined ? wallet : []
 
@@ -52,8 +52,18 @@ Page {
 				onDeleted: console.log("Asked to delete account '" + model.name + "' from wallet '" + wallet.name + "'")
 			}
 
-			onDoubleClicked: clipboard.setTextWithTimer(model.password, 10)
+			highlighted: ListView.isCurrentItem
+			onClicked: list.currentIndex = model.index
+
+			onDoubleClicked: {
+				console.log("Double click: copying password to clipboard")
+				clipboard.setTextWithTimer(model.password, 10)
+				/*console.log("Right click: copying login to clipboard")
+				clipboard.setText(model.login)*/
+			}
 		}
+
+		ScrollIndicator.vertical: ScrollIndicator {}
 	}
 
 	/**
