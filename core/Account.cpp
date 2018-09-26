@@ -43,7 +43,7 @@ const QString& Account::name() const {
  * @return
  */
 const QString& Account::login() const {
-	return m_name;
+	return m_login;
 }
 
 
@@ -53,7 +53,7 @@ const QString& Account::login() const {
  */
 const QString& Account::password() const {
 	qDebug() << "(i) [Account] ::password() is not yet implemented.";
-	return "Not yet implemented";
+	return QString::null;
 }
 
 

@@ -13,12 +13,14 @@ ApplicationWindow {
 	readonly property bool inPortrait: window.width < window.height
 
 	Wallets {
-		id: plop
-	}
-
-	WalletsModel {
 		id: wallets
 	}
+
+	/*
+	// Sample model data defined in QML
+	WalletsModel {
+		id: wallets
+	}*/
 
 	ToolBar {
 		id: overlayHeader

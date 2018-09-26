@@ -49,7 +49,7 @@ const QString& Wallet::tagColor() const {
  * @return
  */
 int Wallet::count() const {
-	return m_accounts.count();
+	return rowCount();
 }
 
 
@@ -75,6 +75,17 @@ Wallet* Wallet::setTagColor(const QString& p_color) {
 	qDebug() << "(i) [Wallet] Changed tag color to " << m_tagColor;
 	emit tagColorChanged(m_tagColor);
 	return this;
+}
+
+
+// NATIVE API
+/**
+ * @brief Wallet::addAccount
+ * @param p_name
+ * @param p_login
+ */
+void Wallet::addAccount(const QString& p_name, const QString& p_login) {
+	insertRow(rowCount(), new Account(p_name, p_login));
 }
 
 
@@ -125,37 +136,6 @@ QVariant Wallet::data(const QModelIndex& p_index, int p_role) const {
 	default:
 		return QVariant();
 	}
-}
-
-
-/**
- * @brief Wallet::setData
- * @param p_index
- * @param p_value
- * @param p_role
- * @return
- */
-bool Wallet::setData(const QModelIndex& p_index, const QVariant& p_value, int p_role) {
-	qDebug() << "(i) [Wallet] Setting data for role " << p_role << " of account ar row " << p_index.row();
-	if (p_index.row() < 0 || p_index.row() >= rowCount())
-		return false;
-
-	Account* account = m_accounts.at(p_index.row());
-	switch (p_role) {
-	case NameRole:
-		account->setName(p_value.toString());
-		break;
-	case LoginRole:
-		account->setLogin(p_value.toString());
-		break;
-	case PasswordRole:
-		account->setPassword(p_value.toString());
-		break;
-	default:
-		return false;
-	}
-	emit dataChanged(p_index, p_index);
-	return true;
 }
 
 

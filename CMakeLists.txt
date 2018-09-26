@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.1)
 
 project(Wallets LANGUAGES CXX)
+set(PROJECT_VERSION "0.1")
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
@@ -11,7 +12,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Qt5 COMPONENTS Core Quick REQUIRED)
 find_package(KF5Wallet)
 
-add_executable(${PROJECT_NAME} "main.cpp" "Account.cpp" "Wallet.cpp" "ManagedWallets.cpp" "QmlClipboardAdapter.cpp" "ui.qrc"
-		"models.qrc" "styles.qrc")
+add_executable(${PROJECT_NAME}
+		core/Account.cpp
+		core/Wallet.cpp
+		core/ManagedWallets.cpp
+		QmlClipboardAdapter.cpp
+		main.cpp
+		ui.qrc
+		models.qrc
+)
 
 target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Quick KF5::Wallet)

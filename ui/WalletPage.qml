@@ -8,7 +8,7 @@ Page {
 	implicitWidth: 440
 	implicitHeight: 480
 
-	property var wallet: undefined
+	property variant wallet: undefined
 
 	title: wallet !== undefined ? wallet.name : qsTr("Wallet name")
 
@@ -28,7 +28,7 @@ Page {
 			verticalAlignment: Text.AlignVCenter
 			anchors.left: parent.left
 
-			text: adaptCount(wallet !== undefined ? wallet.accounts.count : 0)
+			text: adaptCount(wallet !== undefined ? wallet.count : 0)
 		}
 	}
 
@@ -37,7 +37,7 @@ Page {
 		clip: true
 		anchors.fill: parent
 
-		model: wallet !== undefined ? wallet.accounts : []
+		model: wallet !== undefined ? wallet : []
 
 		delegate: ItemDelegate {
 			width: parent.width
