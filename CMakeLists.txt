@@ -19,7 +19,6 @@ add_executable(${PROJECT_NAME}
 		QmlClipboardAdapter.cpp
 		main.cpp
 		ui.qrc
-		models.qrc
 )
 
 target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Quick KF5::Wallet)
