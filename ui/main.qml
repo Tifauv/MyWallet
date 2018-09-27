@@ -53,7 +53,6 @@ ApplicationWindow {
 				id: menu
 				y: menuBtn.height
 
-				MenuItem { text: "New wallet..."    }
 				MenuItem { text: "Export wallet..." }
 				MenuItem { text: "Import wallet..." }
 				MenuItem { text: "Delete wallet"    }
@@ -95,6 +94,19 @@ ApplicationWindow {
 				onClicked: {
 					loadWallet(model.index)
 					listView.currentIndex = model.index
+				}
+			}
+
+			footer: ItemDelegate {
+				width: parent.width
+				hoverEnabled: true
+
+				contentItem: Label {
+					text: qsTr("New wallet")
+				}
+
+				onClicked: {
+					console.log("New wallet requested")
 				}
 			}
 
