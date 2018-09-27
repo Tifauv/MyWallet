@@ -5,6 +5,7 @@
 #include <QScopedPointer>
 #include <KWallet/KWallet>
 #include "Folder.h"
+#include "Trash.h"
 
 class Wallet : public QAbstractListModel {
 	Q_OBJECT
@@ -38,9 +39,11 @@ public slots:
 
 protected:
 	QHash<int, QByteArray> roleNames() const override;
+	int loadBackend();
 
 private:
 	QList<Folder*> m_folders;
+	Trash*         m_trash;
 	QScopedPointer<KWallet::Wallet> m_backend;
 };
 

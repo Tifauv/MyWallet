@@ -9,17 +9,73 @@
  */
 Wallet::Wallet(QObject* p_parent) :
     QAbstractListModel(p_parent),
+    m_trash(new Trash()),
     m_backend(KWallet::Wallet::openWallet(QGuiApplication::applicationName(), 0)) {
 	qDebug() << "(i) [Wallet] Created.";
+	loadBackend();
+}
+
+
+// DESTRUCTORS
+/**
+ * @brief Wallet::~Wallet
+ */
+Wallet::~Wallet() {
+	if (m_backend)
+		m_backend->lockWallet();
+}
+
+// GETTERS
+/**
+ * @brief Wallet::count
+ * @return
+ */
+int Wallet::count() const {
+	return rowCount();
+}
+
+
+// NATIVE API
+/**
+ * @brief Wallet::addFolder
+ * @param p_folder
+ */
+void Wallet::addFolder(Folder* p_folder) {
+	insertRow(rowCount(), p_folder);
+}
+
+
+/**
+ * @brief Wallet::get
+ * @param p_row
+ * @return
+ */
+Folder* Wallet::get(int p_row) const {
+	if (p_row < 0 || p_row >= rowCount())
+		return nullptr;
+
+	if (p_row == m_folders.count())
+		return m_trash;
+	return m_folders.at(p_row);
+}
+
+
+/**
+ * @brief Wallet::loadBackend
+ * @return 0: no error ;
+ *         1: KWallet system is disabled ;
+ *         2: cannot open the application's wallet in KWallet ;
+ */
+int Wallet::loadBackend() {
 	if (!KWallet::Wallet::isEnabled()) {
 		qDebug() << "/!\\ [Wallet] KWallet subsystem is disabled!";
-		return;
+		return 1;
 	}
 
 	// Open our wallet
 	if (m_backend == nullptr) {
 		qDebug() << "/!\\ [Wallet] Wallet '" << qPrintable(QGuiApplication::applicationName()) <<  "' could not be opened!";
-		return;
+		return 2;
 	}
 	qDebug() << "(i) [Wallet] Our wallet '" << qPrintable(QGuiApplication::applicationName()) << "' is now opened.";
 
@@ -75,52 +131,7 @@ Wallet::Wallet(QObject* p_parent) :
 		// Add the wallet to the model
 		addFolder(folder);
 	}
-
-	// Add the trash wallet for deleted accounts
-	auto trashWallet = new Folder();
-	addFolder(trashWallet->setName(tr("Deleted"))->setTagColor("transparent"));
-}
-
-
-// DESTRUCTORS
-/**
- * @brief Wallet::~Wallet
- */
-Wallet::~Wallet() {
-	if (m_backend)
-		m_backend->lockWallet();
-}
-
-// GETTERS
-/**
- * @brief Wallet::count
- * @return
- */
-int Wallet::count() const {
-	return rowCount();
-}
-
-
-// NATIVE API
-/**
- * @brief Wallet::addFolder
- * @param p_folder
- */
-void Wallet::addFolder(Folder* p_folder) {
-	insertRow(rowCount(), p_folder);
-}
-
-
-/**
- * @brief Wallet::get
- * @param p_row
- * @return
- */
-Folder* Wallet::get(int p_row) const {
-	if (p_row < 0 || p_row >= rowCount())
-		return nullptr;
-
-	return m_folders.at(p_row);
+	return 0;
 }
 
 
@@ -132,7 +143,7 @@ Folder* Wallet::get(int p_row) const {
  */
 int Wallet::rowCount(const QModelIndex& p_parent) const {
 	Q_UNUSED(p_parent);
-	return m_folders.count();
+	return m_folders.count() + 1; // +1 for the trash
 }
 
 
@@ -146,8 +157,16 @@ QVariant Wallet::data(const QModelIndex& p_index, int p_role) const {
 	if (p_index.row() < 0 || p_index.row() >= rowCount())
 		return QVariant();
 
-	qDebug() << "(i) [Wallet] Looking for folder at row " << p_index.row() << " with role " << p_role;
-	auto folder = m_folders.at(p_index.row());
+	Folder* folder;
+	if (p_index.row() == m_folders.count()) {
+		qDebug() << "(i) [Wallet] Looking for trash folder with role " << p_role;
+		folder = m_trash;
+	}
+	else {
+		qDebug() << "(i) [Wallet] Looking for folder at row " << p_index.row() << " with role " << p_role;
+		folder = m_folders.at(p_index.row());
+	}
+
 	switch (p_role) {
 	case NameRole:
 		qDebug() << "(i) [Wallet]   folder name is " << folder->name();
@@ -188,7 +207,8 @@ bool Wallet::insertRow(int p_row, Folder* p_folder) {
  * @return
  */
 Folder* Wallet::removeRow(int p_row) {
-	if (p_row < 0 || p_row >= rowCount())
+	// Upper bound check prevents removing the trash item
+	if (p_row < 0 || p_row >= m_folders.count())
 		return nullptr;
 
 	beginRemoveRows(QModelIndex(), p_row, p_row);
