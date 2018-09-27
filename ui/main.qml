@@ -15,8 +15,8 @@ ApplicationWindow {
 		id: wallet
 	}
 
-	ToolBar {
-		id: overlayHeader
+	TitleBar {
+		id: windowHeader
 
 		z: 1
 		width: parent.width
@@ -30,7 +30,7 @@ ApplicationWindow {
 			anchors.leftMargin: 8
 			anchors.verticalCenter: parent.verticalCenter
 
-			text: qsTr("Folder \"%1\"").arg(page.title)
+			text: qsTr("Wallets / %1").arg(page.title)
 			font.letterSpacing: 2
 			font.weight: Font.Thin
 			font.pixelSize: 22
@@ -64,17 +64,18 @@ ApplicationWindow {
 	Drawer {
 		id: sidebar
 
-		y: overlayHeader.height
+		y: windowHeader.height
 		width: 180
-		height: window.height - overlayHeader.height
+		height: window.height - windowHeader.height
 
 		modal: inPortrait
 		interactive: inPortrait
 		position: inPortrait ? 0 : 1
 		visible: !inPortrait
 
-		ListView {
-			id: listView
+		contentItem: ListView {
+			id: folderList
+
 			anchors.fill: parent
 			clip: true
 
@@ -92,32 +93,31 @@ ApplicationWindow {
 				highlighted: ListView.isCurrentItem
 				onClicked: {
 					loadFolder(model.index)
-					listView.currentIndex = model.index
-				}
-			}
-
-			footer: ItemDelegate {
-				width: parent.width
-				hoverEnabled: true
-
-				contentItem: Label {
-					text: qsTr("New folder")
-				}
-
-				onClicked: {
-					console.log("New folder requested")
+					folderList.currentIndex = model.index
 				}
 			}
 
 			ScrollIndicator.vertical: ScrollIndicator { }
 		}
+
+		RoundButton {
+			id: newFolderBtn
+			anchors.bottom: parent.bottom
+			anchors.bottomMargin: 4
+			anchors.horizontalCenter: parent.horizontalCenter
+
+			hoverEnabled: true
+			text: "+"
+
+			onClicked: console.log("New folder requested")
+		}
 	}
 
-	FolderPage {
+	AccountsPage {
 		id: page
 
 		anchors.fill: parent
-		anchors.topMargin: overlayHeader.height
+		anchors.topMargin: windowHeader.height
 		anchors.leftMargin: !inPortrait ? sidebar.width : undefined
 	}
 

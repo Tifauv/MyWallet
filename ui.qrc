@@ -3,8 +3,10 @@
         <file>qtquickcontrols2.conf</file>
         <file>ui/main.qml</file>
         <file>ui/FolderItem.qml</file>
-        <file>ui/FolderPage.qml</file>
+        <file>ui/AccountsPage.qml</file>
         <file>ui/AccountView.qml</file>
         <file>ui/AccountViewForm.ui.qml</file>
+        <file>ui/TitleBar.qml</file>
+        <file>ui/+material/TitleBar.qml</file>
     </qresource>
 </RCC>
