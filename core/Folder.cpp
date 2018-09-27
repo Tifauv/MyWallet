@@ -7,7 +7,7 @@
 
 // CONSTRUCTORS
 /**
- * @brief Wallet::Wallet
+ * @brief Folder::Wallet
  * @param p_parent
  */
 Folder::Folder(QObject* p_parent) :
@@ -17,7 +17,7 @@ Folder::Folder(QObject* p_parent) :
 
 
 /**
- * @brief Wallet::Wallet
+ * @brief Folder::Wallet
  * @param p_toCopy
  */
 Folder::Folder(const Folder& p_toCopy) :
@@ -31,7 +31,7 @@ Folder::Folder(const Folder& p_toCopy) :
 
 // GETTERS
 /**
- * @brief Wallet::name
+ * @brief Folder::name
  * @return
  */
 const QString& Folder::name() const {
@@ -40,7 +40,7 @@ const QString& Folder::name() const {
 
 
 /**
- * @brief Wallet::tagColor
+ * @brief Folder::tagColor
  * @return
  */
 const QString& Folder::tagColor() const {
@@ -49,7 +49,7 @@ const QString& Folder::tagColor() const {
 
 
 /**
- * @brief Wallet::count
+ * @brief Folder::count
  * @return
  */
 int Folder::count() const {
@@ -59,8 +59,10 @@ int Folder::count() const {
 
 // SETTERS
 /**
- * @brief Wallet::setName
+ * @brief Folder::setName
  * @param p_name
+ *
+ * @return this
  */
 Folder* Folder::setName(const QString& p_name) {
 	m_name = p_name;
@@ -71,8 +73,10 @@ Folder* Folder::setName(const QString& p_name) {
 
 
 /**
- * @brief Wallet::setTagColor
+ * @brief Folder::setTagColor
  * @param p_color
+ *
+ * @return this
  */
 Folder* Folder::setTagColor(const QString& p_color) {
 	m_tagColor = p_color;
@@ -84,7 +88,7 @@ Folder* Folder::setTagColor(const QString& p_color) {
 
 // NATIVE API
 /**
- * @brief Wallet::addAccount
+ * @brief Folder::addAccount
  * @param p_name
  * @param p_login
  */
@@ -94,7 +98,7 @@ void Folder::addAccount(const QString& p_name, const QString& p_login) {
 
 
 /**
- * @brief Wallet::retrievePassword
+ * @brief Folder::retrievePassword
  * @param p_account
  * @param p_password
  *
@@ -146,7 +150,7 @@ int Folder::retrievePassword(Account& p_account, QString& p_password) const {
 
 // MODEL/VIEW API
 /**
- * @brief Wallet::rowCount
+ * @brief Folder::rowCount
  * @param p_parent
  * @return
  */
@@ -157,7 +161,7 @@ int Folder::rowCount(const QModelIndex& p_parent) const {
 
 
 /**
- * @brief Wallet::roleNames
+ * @brief Folder::roleNames
  * @return
  */
 QHash<int, QByteArray> Folder::roleNames() const {
@@ -170,7 +174,7 @@ QHash<int, QByteArray> Folder::roleNames() const {
 
 
 /**
- * @brief Wallet::data
+ * @brief Folder::data
  * @param p_index
  * @param p_role
  * @return
@@ -197,7 +201,7 @@ QVariant Folder::data(const QModelIndex& p_index, int p_role) const {
 
 
 /**
- * @brief Wallet::insertRow
+ * @brief Folder::insertRow
  * @param p_row
  * @param p_account
  */
@@ -215,7 +219,7 @@ void Folder::insertRow(int p_row, Account* p_account) {
 
 
 /**
- * @brief Wallet::removeRow
+ * @brief Folder::removeRow
  * @param p_row
  * @return
  */
@@ -235,7 +239,7 @@ Account* Folder::removeRow(int p_row) {
 
 // PRIVATE SLOTS: DATA CHANGE SIGNALLING
 /**
- * @brief Wallet::handleDataChanged
+ * @brief Folder::handleDataChanged
  */
 void Folder::handleDataChanged() {
 	QModelIndex index( createIndex( m_accounts.indexOf(static_cast<Account*>(sender())), 0 ) );
