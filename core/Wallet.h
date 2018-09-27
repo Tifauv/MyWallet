@@ -1,67 +1,47 @@
 #ifndef Wallet_H
 #define Wallet_H
 
-#include <QObject>
-#include <QMetaType>
 #include <QAbstractListModel>
-#include "Account.h"
+#include <QScopedPointer>
+#include <KWallet/KWallet>
+#include "Folder.h"
 
-/**
- * @brief The Wallet class
- */
 class Wallet : public QAbstractListModel {
 	Q_OBJECT
 
-	Q_PROPERTY(QString name      READ name      WRITE setName      NOTIFY nameChanged      DESIGNABLE false)
-	Q_PROPERTY(QString tagColor  READ tagColor  WRITE setTagColor  NOTIFY tagColorChanged                  )
-	Q_PROPERTY(int     count     READ count                        NOTIFY countChanged                     )
+	Q_PROPERTY(int count  READ count  NOTIFY countChanged)
 
 public:
 	enum Roles {
 		NameRole = Qt::UserRole + 1,
-		LoginRole,
-		PasswordRole
+		TagColorRole,
+		AccountListRole
 	};
 
 	explicit Wallet(QObject* parent = nullptr);
-	explicit Wallet(const Wallet&);
-	~Wallet() {}
+	~Wallet();
 
-	const QString& name()     const;
-	const QString& tagColor() const;
 	int count() const;
 
-	Wallet* setName(const QString& name);
-	Wallet* setTagColor(const QString& color);
-
-	int rowCount(const QModelIndex& parent = QModelIndex()) const override;
-	QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
 signals:
-	void nameChanged(const QString&);
-	void tagColorChanged(const QString&);
 	void countChanged(int);
 
 public slots:
-	void addAccount(const QString& name, const QString& login);
-	void insertRow(int row, Account* account);
-	Account* removeRow(int row);
+	void addFolder(Folder* wallet);
+	Folder* get(int row) const;
+
+	bool insertRow(int row, Folder* wallet);
+	Folder* removeRow(int row);
 
 protected:
 	QHash<int, QByteArray> roleNames() const override;
-	int retrievePassword(Account& account, QString& password) const;
-
-private slots:
-	void handleDataChanged();
 
 private:
-	QString m_name;
-	QString m_tagColor;
-	QList<Account*> m_accounts;
+	QList<Folder*> m_folders;
+	QScopedPointer<KWallet::Wallet> m_backend;
 };
-
-Q_DECLARE_METATYPE(Wallet)
-Q_DECLARE_METATYPE(Wallet*)
-Q_DECLARE_METATYPE(QList<Wallet*>)
 
 #endif

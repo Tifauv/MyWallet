@@ -11,8 +11,8 @@ ApplicationWindow {
 
 	readonly property bool inPortrait: window.width < window.height
 
-	Wallets {
-		id: wallets
+	Wallet {
+		id: wallet
 	}
 
 	ToolBar {
@@ -30,7 +30,7 @@ ApplicationWindow {
 			anchors.leftMargin: 8
 			anchors.verticalCenter: parent.verticalCenter
 
-			text: qsTr("Wallet \"%1\"").arg(page.title)
+			text: qsTr("Folder \"%1\"").arg(page.title)
 			font.letterSpacing: 2
 			font.weight: Font.Thin
 			font.pixelSize: 22
@@ -45,7 +45,6 @@ ApplicationWindow {
 
 			text: "\u2630"
 			font.pixelSize: Qt.application.font.pixelSize * 1.6
-			//contentItem.color: "#002b36"
 
 			onClicked: menu.open()
 
@@ -79,20 +78,20 @@ ApplicationWindow {
 			anchors.fill: parent
 			clip: true
 
-			model: wallets
+			model: wallet
 
 			delegate: ItemDelegate {
 				width: parent.width
 				hoverEnabled: true
 
-				contentItem: WalletItem {
+				contentItem: FolderItem {
 					color: model.color
 					text: model.name
 				}
 
 				highlighted: ListView.isCurrentItem
 				onClicked: {
-					loadWallet(model.index)
+					loadFolder(model.index)
 					listView.currentIndex = model.index
 				}
 			}
@@ -102,11 +101,11 @@ ApplicationWindow {
 				hoverEnabled: true
 
 				contentItem: Label {
-					text: qsTr("New wallet")
+					text: qsTr("New folder")
 				}
 
 				onClicked: {
-					console.log("New wallet requested")
+					console.log("New folder requested")
 				}
 			}
 
@@ -114,7 +113,7 @@ ApplicationWindow {
 		}
 	}
 
-	WalletPage {
+	FolderPage {
 		id: page
 
 		anchors.fill: parent
@@ -122,18 +121,18 @@ ApplicationWindow {
 		anchors.leftMargin: !inPortrait ? sidebar.width : undefined
 	}
 
-	// Autoselect the first wallet
-	Component.onCompleted: loadWallet(0)
+	// Autoselect the first folder
+	Component.onCompleted: loadFolder(0)
 
 
 	/**
-	 * Selects the wallet at the given index in the model.
+	 * Selects the folder at the given index in the model.
 	 * If the model is empty, or the index is outside [0, model.count[, nothing is done.
 	 *
-	 * @param index  the index of the wallet to select
+	 * @param index  the index of the folder to select
 	 */
-	function loadWallet(index) {
-		if (wallets.count > 0 && index >= 0 && index < wallets.count)
-			page.wallet = wallets.get(index)
+	function loadFolder(index) {
+		if (wallet.count > 0 && index >= 0 && index < wallet.count)
+			page.folder = wallet.get(index)
 	}
 }

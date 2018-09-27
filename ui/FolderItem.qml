@@ -2,7 +2,6 @@ import QtQuick 2.9
 import QtQuick.Controls 2.2
 
 Item {
-	id: walletItem
 	implicitWidth: 200
 	implicitHeight: label.height
 
@@ -24,7 +23,7 @@ Item {
 
 	Label {
 		id: label
-		text: "Wallet name"
+		text: "Folder name"
 		anchors.verticalCenter: parent.verticalCenter
 		verticalAlignment: Text.AlignVCenter
 		anchors.left: icon.right

@@ -2,8 +2,8 @@
     <qresource prefix="/">
         <file>qtquickcontrols2.conf</file>
         <file>ui/main.qml</file>
-        <file>ui/WalletItem.qml</file>
-        <file>ui/WalletPage.qml</file>
+        <file>ui/FolderItem.qml</file>
+        <file>ui/FolderPage.qml</file>
         <file>ui/AccountView.qml</file>
         <file>ui/AccountViewForm.ui.qml</file>
     </qresource>

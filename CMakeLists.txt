@@ -14,8 +14,8 @@ find_package(KF5Wallet)
 
 add_executable(${PROJECT_NAME}
 		core/Account.cpp
+		core/Folder.cpp
 		core/Wallet.cpp
-		core/ManagedWallets.cpp
 		QmlClipboardAdapter.cpp
 		main.cpp
 		ui.qrc

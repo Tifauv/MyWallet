@@ -8,9 +8,9 @@ Page {
 	implicitWidth: 440
 	implicitHeight: 480
 
-	property variant wallet: undefined
+	property variant folder: undefined
 
-	title: wallet !== undefined ? wallet.name : qsTr("Wallet name")
+	title: folder !== undefined ? folder.name : qsTr("Folder name")
 
 	Clipboard {
 		id: clipboard
@@ -28,7 +28,7 @@ Page {
 			verticalAlignment: Text.AlignVCenter
 			anchors.left: parent.left
 
-			text: adaptCount(wallet !== undefined ? wallet.count : 0)
+			text: adaptCount(folder !== undefined ? folder.count : 0)
 		}
 	}
 
@@ -37,7 +37,7 @@ Page {
 		anchors.fill: parent
 		clip: true
 
-		model: wallet !== undefined ? wallet : []
+		model: folder !== undefined ? folder : []
 
 		delegate: ItemDelegate {
 			id: accountDelegate
@@ -49,7 +49,7 @@ Page {
 				login: model.login
 				hovered: accountDelegate.hovered
 
-				onDeleted: console.log("Asked to delete account '" + model.name + "' from wallet '" + wallet.name + "'")
+				onDeleted: console.log("Asked to delete account '" + model.name + "' from folder '" + folder.name + "'")
 			}
 
 			highlighted: ListView.isCurrentItem
@@ -67,7 +67,7 @@ Page {
 	}
 
 	/**
-	 * Adapts the accounts count to the number of elements in the wallet.
+	 * Adapts the accounts count to the number of elements in the folder.
 	 */
 	function adaptCount(count) {
 		switch (count) {
