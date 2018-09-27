@@ -2,6 +2,8 @@
 #define ManagedWallets_H
 
 #include <QAbstractListModel>
+#include <QScopedPointer>
+#include <KWallet/KWallet>
 #include "Wallet.h"
 
 class ManagedWallets : public QAbstractListModel {
@@ -17,7 +19,7 @@ public:
 	};
 
 	explicit ManagedWallets(QObject* parent = nullptr);
-	~ManagedWallets() {}
+	~ManagedWallets();
 
 	int count() const;
 
@@ -39,6 +41,7 @@ protected:
 
 private:
 	QList<Wallet*> m_wallets;
+	QScopedPointer<KWallet::Wallet> m_backend;
 };
 
 #endif

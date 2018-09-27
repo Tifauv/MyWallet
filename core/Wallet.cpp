@@ -1,5 +1,6 @@
 #include "Wallet.h"
 #include <QGuiApplication>
+#include <QScopedPointer>
 #include <QtDebug>
 #include <KWallet/KWallet>
 
@@ -105,8 +106,8 @@ void Wallet::addAccount(const QString& p_name, const QString& p_login) {
  *         5: there is no password named as the 'current password identifier'.
  */
 int Wallet::retrievePassword(Account& p_account, QString& p_password) const {
-	KWallet::Wallet* backend = KWallet::Wallet::openWallet(QGuiApplication::applicationName(), 0);
-	if (backend == nullptr) {
+	QScopedPointer<KWallet::Wallet> backend(KWallet::Wallet::openWallet(QGuiApplication::applicationName(), 0));
+	if (!backend) {
 		qDebug() << "/!\\ [Wallet] Wallet '" << qPrintable(QGuiApplication::applicationName()) <<  "' could not be opened!";
 		return 1;
 	}
@@ -114,7 +115,6 @@ int Wallet::retrievePassword(Account& p_account, QString& p_password) const {
 	// Set the current folder
 	if (!backend->setFolder(name())) {
 		qDebug() << "/i\\ [Wallet] No folder named '" << qPrintable(name()) << "'!";
-		delete backend;
 		return 2;
 	}
 
@@ -122,7 +122,6 @@ int Wallet::retrievePassword(Account& p_account, QString& p_password) const {
 	QMap<QString, QString> accountData;
 	if (backend->readMap(p_account.name(), accountData) != 0) {
 		qDebug() << "/i\\ [Wallet] No account named '" << qPrintable(p_account.name()) << "' in folder '" << qPrintable(name()) << "'!";
-		delete backend;
 		return 3;
 	}
 
@@ -130,7 +129,6 @@ int Wallet::retrievePassword(Account& p_account, QString& p_password) const {
 	const QString& currentPwdId = accountData.value("password");
 	if (currentPwdId.isEmpty()) {
 		qDebug() << "/!\\ [Wallet] Account '" << p_account.name() << "' has no current password identifier!";
-		delete backend;
 		return 4;
 	}
 
@@ -138,13 +136,10 @@ int Wallet::retrievePassword(Account& p_account, QString& p_password) const {
 	QString password;
 	if (backend->readPassword(currentPwdId, password) != 0) {
 		qDebug() << "/!\\ [Wallet] No password with id '" << currentPwdId << "'!";
-		delete backend;
 		return 5;
 	}
 
 	p_password = password;
-
-	delete backend;
 	return 0;
 }
 

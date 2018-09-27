@@ -1,7 +1,6 @@
 #include "ManagedWallets.h"
 #include <QGuiApplication>
 #include <QtDebug>
-#include <KWallet/kwallet.h>
 
 // CONSTRUCTORS
 /**
@@ -9,7 +8,8 @@
  * @param parent
  */
 ManagedWallets::ManagedWallets(QObject* p_parent) :
-    QAbstractListModel(p_parent) {
+    QAbstractListModel(p_parent),
+    m_backend(KWallet::Wallet::openWallet(QGuiApplication::applicationName(), 0)) {
 	qDebug() << "(i) [ManagedWallets] Created.";
 	if (!KWallet::Wallet::isEnabled()) {
 		qDebug() << "/!\\ [ManagedWallets] KWallet subsystem is disabled!";
@@ -17,38 +17,37 @@ ManagedWallets::ManagedWallets(QObject* p_parent) :
 	}
 
 	// Open our wallet
-	KWallet::Wallet* mainWallet = KWallet::Wallet::openWallet(QGuiApplication::applicationName(), 0);
-	if (mainWallet == nullptr) {
+	if (m_backend == nullptr) {
 		qDebug() << "/!\\ [ManagedWallets] Wallet '" << qPrintable(QGuiApplication::applicationName()) <<  "' could not be opened!";
 		return;
 	}
 	qDebug() << "(i) [ManagedWallets] Our wallet '" << qPrintable(QGuiApplication::applicationName()) << "' is now opened.";
 
 	// Remove the default folders
-	if (mainWallet->hasFolder(KWallet::Wallet::FormDataFolder())) {
-		mainWallet->removeFolder(KWallet::Wallet::FormDataFolder());
+	if (m_backend->hasFolder(KWallet::Wallet::FormDataFolder())) {
+		m_backend->removeFolder(KWallet::Wallet::FormDataFolder());
 		qDebug() << "(i) [ManagedWallets] Removed default folder '" << qPrintable(KWallet::Wallet::FormDataFolder()) << "' from our wallet.";
 	}
-	if (mainWallet->hasFolder(KWallet::Wallet::PasswordFolder())) {
-		mainWallet->removeFolder(KWallet::Wallet::PasswordFolder());
+	if (m_backend->hasFolder(KWallet::Wallet::PasswordFolder())) {
+		m_backend->removeFolder(KWallet::Wallet::PasswordFolder());
 		qDebug() << "(i) [ManagedWallets] Removed default folder '" << qPrintable(KWallet::Wallet::PasswordFolder()) << "' from our wallet.";
 	}
 
 	// Retrieve the folders
 	qDebug() << "(i) [ManagedWallets] Listing existing folders:";
-	auto folders = mainWallet->folderList();
+	auto folders = m_backend->folderList();
 	foreach (QString folder, folders) {
 		qDebug() << "(i) [ManagedWallets] Folder '" << qPrintable(folder) << "' found.";
-		mainWallet->setFolder(folder);
+		m_backend->setFolder(folder);
 
 		// Create our model object
 		auto wallet = new Wallet();
 		wallet->setName(folder);
 
 		// Retrieve the tag color
-		if (mainWallet->hasEntry("tagColor")) {
+		if (m_backend->hasEntry("tagColor")) {
 			QByteArray colorData;
-			mainWallet->readEntry("tagColor", colorData);
+			m_backend->readEntry("tagColor", colorData);
 			wallet->setTagColor(colorData);
 			qDebug() << "(i) [ManagedWallets]   has tag color '" << qPrintable(colorData) << "'.";
 		}
@@ -64,7 +63,7 @@ ManagedWallets::ManagedWallets(QObject* p_parent) :
 				colorData = "#259286";
 			else if (folder == "SAIL")
 				colorData = "#c61c6f";
-			mainWallet->writeEntry("tagColor", colorData, KWallet::Wallet::Stream);
+			m_backend->writeEntry("tagColor", colorData, KWallet::Wallet::Stream);
 			wallet->setTagColor(colorData);
 			qDebug() << "(i) [ManagedWallets]   has tag color '" << qPrintable(colorData) << "'.";*/
 		}
@@ -72,7 +71,7 @@ ManagedWallets::ManagedWallets(QObject* p_parent) :
 		// Load the accounts
 		qDebug() << "(i) [ManagedWallets] Loading accounts of wallet '" << qPrintable(folder) << "'...";
 		QMap<QString, QMap<QString, QString>> accounts;
-		mainWallet->readMapList("*", accounts);
+		m_backend->readMapList("*", accounts);
 		qDebug() << "(i) [ManagedWallets] " << accounts.count() << " accounts found:";
 		QMapIterator<QString, QMap<QString, QString>> accountIter(accounts);
 		while (accountIter.hasNext()) {
@@ -91,13 +90,20 @@ ManagedWallets::ManagedWallets(QObject* p_parent) :
 		addWallet(wallet);
 	}
 
-	delete mainWallet;
-
 	// Add the trash wallet for deleted accounts
 	auto trashWallet = new Wallet();
 	addWallet(trashWallet->setName(tr("Deleted"))->setTagColor("transparent"));
 }
 
+
+// DESTRUCTORS
+/**
+ * @brief ManagedWallets::~ManagedWallets
+ */
+ManagedWallets::~ManagedWallets() {
+	if (m_backend)
+		m_backend->lockWallet();
+}
 
 // GETTERS
 /**
