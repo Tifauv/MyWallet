@@ -13,13 +13,15 @@ find_package(Qt5 COMPONENTS Core Quick REQUIRED)
 find_package(KF5Wallet)
 
 add_executable(${PROJECT_NAME}
-		core/Account.cpp
-		core/Folder.cpp
-		core/Trash.cpp
-		core/Wallet.cpp
-		QmlClipboardAdapter.cpp
-		main.cpp
-		ui.qrc
+	core/Account.cpp
+	core/Folder.cpp
+	core/Trash.cpp
+	core/Wallet.cpp
+	core/Backend.cpp
+	core/KWalletBackend.cpp
+	QmlClipboardAdapter.cpp
+	main.cpp
+	ui.qrc
 )
 
 target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Quick KF5::Wallet)

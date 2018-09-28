@@ -1,4 +1,5 @@
 #include "Wallet.h"
+#include "KWalletBackend.h"
 #include <QGuiApplication>
 #include <QtDebug>
 
@@ -10,20 +11,14 @@
 Wallet::Wallet(QObject* p_parent) :
     QAbstractListModel(p_parent),
     m_trash(new Trash()),
-    m_backend(KWallet::Wallet::openWallet(QGuiApplication::applicationName(), 0)) {
+    m_backend(new KWalletBackend(QGuiApplication::applicationName())) {
 	qDebug() << "(i) [Wallet] Created.";
-	loadBackend();
+	if (m_backend) {
+		connect(m_backend.data(), &Backend::folderLoaded, this, &Wallet::addFolder);
+		m_backend->load();
+	}
 }
 
-
-// DESTRUCTORS
-/**
- * @brief Wallet::~Wallet
- */
-Wallet::~Wallet() {
-	if (m_backend)
-		m_backend->lockWallet();
-}
 
 // GETTERS
 /**
@@ -37,11 +32,20 @@ int Wallet::count() const {
 
 // NATIVE API
 /**
- * @brief Wallet::addFolder
- * @param p_folder
+ * @brief Wallet::createFolder
+ * @param p_name
+ * @param p_tagColor
  */
-void Wallet::addFolder(Folder* p_folder) {
-	insertRow(rowCount(), p_folder);
+Folder* Wallet::createFolder(const QString& p_name, const QString& p_tagColor) {
+	// The folder already exist
+	if (m_backend->hasFolder(p_name))
+		return nullptr;
+
+	auto folder = new Folder();
+	folder->setName(p_name)->setTagColor(p_tagColor);
+	m_backend->createFolder(*folder);
+	insertRow(rowCount(), folder);
+	return folder;
 }
 
 
@@ -60,78 +64,13 @@ Folder* Wallet::get(int p_row) const {
 }
 
 
+// PRIVATE BACKEND API
 /**
- * @brief Wallet::loadBackend
- * @return 0: no error ;
- *         1: KWallet system is disabled ;
- *         2: cannot open the application's wallet in KWallet ;
+ * @brief Wallet::addFolder
+ * @param p_folder
  */
-int Wallet::loadBackend() {
-	if (!KWallet::Wallet::isEnabled()) {
-		qDebug() << "/!\\ [Wallet] KWallet subsystem is disabled!";
-		return 1;
-	}
-
-	// Open our wallet
-	if (m_backend == nullptr) {
-		qDebug() << "/!\\ [Wallet] Wallet '" << qPrintable(QGuiApplication::applicationName()) <<  "' could not be opened!";
-		return 2;
-	}
-	qDebug() << "(i) [Wallet] Our wallet '" << qPrintable(QGuiApplication::applicationName()) << "' is now opened.";
-
-	// Remove the default folders
-	if (m_backend->hasFolder(KWallet::Wallet::FormDataFolder())) {
-		m_backend->removeFolder(KWallet::Wallet::FormDataFolder());
-		qDebug() << "(i) [Wallet] Removed default folder '" << qPrintable(KWallet::Wallet::FormDataFolder()) << "' from our wallet.";
-	}
-	if (m_backend->hasFolder(KWallet::Wallet::PasswordFolder())) {
-		m_backend->removeFolder(KWallet::Wallet::PasswordFolder());
-		qDebug() << "(i) [Wallet] Removed default folder '" << qPrintable(KWallet::Wallet::PasswordFolder()) << "' from our wallet.";
-	}
-
-	// Retrieve the folders
-	qDebug() << "(i) [Wallet] Listing existing folders:";
-	auto backendFolders = m_backend->folderList();
-	foreach (QString backendFolder, backendFolders) {
-		qDebug() << "(i) [Wallet] Folder '" << qPrintable(backendFolder) << "' found.";
-		m_backend->setFolder(backendFolder);
-
-		// Create our model object
-		auto folder = new Folder();
-		folder->setName(backendFolder);
-
-		// Retrieve the tag color
-		if (m_backend->hasEntry("tagColor")) {
-			QByteArray colorData;
-			m_backend->readEntry("tagColor", colorData);
-			folder->setTagColor(colorData);
-			qDebug() << "(i) [Wallet]   has tag color '" << qPrintable(colorData) << "'.";
-		}
-		else
-			qDebug() << "/!\\ [Wallet]   !! has no tag color entry!";
-
-		// Load the accounts
-		qDebug() << "(i) [Wallet] Loading accounts of folder '" << qPrintable(backendFolder) << "'...";
-		QMap<QString, QMap<QString, QString>> accounts;
-		m_backend->readMapList("*", accounts);
-		qDebug() << "(i) [Wallet] " << accounts.count() << " accounts found:";
-		QMapIterator<QString, QMap<QString, QString>> accountIter(accounts);
-		while (accountIter.hasNext()) {
-			accountIter.next();
-
-			auto accountName = accountIter.key();
-			qDebug() << "(i) [Wallet]   Account name '" << accountName << "'";
-			auto login = accountIter.value().value("login");
-			qDebug() << "(i) [Wallet]   Account login '" << login << "'";
-
-			folder->addAccount(accountName, login);
-			qDebug() << "(i) [Wallet]   Account '" << accountName << "' with login '" << login << "' added.";
-		}
-
-		// Add the wallet to the model
-		addFolder(folder);
-	}
-	return 0;
+void Wallet::addFolder(Folder* p_folder) {
+	insertRow(rowCount(), p_folder);
 }
 
 

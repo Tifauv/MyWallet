@@ -3,7 +3,7 @@
 
 #include <QAbstractListModel>
 #include <QScopedPointer>
-#include <KWallet/KWallet>
+#include "Backend.h"
 #include "Folder.h"
 #include "Trash.h"
 
@@ -20,7 +20,7 @@ public:
 	};
 
 	explicit Wallet(QObject* parent = nullptr);
-	~Wallet();
+	~Wallet() {}
 
 	int count() const;
 
@@ -31,7 +31,7 @@ signals:
 	void countChanged(int);
 
 public slots:
-	void addFolder(Folder* wallet);
+	Folder* createFolder(const QString& name, const QString& tagColor);
 	Folder* get(int row) const;
 
 	bool insertRow(int row, Folder* wallet);
@@ -39,12 +39,14 @@ public slots:
 
 protected:
 	QHash<int, QByteArray> roleNames() const override;
-	int loadBackend();
+
+protected slots:
+	void addFolder(Folder* wallet);
 
 private:
 	QList<Folder*> m_folders;
 	Trash*         m_trash;
-	QScopedPointer<KWallet::Wallet> m_backend;
+	QScopedPointer<Backend> m_backend;
 };
 
 #endif
