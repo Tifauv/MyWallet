@@ -34,6 +34,7 @@ public slots:
 	Folder* createFolder(const QString& name, const QString& tagColor);
 	Folder* get(int row) const;
 
+	bool appendRow(Folder* wallet);
 	bool insertRow(int row, Folder* wallet);
 	Folder* removeRow(int row);
 

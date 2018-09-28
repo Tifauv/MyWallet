@@ -44,7 +44,7 @@ Folder* Wallet::createFolder(const QString& p_name, const QString& p_tagColor) {
 	auto folder = new Folder();
 	folder->setName(p_name)->setTagColor(p_tagColor);
 	m_backend->createFolder(*folder);
-	insertRow(rowCount(), folder);
+	appendRow(folder);
 	return folder;
 }
 
@@ -70,7 +70,7 @@ Folder* Wallet::get(int p_row) const {
  * @param p_folder
  */
 void Wallet::addFolder(Folder* p_folder) {
-	insertRow(rowCount(), p_folder);
+	appendRow(p_folder);
 }
 
 
@@ -120,6 +120,16 @@ QVariant Wallet::data(const QModelIndex& p_index, int p_role) const {
 		qDebug() << "/i\\ [Wallet]   unknown role";
 		return QVariant();
 	}
+}
+
+
+/**
+ * @brief Wallet::appendRow
+ * @param p_folder
+ * @return
+ */
+bool Wallet::appendRow(Folder* p_folder) {
+	insertRow(rowCount()-1, p_folder);
 }
 
 

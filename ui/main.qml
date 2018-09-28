@@ -109,7 +109,7 @@ ApplicationWindow {
 			hoverEnabled: true
 			text: "+"
 
-			onClicked: console.log("New folder requested")
+			onClicked: createFolderDlg.open()
 		}
 	}
 
@@ -119,6 +119,24 @@ ApplicationWindow {
 		anchors.fill: parent
 		anchors.topMargin: windowHeader.height
 		anchors.leftMargin: !inPortrait ? sidebar.width : undefined
+	}
+
+	CreateFolderDialog {
+		id: createFolderDlg
+
+		modal: true
+		focus: true
+
+		width: 220
+		height: 200
+
+		x: (parent.width - width) / 2
+		y: (parent.height - height) / 2
+
+		onAccepted: {
+			console.log("Creating folder '" + name + "' with color '" + tagColor + "'")
+			wallet.createFolder(name, tagColor);
+		}
 	}
 
 	// Autoselect the first folder

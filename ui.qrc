@@ -8,5 +8,8 @@
         <file>ui/AccountViewForm.ui.qml</file>
         <file>ui/TitleBar.qml</file>
         <file>ui/+material/TitleBar.qml</file>
+        <file>ui/CreateFolderDialog.qml</file>
+        <file>ui/SolarizedPalette.qml</file>
+        <file>ui/ColorSelector.qml</file>
     </qresource>
 </RCC>
