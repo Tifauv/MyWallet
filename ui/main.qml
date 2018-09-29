@@ -1,5 +1,6 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
+//import QtQuick.Controls.Material 2.2
 import Wallets 1.0
 
 ApplicationWindow {
@@ -82,6 +83,7 @@ ApplicationWindow {
 			model: wallet
 
 			delegate: ItemDelegate {
+				id: delegate
 				width: parent.width
 				hoverEnabled: true
 
@@ -95,6 +97,55 @@ ApplicationWindow {
 					loadFolder(model.index)
 					folderList.currentIndex = model.index
 				}
+
+				/*swipe.right: Rectangle {
+					width: parent.width
+					height: parent.height
+
+					clip: true
+					color: SwipeDelegate.pressed ? "#555" : "#666"
+
+					Label {
+						//font.family: "Fontello"
+						text: delegate.swipe.complete ? "\ue805" // icon-cw-circled
+													: "\ue801" // icon-cancel-circled-1
+
+						padding: 20
+						anchors.fill: parent
+						horizontalAlignment: Qt.AlignRight
+						verticalAlignment: Qt.AlignVCenter
+
+						opacity: 2 * -delegate.swipe.position
+
+						color: Material.color(delegate.swipe.complete ? Material.Green : Material.Red, Material.Shade200)
+						Behavior on color { ColorAnimation { } }
+					}
+
+					Label {
+						text: qsTr("Removed")
+						color: "white"
+
+						padding: 20
+						anchors.fill: parent
+						horizontalAlignment: Qt.AlignLeft
+						verticalAlignment: Qt.AlignVCenter
+
+						opacity: delegate.swipe.complete ? 1 : 0
+						Behavior on opacity { NumberAnimation { } }
+					}
+
+					SwipeDelegate.onClicked: delegate.swipe.close()
+					SwipeDelegate.onPressedChanged: undoTimer.stop()
+				}
+
+				Timer {
+					id: undoTimer
+					interval: 3600
+					onTriggered: wallet.removeFolder(index)
+				}
+
+				swipe.onCompleted: undoTimer.start()
+				*/
 			}
 
 			ScrollIndicator.vertical: ScrollIndicator { }
