@@ -36,6 +36,7 @@ Dialog {
 	
 	function reset() {
 		name = "";
+		colorSelector.currentIndex = 0;
 		nameTxt.focus = true;
 	}
 }
