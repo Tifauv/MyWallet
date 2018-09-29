@@ -33,4 +33,9 @@ Dialog {
 
 		model: SolarizedPalette {}
 	}
+	
+	function reset() {
+		name = "";
+		nameTxt.focus = true;
+	}
 }
