@@ -32,6 +32,7 @@ signals:
 
 public slots:
 	Folder* createFolder(const QString& name, const QString& tagColor);
+	void removeFolder(int row);
 	Folder* get(int row) const;
 
 	bool appendRow(Folder* wallet);

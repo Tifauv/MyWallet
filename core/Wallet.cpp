@@ -50,6 +50,15 @@ Folder* Wallet::createFolder(const QString& p_name, const QString& p_tagColor) {
 
 
 /**
+ * @brief Wallet::removeFolder
+ * @param p_row
+ */
+void Wallet::removeFolder(int p_row) {
+	removeRow(p_row);
+}
+
+
+/**
  * @brief Wallet::get
  * @param p_row
  * @return
