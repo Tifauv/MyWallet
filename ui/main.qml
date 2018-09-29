@@ -185,9 +185,10 @@ ApplicationWindow {
 		y: (parent.height - height) / 2
 
 		onAccepted: {
-			console.log("Creating folder '" + name + "' with color '" + tagColor + "'")
 			wallet.createFolder(name, tagColor);
+			reset();
 		}
+		onRejected: reset()
 	}
 
 	// Autoselect the first folder
