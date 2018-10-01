@@ -15,7 +15,6 @@ find_package(KF5Wallet)
 add_executable(${PROJECT_NAME}
 	core/Account.cpp
 	core/Folder.cpp
-	core/Trash.cpp
 	core/Wallet.cpp
 	core/Backend.cpp
 	core/KWalletBackend.cpp

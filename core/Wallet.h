@@ -5,7 +5,6 @@
 #include <QScopedPointer>
 #include "Backend.h"
 #include "Folder.h"
-#include "Trash.h"
 
 class Wallet : public QAbstractListModel {
 	Q_OBJECT
@@ -47,7 +46,6 @@ protected slots:
 
 private:
 	QList<Folder*> m_folders;
-	Trash*         m_trash;
 	QScopedPointer<Backend> m_backend;
 };
 

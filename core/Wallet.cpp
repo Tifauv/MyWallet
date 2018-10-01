@@ -10,7 +10,6 @@
  */
 Wallet::Wallet(QObject* p_parent) :
     QAbstractListModel(p_parent),
-    m_trash(new Trash()),
     m_backend(new KWalletBackend(QGuiApplication::applicationName())) {
 	qDebug() << "(i) [Wallet] Created.";
 	if (m_backend) {
@@ -67,8 +66,6 @@ Folder* Wallet::get(int p_row) const {
 	if (p_row < 0 || p_row >= rowCount())
 		return nullptr;
 
-	if (p_row == m_folders.count())
-		return m_trash;
 	return m_folders.at(p_row);
 }
 
@@ -91,7 +88,7 @@ void Wallet::addFolder(Folder* p_folder) {
  */
 int Wallet::rowCount(const QModelIndex& p_parent) const {
 	Q_UNUSED(p_parent);
-	return m_folders.count() + 1; // +1 for the trash
+	return m_folders.count();
 }
 
 
@@ -105,15 +102,8 @@ QVariant Wallet::data(const QModelIndex& p_index, int p_role) const {
 	if (p_index.row() < 0 || p_index.row() >= rowCount())
 		return QVariant();
 
-	Folder* folder;
-	if (p_index.row() == m_folders.count()) {
-		qDebug() << "(i) [Wallet] Looking for trash folder with role " << p_role;
-		folder = m_trash;
-	}
-	else {
-		qDebug() << "(i) [Wallet] Looking for folder at row " << p_index.row() << " with role " << p_role;
-		folder = m_folders.at(p_index.row());
-	}
+	qDebug() << "(i) [Wallet] Looking for folder at row " << p_index.row() << " with role " << p_role;
+	Folder* folder = m_folders.at(p_index.row());
 
 	switch (p_role) {
 	case NameRole:
@@ -138,7 +128,7 @@ QVariant Wallet::data(const QModelIndex& p_index, int p_role) const {
  * @return
  */
 bool Wallet::appendRow(Folder* p_folder) {
-	insertRow(rowCount()-1, p_folder);
+	insertRow(rowCount(), p_folder);
 }
 
 
