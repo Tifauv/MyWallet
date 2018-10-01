@@ -12,5 +12,7 @@
         <file>ui/SolarizedPalette.qml</file>
         <file>ui/ColorSelector.qml</file>
         <file>ui/FoldersSidebar.qml</file>
+        <file>ui/DrawerSwipeDelegate.qml</file>
+        <file>ui/+material/DrawerSwipeDelegate.qml</file>
     </qresource>
 </RCC>

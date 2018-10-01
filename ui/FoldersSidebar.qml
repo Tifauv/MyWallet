@@ -1,5 +1,6 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
+import QtQuick.Controls.Material 2.2
 
 Drawer {
 	id: sidebar
@@ -13,7 +14,7 @@ Drawer {
 		anchors.fill: parent
 		clip: true
 
-		delegate: SwipeDelegate {
+		delegate: DrawerSwipeDelegate {
 			id: delegate
 			width: parent.width
 			hoverEnabled: true
@@ -29,7 +30,7 @@ Drawer {
 				folderList.currentIndex = model.index
 			}
 
-			/*swipe.right: Rectangle {
+			swipe.right: Rectangle {
 				width: parent.width
 				height: parent.height
 
@@ -37,9 +38,7 @@ Drawer {
 				color: SwipeDelegate.pressed ? "#555" : "#666"
 
 				Label {
-					//font.family: "Fontello"
-					text: delegate.swipe.complete ? "\ue805" // icon-cw-circled
-												: "\ue801" // icon-cancel-circled-1
+					text: delegate.swipe.complete ? "\u2714" : "\u2718"
 
 					padding: 20
 					anchors.fill: parent
@@ -54,7 +53,6 @@ Drawer {
 
 				Label {
 					text: qsTr("Removed")
-					color: "white"
 
 					padding: 20
 					anchors.fill: parent
@@ -76,7 +74,6 @@ Drawer {
 			}
 
 			swipe.onCompleted: undoTimer.start()
-			*/
 		}
 
 		ScrollIndicator.vertical: ScrollIndicator { }
