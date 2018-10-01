@@ -22,7 +22,7 @@ public:
 	void removeFolder(const QString& name) const;
 
 	// Account management
-	const QString& retrievePassword(const QString& folder, const QString& account) const;
+	const QString retrievePassword(const QString& folder, const QString& account) const;
 
 private:
 	QString m_walletName;

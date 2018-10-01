@@ -2,7 +2,7 @@
 #define Wallet_H
 
 #include <QAbstractListModel>
-#include <QScopedPointer>
+#include <QSharedPointer>
 #include "Backend.h"
 #include "Folder.h"
 
@@ -46,7 +46,7 @@ protected slots:
 
 private:
 	QList<Folder*> m_folders;
-	QScopedPointer<Backend> m_backend;
+	QSharedPointer<Backend> m_backend;
 };
 
 #endif

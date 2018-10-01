@@ -1,4 +1,5 @@
 #include "KWalletBackend.h"
+#include "Folder.h"
 #include <QDebug>
 
 // CONSTRUCTORS
@@ -151,6 +152,33 @@ void KWalletBackend::removeFolder(const QString& p_name) const {
  * @param p_account
  * @return
  */
-const QString& KWalletBackend::retrievePassword(const QString& p_folder, const QString& p_account) const {
-	return "Not implemented yet";
+const QString KWalletBackend::retrievePassword(const QString& p_folder, const QString& p_account) const {
+	// Set the current folder
+	if (!m_kwallet->setFolder(p_folder)) {
+		qDebug() << "/i\\ [Folder] No folder named '" << p_folder << "'!";
+		return QString::null;
+	}
+
+	// Retrieve the account data
+	QMap<QString, QString> accountData;
+	if (m_kwallet->readMap(p_account, accountData) != 0) {
+		qDebug() << "/i\\ [Folder] No account named '" << p_account << "' in folder '" << p_folder << "'!";
+		return QString::null;
+	}
+
+	// Get the current password identifier
+	const QString& currentPwdId = accountData.value("password");
+	if (currentPwdId.isEmpty()) {
+		qDebug() << "/!\\ [Folder] Account '" << p_account << "' has no current password identifier!";
+		return QString::null;
+	}
+
+	// Get the current password
+	QString password;
+	if (m_kwallet->readPassword(currentPwdId, password) != 0) {
+		qDebug() << "/!\\ [Folder] No password with id '" << currentPwdId << "'!";
+		return QString::null;
+	}
+
+	return password;
 }

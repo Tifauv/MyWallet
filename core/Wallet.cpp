@@ -41,7 +41,7 @@ Folder* Wallet::createFolder(const QString& p_name, const QString& p_tagColor) {
 		return nullptr;
 
 	auto folder = new Folder();
-	folder->setName(p_name)->setTagColor(p_tagColor);
+	folder->setName(p_name)->setTagColor(p_tagColor)->setBackend(m_backend);
 	m_backend->createFolder(*folder);
 	appendRow(folder);
 	return folder;
@@ -83,6 +83,7 @@ Folder* Wallet::get(int p_row) const {
  * @param p_folder
  */
 void Wallet::addFolder(Folder* p_folder) {
+	p_folder->setBackend(m_backend);
 	appendRow(p_folder);
 }
 

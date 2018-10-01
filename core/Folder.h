@@ -4,7 +4,10 @@
 #include <QObject>
 #include <QMetaType>
 #include <QAbstractListModel>
+#include <QSharedPointer>
 #include "Account.h"
+
+class Backend;
 
 /**
  * @brief The Folder class
@@ -33,6 +36,7 @@ public:
 
 	Folder* setName(const QString& name);
 	Folder* setTagColor(const QString& color);
+	Folder* setBackend(const QSharedPointer<Backend> backend);
 
 	int rowCount(const QModelIndex& parent = QModelIndex()) const override;
 	QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
@@ -49,7 +53,6 @@ public slots:
 
 protected:
 	QHash<int, QByteArray> roleNames() const override;
-	int retrievePassword(Account& account, QString& password) const;
 
 private slots:
 	void handleDataChanged();
@@ -58,6 +61,7 @@ private:
 	QString m_name;
 	QString m_tagColor;
 	QList<Account*> m_accounts;
+	QSharedPointer<Backend> m_backend;
 };
 
 Q_DECLARE_METATYPE(Folder)

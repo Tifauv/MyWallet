@@ -1,4 +1,5 @@
 #include "Backend.h"
+#include "Folder.h"
 #include <QDebug>
 
 // CONSTRUCTORS

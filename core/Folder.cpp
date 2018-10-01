@@ -1,8 +1,8 @@
 #include "Folder.h"
+#include "Backend.h"
 #include <QGuiApplication>
 #include <QScopedPointer>
 #include <QtDebug>
-#include <KWallet/KWallet>
 
 
 // CONSTRUCTORS
@@ -24,7 +24,8 @@ Folder::Folder(const Folder& p_toCopy) :
     QAbstractListModel(),
     m_name(p_toCopy.name()),
     m_tagColor(p_toCopy.tagColor()),
-    m_accounts(p_toCopy.m_accounts) {
+    m_accounts(p_toCopy.m_accounts),
+    m_backend(p_toCopy.m_backend) {
 	qDebug() << "(i) [Folder] Copied folder '" << m_name << "' with tag color '" << m_tagColor << "' and " << m_accounts.count() << " accounts.";
 }
 
@@ -86,6 +87,16 @@ Folder* Folder::setTagColor(const QString& p_color) {
 }
 
 
+/**
+ * @brief Folder::setBackend
+ * @param p_backend
+ * @return
+ */
+Folder* Folder::setBackend(const QSharedPointer<Backend> p_backend) {
+	m_backend = p_backend;
+}
+
+
 // NATIVE API
 /**
  * @brief Folder::addAccount
@@ -94,57 +105,6 @@ Folder* Folder::setTagColor(const QString& p_color) {
  */
 void Folder::addAccount(const QString& p_name, const QString& p_login) {
 	insertRow(rowCount(), new Account(p_name, p_login));
-}
-
-
-/**
- * @brief Folder::retrievePassword
- * @param p_account
- * @param p_password
- *
- * @return 0: no error ;
- *         1: cannot open the application's wallet in KWallet ;
- *         2: there is no folder named after this wallet in KWallet ;
- *         3: there is no data for the requested account in this folder ;
- *         4: the account's data lacks the 'current password identifier' field ;
- *         5: there is no password named as the 'current password identifier'.
- */
-int Folder::retrievePassword(Account& p_account, QString& p_password) const {
-	QScopedPointer<KWallet::Wallet> backend(KWallet::Wallet::openWallet(QGuiApplication::applicationName(), 0));
-	if (!backend) {
-		qDebug() << "/!\\ [Folder] Wallet '" << qPrintable(QGuiApplication::applicationName()) <<  "' could not be opened!";
-		return 1;
-	}
-
-	// Set the current folder
-	if (!backend->setFolder(name())) {
-		qDebug() << "/i\\ [Folder] No folder named '" << qPrintable(name()) << "'!";
-		return 2;
-	}
-
-	// Retrieve the account data
-	QMap<QString, QString> accountData;
-	if (backend->readMap(p_account.name(), accountData) != 0) {
-		qDebug() << "/i\\ [Folder] No account named '" << qPrintable(p_account.name()) << "' in folder '" << qPrintable(name()) << "'!";
-		return 3;
-	}
-
-	// Get the current password identifier
-	const QString& currentPwdId = accountData.value("password");
-	if (currentPwdId.isEmpty()) {
-		qDebug() << "/!\\ [Folder] Account '" << p_account.name() << "' has no current password identifier!";
-		return 4;
-	}
-
-	// Get the current password
-	QString password;
-	if (backend->readPassword(currentPwdId, password) != 0) {
-		qDebug() << "/!\\ [Folder] No password with id '" << currentPwdId << "'!";
-		return 5;
-	}
-
-	p_password = password;
-	return 0;
 }
 
 
@@ -191,9 +151,7 @@ QVariant Folder::data(const QModelIndex& p_index, int p_role) const {
 	case LoginRole:
 		return account->login();
 	case PasswordRole:
-		QString password;
-		if (retrievePassword(*account, password) == 0)
-			return QVariant(password);
+		return m_backend->retrievePassword(name(), account->name());
 	}
 
 	return QVariant();

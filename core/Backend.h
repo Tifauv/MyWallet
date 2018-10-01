@@ -2,7 +2,8 @@
 #define Backend_H
 
 #include <QObject>
-#include "Folder.h"
+
+class Folder;
 
 class Backend : public QObject {
 	Q_OBJECT
@@ -20,7 +21,7 @@ public:
 	virtual void removeFolder(const QString& name) const = 0;
 
 	// Account management
-	virtual const QString& retrievePassword(const QString& folderName, const QString& accountName) const = 0;
+	virtual const QString retrievePassword(const QString& folderName, const QString& accountName) const = 0;
 
 signals:
 	void folderLoaded(Folder*) const;
