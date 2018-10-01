@@ -11,5 +11,6 @@
         <file>ui/CreateFolderDialog.qml</file>
         <file>ui/SolarizedPalette.qml</file>
         <file>ui/ColorSelector.qml</file>
+        <file>ui/FoldersSidebar.qml</file>
     </qresource>
 </RCC>
