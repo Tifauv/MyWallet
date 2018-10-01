@@ -53,6 +53,13 @@ Folder* Wallet::createFolder(const QString& p_name, const QString& p_tagColor) {
  * @param p_row
  */
 void Wallet::removeFolder(int p_row) {
+	// Index range check
+	if (p_row < 0 || p_row >= rowCount())
+		return;
+
+	auto folder = get(p_row);
+	if (m_backend->hasFolder(folder->name()))
+		m_backend->removeFolder(folder->name());
 	removeRow(p_row);
 }
 
@@ -156,7 +163,7 @@ bool Wallet::insertRow(int p_row, Folder* p_folder) {
  */
 Folder* Wallet::removeRow(int p_row) {
 	// Upper bound check prevents removing the trash item
-	if (p_row < 0 || p_row >= m_folders.count())
+	if (p_row < 0 || p_row >= rowCount())
 		return nullptr;
 
 	beginRemoveRows(QModelIndex(), p_row, p_row);
