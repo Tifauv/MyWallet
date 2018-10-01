@@ -1,5 +1,6 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
+import QtQuick.Controls.Material 2.2
 import Wallets 1.0
 
 Page {
@@ -34,22 +35,20 @@ Page {
 
 	ListView {
 		id: list
+
 		anchors.fill: parent
 		clip: true
 
 		model: folder !== undefined ? folder : []
 
-		delegate: ItemDelegate {
-			id: accountDelegate
+		delegate: SwipeDelegate {
+			id: delegate
 			width: parent.width
 			hoverEnabled: true
 
 			contentItem: AccountView {
 				name: model.name
 				login: model.login
-				hovered: accountDelegate.hovered
-
-				onDeleted: console.log("Asked to delete account '" + model.name + "' from folder '" + folder.name + "'")
 			}
 
 			highlighted: ListView.isCurrentItem
@@ -58,9 +57,52 @@ Page {
 			onDoubleClicked: {
 				console.log("Double click: copying password to clipboard")
 				clipboard.setTextWithTimer(model.password, 10)
-				/*console.log("Right click: copying login to clipboard")
-				clipboard.setText(model.login)*/
 			}
+
+			swipe.right: Rectangle {
+				width: parent.width
+				height: parent.height
+
+				clip: true
+				color: SwipeDelegate.pressed ? "#555" : "#666"
+
+				Label {
+					text: delegate.swipe.complete ? "\u2714" : "\u2718"
+
+					padding: 20
+					anchors.fill: parent
+					horizontalAlignment: Qt.AlignRight
+					verticalAlignment: Qt.AlignVCenter
+
+					opacity: 2 * -delegate.swipe.position
+
+					color: Material.color(delegate.swipe.complete ? Material.Green : Material.Red, Material.Shade200)
+					Behavior on color { ColorAnimation { } }
+				}
+
+				Label {
+					text: qsTr("Removed")
+
+					padding: 20
+					anchors.fill: parent
+					horizontalAlignment: Qt.AlignLeft
+					verticalAlignment: Qt.AlignVCenter
+
+					opacity: delegate.swipe.complete ? 1 : 0
+					Behavior on opacity { NumberAnimation { } }
+				}
+
+				SwipeDelegate.onClicked: delegate.swipe.close()
+				SwipeDelegate.onPressedChanged: undoTimer.stop()
+			}
+
+			Timer {
+				id: undoTimer
+				interval: 3600
+				onTriggered: folder.removeAccount(index)
+			}
+
+			swipe.onCompleted: undoTimer.start()
 		}
 
 		ScrollIndicator.vertical: ScrollIndicator {}

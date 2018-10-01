@@ -8,7 +8,6 @@ Item {
 
 	property alias nameTxt: accountName
 	property alias loginTxt: accountLogin
-	property alias deleteBtn: deleteBtn
 
 	Label {
 		id: accountName
@@ -33,12 +32,5 @@ Item {
 		verticalAlignment: Text.AlignVCenter
 		anchors.left: accountName.left
 		font.pixelSize: 12
-	}
-
-	ToolButton {
-		id: deleteBtn
-		text: qsTr("\u2716")
-		anchors.right: parent.right
-		anchors.verticalCenter: parent.verticalCenter
 	}
 }
