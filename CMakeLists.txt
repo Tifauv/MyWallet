@@ -24,3 +24,5 @@ add_executable(${PROJECT_NAME}
 )
 
 target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Quick KF5::Wallet)
+
+install(TARGETS ${PROJECT_NAME} DESTINATION bin)
