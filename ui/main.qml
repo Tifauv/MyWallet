@@ -106,7 +106,11 @@ ApplicationWindow {
 	}
 
 	// Autoselect the first folder
-	Component.onCompleted: loadFolder(0)
+	Component.onCompleted: {
+		loadFolder(0);
+		if (wallet.count === 0)
+			createFolderDlg.open();
+	}
 
 
 	/**
