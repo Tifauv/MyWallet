@@ -14,15 +14,19 @@ public:
 	~KWalletBackend();
 
 	// Initial loading
-	int load() const;
+	int load() const override;
 
 	// Folder management
-	bool hasFolder(const QString& name) const;
-	void createFolder(const Folder& folder) const;
-	void removeFolder(const QString& name) const;
+	bool hasFolder(const QString& name) const override;
+	void createFolder(const Folder& folder) const override;
+	void removeFolder(const QString& name) const override;
 
 	// Account management
-	const QString retrievePassword(const QString& folder, const QString& account) const;
+	bool hasAccount(const QString& folder, const QString& name) const override;
+	void createAccount(const QString& folder, const Account& account, const QString& password) const override;
+	void removeAccount(const QString& folder, const QString& name) const override;
+
+	const QString retrievePassword(const QString& folder, const QString& account) const override;
 
 private:
 	QString m_walletName;

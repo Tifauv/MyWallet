@@ -99,12 +99,41 @@ Folder* Folder::setBackend(const QSharedPointer<Backend> p_backend) {
 
 // NATIVE API
 /**
- * @brief Folder::addAccount
+ * @brief Folder::createAccount
  * @param p_name
  * @param p_login
  */
-void Folder::addAccount(const QString& p_name, const QString& p_login) {
-	insertRow(rowCount(), new Account(p_name, p_login));
+Account* Folder::createAccount(const QString& p_name, const QString& p_login) {
+	auto account = new Account(p_name, p_login);
+	m_backend->createAccount(name(), *account, "");
+	addAccount(account);
+	return account;
+}
+
+
+/**
+ * @brief Folder::deleteAccount
+ * @param p_row
+ */
+void Folder::deleteAccount(int p_row) {
+	// Index range check
+	if (p_row < 0 || p_row >= rowCount())
+		return;
+
+	auto account = removeRow(p_row);
+	if (m_backend->hasAccount(name(), account->name()))
+		m_backend->removeAccount(name(), account->name());
+	delete account;
+}
+
+
+// PRIVATE BACKEND API
+/**
+ * @brief Folder::addAccount
+ * @param p_account
+ */
+void Folder::addAccount(Account* p_account) {
+	appendRow(p_account);
 }
 
 
@@ -117,19 +146,6 @@ void Folder::addAccount(const QString& p_name, const QString& p_login) {
 int Folder::rowCount(const QModelIndex& p_parent) const {
 	Q_UNUSED(p_parent);
 	return m_accounts.count();
-}
-
-
-/**
- * @brief Folder::roleNames
- * @return
- */
-QHash<int, QByteArray> Folder::roleNames() const {
-	QHash<int, QByteArray> names;
-	names[NameRole]     = "name";
-	names[LoginRole]    = "login";
-	names[PasswordRole] = "password";
-	return names;
 }
 
 
@@ -155,6 +171,28 @@ QVariant Folder::data(const QModelIndex& p_index, int p_role) const {
 	}
 
 	return QVariant();
+}
+
+
+/**
+ * @brief Folder::roleNames
+ * @return
+ */
+QHash<int, QByteArray> Folder::roleNames() const {
+	QHash<int, QByteArray> names;
+	names[NameRole]     = "name";
+	names[LoginRole]    = "login";
+	names[PasswordRole] = "password";
+	return names;
+}
+
+
+/**
+ * @brief Folder::appendRow
+ * @param p_account
+ */
+void Folder::appendRow(Account* p_account) {
+	insertRow(rowCount(), p_account);
 }
 
 

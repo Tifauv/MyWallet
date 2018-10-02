@@ -47,12 +47,15 @@ signals:
 	void countChanged(int);
 
 public slots:
-	void addAccount(const QString& name, const QString& login);
-	void insertRow(int row, Account* account);
-	Account* removeRow(int row);
+	Account* createAccount(const QString& name, const QString& login);
+	void addAccount(Account* account);
+	void deleteAccount(int row);
 
 protected:
 	QHash<int, QByteArray> roleNames() const override;
+	void appendRow(Account* account);
+	void insertRow(int row, Account* account);
+	Account* removeRow(int row);
 
 private slots:
 	void handleDataChanged();

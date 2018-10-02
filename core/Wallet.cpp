@@ -41,26 +41,26 @@ Folder* Wallet::createFolder(const QString& p_name, const QString& p_tagColor) {
 		return nullptr;
 
 	auto folder = new Folder();
-	folder->setName(p_name)->setTagColor(p_tagColor)->setBackend(m_backend);
+	folder->setName(p_name)->setTagColor(p_tagColor);
 	m_backend->createFolder(*folder);
-	appendRow(folder);
+	addFolder(folder);
 	return folder;
 }
 
 
 /**
- * @brief Wallet::removeFolder
+ * @brief Wallet::deleteFolder
  * @param p_row
  */
-void Wallet::removeFolder(int p_row) {
+void Wallet::deleteFolder(int p_row) {
 	// Index range check
 	if (p_row < 0 || p_row >= rowCount())
 		return;
 
-	auto folder = get(p_row);
+	auto folder = removeRow(p_row);
 	if (m_backend->hasFolder(folder->name()))
 		m_backend->removeFolder(folder->name());
-	removeRow(p_row);
+	delete folder;
 }
 
 
@@ -131,11 +131,24 @@ QVariant Wallet::data(const QModelIndex& p_index, int p_role) const {
 
 
 /**
+ * @brief Wallet::roleNames
+ * @return
+ */
+QHash<int, QByteArray> Wallet::roleNames() const {
+	QHash<int, QByteArray> names;
+	names[NameRole]        = "name";
+	names[TagColorRole]    = "color";
+	names[AccountListRole] = "accounts";
+	return names;
+}
+
+
+/**
  * @brief Wallet::appendRow
  * @param p_folder
  * @return
  */
-bool Wallet::appendRow(Folder* p_folder) {
+void Wallet::appendRow(Folder* p_folder) {
 	insertRow(rowCount(), p_folder);
 }
 
@@ -146,7 +159,7 @@ bool Wallet::appendRow(Folder* p_folder) {
  * @param p_folder
  * @return
  */
-bool Wallet::insertRow(int p_row, Folder* p_folder) {
+void Wallet::insertRow(int p_row, Folder* p_folder) {
 	Q_ASSERT(p_folder);
 
 	beginInsertRows(QModelIndex(), p_row, p_row);
@@ -173,17 +186,4 @@ Folder* Wallet::removeRow(int p_row) {
 	emit countChanged(rowCount());
 	qDebug() << "(i) [Wallet] Folder " << folder->name() << " removed.";
 	return folder;
-}
-
-
-/**
- * @brief Wallet::roleNames
- * @return
- */
-QHash<int, QByteArray> Wallet::roleNames() const {
-	QHash<int, QByteArray> names;
-	names[NameRole]        = "name";
-	names[TagColorRole]    = "color";
-	names[AccountListRole] = "accounts";
-	return names;
 }

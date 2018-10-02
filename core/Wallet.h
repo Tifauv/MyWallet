@@ -31,15 +31,15 @@ signals:
 
 public slots:
 	Folder* createFolder(const QString& name, const QString& tagColor);
-	void removeFolder(int row);
+	void deleteFolder(int row);
 	Folder* get(int row) const;
 
-	bool appendRow(Folder* wallet);
-	bool insertRow(int row, Folder* wallet);
-	Folder* removeRow(int row);
 
 protected:
 	QHash<int, QByteArray> roleNames() const override;
+	void appendRow(Folder* wallet);
+	void insertRow(int row, Folder* wallet);
+	Folder* removeRow(int row);
 
 protected slots:
 	void addFolder(Folder* wallet);

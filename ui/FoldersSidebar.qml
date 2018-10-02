@@ -70,7 +70,7 @@ Drawer {
 			Timer {
 				id: undoTimer
 				interval: 3600
-				onTriggered: wallet.removeFolder(index)
+				onTriggered: wallet.deleteFolder(index)
 			}
 
 			swipe.onCompleted: undoTimer.start()

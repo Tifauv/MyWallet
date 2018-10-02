@@ -99,7 +99,7 @@ Page {
 			Timer {
 				id: undoTimer
 				interval: 3600
-				onTriggered: folder.removeAccount(index)
+				onTriggered: folder.deleteAccount(index)
 			}
 
 			swipe.onCompleted: undoTimer.start()

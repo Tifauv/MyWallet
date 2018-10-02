@@ -4,6 +4,7 @@
 #include <QObject>
 
 class Folder;
+class Account;
 
 class Backend : public QObject {
 	Q_OBJECT
@@ -21,6 +22,10 @@ public:
 	virtual void removeFolder(const QString& name) const = 0;
 
 	// Account management
+	virtual bool hasAccount(const QString& folder, const QString& name) const = 0;
+	virtual void createAccount(const QString& folder, const Account& account, const QString& password) const = 0;
+	virtual void removeAccount(const QString& folder, const QString& name) const = 0;
+
 	virtual const QString retrievePassword(const QString& folderName, const QString& accountName) const = 0;
 
 signals:
