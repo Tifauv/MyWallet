@@ -14,5 +14,6 @@
         <file>ui/FoldersSidebar.qml</file>
         <file>ui/DrawerSwipeDelegate.qml</file>
         <file>ui/+material/DrawerSwipeDelegate.qml</file>
+        <file>ui/CreateAccountDialog.qml</file>
     </qresource>
 </RCC>

@@ -103,9 +103,9 @@ Folder* Folder::setBackend(const QSharedPointer<Backend> p_backend) {
  * @param p_name
  * @param p_login
  */
-Account* Folder::createAccount(const QString& p_name, const QString& p_login) {
+Account* Folder::createAccount(const QString& p_name, const QString& p_login, const QString& p_password) {
 	auto account = new Account(p_name, p_login);
-	m_backend->createAccount(name(), *account, "");
+	m_backend->createAccount(name(), *account, p_password);
 	addAccount(account);
 	return account;
 }

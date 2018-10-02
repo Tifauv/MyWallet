@@ -18,11 +18,12 @@ Page {
 	}
 
 	footer: Pane {
-		height: accountCount.implicitHeight + topPadding + bottomPadding
+		id: pane
+		height: Math.max(accountCount.height, createBtn.height)
+		padding: 8
+		bottomPadding: 0
+		topPadding: 0
 
-		topPadding: 4
-		bottomPadding: 4
-		leftPadding: 8
 
 		Label {
 			id: accountCount
@@ -30,6 +31,21 @@ Page {
 			anchors.left: parent.left
 
 			text: adaptCount(folder !== undefined ? folder.count : 0)
+			anchors.verticalCenter: parent.verticalCenter
+		}
+
+		ToolButton {
+			id: createBtn
+			height: 32
+			anchors.verticalCenter: parent.verticalCenter
+			anchors.right: parent.right
+
+			text: qsTr("New Account...")
+			flat: true
+
+			visible: folder !== undefined
+
+			onClicked: createAccountDlg.open()
 		}
 	}
 
@@ -106,6 +122,25 @@ Page {
 		}
 
 		ScrollIndicator.vertical: ScrollIndicator {}
+	}
+
+	CreateAccountDialog {
+		id: createAccountDlg
+
+		modal: true
+		focus: true
+
+		width: 220
+		height: 200
+
+		x: (parent.width - width) / 2
+		y: (parent.height - height) / 2
+
+		onAccepted: {
+			folder.createAccount(name, login, password);
+			reset();
+		}
+		onRejected: reset()
 	}
 
 	/**

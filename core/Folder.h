@@ -47,7 +47,7 @@ signals:
 	void countChanged(int);
 
 public slots:
-	Account* createAccount(const QString& name, const QString& login);
+	Account* createAccount(const QString& name, const QString& login, const QString& password);
 	void addAccount(Account* account);
 	void deleteAccount(int row);
 
