@@ -75,15 +75,36 @@ Page {
 				clipboard.setTextWithTimer(model.password, 10)
 			}
 
+			swipe.left: Rectangle {
+				width: parent.width
+				height: parent.height
+
+				clip: true
+				color: SwipeDelegate.pressed ? Material.color(Material.BlueGrey) : Material.color(Material.Blue)
+
+				Label {
+					text: model.password
+
+					padding: 20
+					anchors.fill: parent
+					horizontalAlignment: Qt.AlignLeft
+					verticalAlignment: Qt.AlignVCenter
+
+					opacity: 2 * delegate.swipe.position
+				}
+
+				SwipeDelegate.onClicked: delegate.swipe.close()
+			}
+
 			swipe.right: Rectangle {
 				width: parent.width
 				height: parent.height
 
 				clip: true
-				color: SwipeDelegate.pressed ? "#555" : "#666"
+				color: Material.color(Material.DeepOrange)
 
 				Label {
-					text: delegate.swipe.complete ? "\u2714" : "\u2718"
+					text: "\u25b6"
 
 					padding: 20
 					anchors.fill: parent
@@ -91,9 +112,6 @@ Page {
 					verticalAlignment: Qt.AlignVCenter
 
 					opacity: 2 * -delegate.swipe.position
-
-					color: Material.color(delegate.swipe.complete ? Material.Green : Material.Red, Material.Shade200)
-					Behavior on color { ColorAnimation { } }
 				}
 
 				Label {
@@ -113,12 +131,26 @@ Page {
 			}
 
 			Timer {
+				id: hideTimer
+				interval: 10000 // ms
+				onTriggered: swipe.close()
+			}
+
+			Timer {
 				id: undoTimer
-				interval: 3600
+				interval: 6000 // ms
 				onTriggered: folder.deleteAccount(index)
 			}
 
-			swipe.onCompleted: undoTimer.start()
+			swipe.onCompleted: {
+				// Swipe to reveal password
+				if (swipe.position == 1.0)
+					hideTimer.start()
+
+				// Swipe to delete
+				if (swipe.position == -1.0)
+					undoTimer.start()
+			}
 		}
 
 		ScrollIndicator.vertical: ScrollIndicator {}
