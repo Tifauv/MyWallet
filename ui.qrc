@@ -15,5 +15,7 @@
         <file>ui/DrawerSwipeDelegate.qml</file>
         <file>ui/+material/DrawerSwipeDelegate.qml</file>
         <file>ui/CreateAccountDialog.qml</file>
+        <file>ui/RemovedSwipeItem.qml</file>
+        <file>ui/PasswordSwipeItem.qml</file>
     </qresource>
 </RCC>

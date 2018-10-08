@@ -75,56 +75,24 @@ Page {
 				clipboard.setTextWithTimer(model.password, 10)
 			}
 
-			swipe.left: Rectangle {
+			swipe.left: PasswordSwipeItem {
 				width: parent.width
 				height: parent.height
 
 				clip: true
-				color: SwipeDelegate.pressed ? Material.color(Material.BlueGrey) : Material.color(Material.Blue)
-
-				Label {
-					text: model.password
-
-					padding: 20
-					anchors.fill: parent
-					horizontalAlignment: Qt.AlignLeft
-					verticalAlignment: Qt.AlignVCenter
-
-					opacity: 2 * delegate.swipe.position
-				}
-
+				bgColor: SwipeDelegate.pressed ? Material.color(Material.BlueGrey) : Material.color(Material.Blue)
+				text: model.password
+				textOpacity: 2 * delegate.swipe.position
+				
 				SwipeDelegate.onClicked: delegate.swipe.close()
 			}
 
-			swipe.right: Rectangle {
+			swipe.right: RemovedSwipeItem {
 				width: parent.width
 				height: parent.height
 
 				clip: true
-				color: Material.color(Material.DeepOrange)
-
-				Label {
-					text: "\u25b6"
-
-					padding: 20
-					anchors.fill: parent
-					horizontalAlignment: Qt.AlignRight
-					verticalAlignment: Qt.AlignVCenter
-
-					opacity: 2 * -delegate.swipe.position
-				}
-
-				Label {
-					text: qsTr("Removed")
-
-					padding: 20
-					anchors.fill: parent
-					horizontalAlignment: Qt.AlignLeft
-					verticalAlignment: Qt.AlignVCenter
-
-					opacity: delegate.swipe.complete ? 1 : 0
-					Behavior on opacity { NumberAnimation { } }
-				}
+				textOpacity: 2 * -delegate.swipe.position
 
 				SwipeDelegate.onClicked: delegate.swipe.close()
 				SwipeDelegate.onPressedChanged: undoTimer.stop()
