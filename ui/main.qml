@@ -65,7 +65,7 @@ ApplicationWindow {
 		id: sidebar
 		
 		y: windowHeader.height
-		width: 180
+		width: 200
 		height: window.height - windowHeader.height
 
 		modal: inPortrait

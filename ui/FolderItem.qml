@@ -7,8 +7,7 @@ Item {
 	property alias color: icon.color
 	property alias text: label.text
 	property alias secondText: accountCount.text
-	property int padding: 4
-	property int spacing: 10
+	property int spacing: 8
 
 	Rectangle {
 		id: icon
@@ -18,7 +17,6 @@ Item {
 		anchors.top: label.top
 		border.width: 0
 		anchors.left: parent.left
-		anchors.leftMargin: padding
 	}
 
 	Label {
@@ -38,6 +36,5 @@ Item {
 		anchors.verticalCenter: parent.verticalCenter
 		anchors.left: label.right
 		anchors.right: parent.right
-		anchors.rightMargin: padding
 	}
 }
