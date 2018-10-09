@@ -93,6 +93,7 @@ Drawer {
 
 		text: qsTr("New Folder...")
 		flat: true
+		hoverEnabled: true
 
 		onClicked: createDlg.open()
 	}
