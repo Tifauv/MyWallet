@@ -4,10 +4,10 @@ import QtQuick.Controls 2.2
 Item {
 	implicitWidth: 200
 	implicitHeight: label.height
-
 	property alias color: icon.color
 	property alias text: label.text
-	property int padding: 8
+	property alias secondText: accountCount.text
+	property int padding: 4
 	property int spacing: 10
 
 	Rectangle {
@@ -24,10 +24,19 @@ Item {
 	Label {
 		id: label
 		text: "Folder name"
-		anchors.verticalCenter: parent.verticalCenter
 		verticalAlignment: Text.AlignVCenter
+		anchors.verticalCenter: parent.verticalCenter
 		anchors.left: icon.right
 		anchors.leftMargin: spacing
+	}
+
+	SecondaryLabel {
+		id: accountCount
+		text: "Empty"
+		horizontalAlignment: Text.AlignRight
+		verticalAlignment: Text.AlignVCenter
+		anchors.verticalCenter: parent.verticalCenter
+		anchors.left: label.right
 		anchors.right: parent.right
 		anchors.rightMargin: padding
 	}

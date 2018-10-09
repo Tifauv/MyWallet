@@ -8,10 +8,14 @@ Drawer {
 	property alias model: folderList.model
 	property variant createDlg
 	
-	contentItem: ListView {
+	ListView {
 		id: folderList
 
-		anchors.fill: parent
+		anchors.top: parent.top
+		anchors.left: parent.left
+		anchors.right: parent.right
+		anchors.bottom: newFolderBtn.top
+
 		clip: true
 
 		delegate: DrawerSwipeDelegate {
@@ -22,6 +26,7 @@ Drawer {
 			contentItem: FolderItem {
 				color: model.color
 				text: model.name
+				secondText: adaptCount(model.accounts.count)
 			}
 
 			highlighted: ListView.isCurrentItem
@@ -79,15 +84,27 @@ Drawer {
 		ScrollIndicator.vertical: ScrollIndicator { }
 	}
 
-	RoundButton {
+	ToolButton {
 		id: newFolderBtn
+		anchors.left: parent.left
+		anchors.right: parent.right
 		anchors.bottom: parent.bottom
-		anchors.bottomMargin: 4
-		anchors.horizontalCenter: parent.horizontalCenter
+		height: 32
 
-		hoverEnabled: true
-		text: "+"
+		text: qsTr("New Folder...")
+		flat: true
 
 		onClicked: createDlg.open()
+	}
+
+	/**
+	 * Adapts the accounts count to the number of elements in the folder.
+	 */
+	function adaptCount(count) {
+		switch (count) {
+		    case 0: return qsTr("Empty");
+			case 1: return qsTr("1 account");
+			default: return qsTr("%1 accounts").arg(count)
+		}
 	}
 }

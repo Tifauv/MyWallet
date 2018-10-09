@@ -21,7 +21,7 @@ Item {
 		font.pixelSize: 16
 	}
 
-	Label {
+	SecondaryLabel {
 		id: accountLogin
 		text: qsTr("Login")
 		anchors.top: accountName.bottom
@@ -31,6 +31,5 @@ Item {
 		anchors.leftMargin: 12
 		verticalAlignment: Text.AlignVCenter
 		anchors.left: accountName.left
-		font.pixelSize: 12
 	}
 }

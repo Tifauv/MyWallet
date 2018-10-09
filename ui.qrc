@@ -17,5 +17,6 @@
         <file>ui/CreateAccountDialog.qml</file>
         <file>ui/RemovedSwipeItem.qml</file>
         <file>ui/PasswordSwipeItem.qml</file>
+        <file>ui/SecondaryLabel.qml</file>
     </qresource>
 </RCC>

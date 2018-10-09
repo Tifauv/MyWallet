@@ -17,38 +17,6 @@ Page {
 		id: clipboard
 	}
 
-	footer: Pane {
-		id: pane
-		height: Math.max(accountCount.height, createBtn.height)
-		padding: 8
-		bottomPadding: 0
-		topPadding: 0
-
-
-		Label {
-			id: accountCount
-			verticalAlignment: Text.AlignVCenter
-			anchors.left: parent.left
-
-			text: adaptCount(folder !== undefined ? folder.count : 0)
-			anchors.verticalCenter: parent.verticalCenter
-		}
-
-		ToolButton {
-			id: createBtn
-			height: 32
-			anchors.verticalCenter: parent.verticalCenter
-			anchors.right: parent.right
-
-			text: qsTr("New Account...")
-			flat: true
-
-			visible: folder !== undefined
-
-			onClicked: createAccountDlg.open()
-		}
-	}
-
 	ListView {
 		id: list
 
@@ -124,6 +92,21 @@ Page {
 		ScrollIndicator.vertical: ScrollIndicator {}
 	}
 
+	RoundButton {
+		id: createBtn
+		anchors.bottom: parent.bottom
+		anchors.bottomMargin: 4
+		anchors.right: parent.right
+		anchors.rightMargin: 4
+
+		hoverEnabled: true
+		text: "+"
+
+		visible: folder != undefined
+
+		onClicked: createAccountDlg.open()
+	}
+
 	CreateAccountDialog {
 		id: createAccountDlg
 
@@ -141,16 +124,5 @@ Page {
 			reset();
 		}
 		onRejected: reset()
-	}
-
-	/**
-	 * Adapts the accounts count to the number of elements in the folder.
-	 */
-	function adaptCount(count) {
-		switch (count) {
-		    case 0: return qsTr("Empty");
-			case 1: return qsTr("1 account");
-			default: return qsTr("%1 accounts").arg(count)
-		}
 	}
 }
