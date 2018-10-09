@@ -35,7 +35,6 @@ Page {
 				login: model.login
 			}
 
-			highlighted: ListView.isCurrentItem
 			onClicked: list.currentIndex = model.index
 
 			onDoubleClicked: {
