@@ -5,11 +5,11 @@ import QtQuick.Controls.Material 2.2
 Drawer {
 	id: sidebar
 
-	property alias model: folderList.model
+	property alias model: list.model
 	property variant createDlg
 	
 	ListView {
-		id: folderList
+		id: list
 
 		anchors.top: parent.top
 		anchors.left: parent.left
@@ -31,42 +31,16 @@ Drawer {
 
 			highlighted: ListView.isCurrentItem
 			onClicked: {
+				list.currentIndex = model.index
 				loadFolder(model.index)
-				folderList.currentIndex = model.index
 			}
 
-			swipe.right: Rectangle {
+			swipe.right: RemovedSwipeItem {
 				width: parent.width
 				height: parent.height
 
 				clip: true
-				color: SwipeDelegate.pressed ? "#555" : "#666"
-
-				Label {
-					text: delegate.swipe.complete ? "\u2714" : "\u2718"
-
-					padding: 20
-					anchors.fill: parent
-					horizontalAlignment: Qt.AlignRight
-					verticalAlignment: Qt.AlignVCenter
-
-					opacity: 2 * -delegate.swipe.position
-
-					color: Material.color(delegate.swipe.complete ? Material.Green : Material.Red, Material.Shade200)
-					Behavior on color { ColorAnimation { } }
-				}
-
-				Label {
-					text: qsTr("Removed")
-
-					padding: 20
-					anchors.fill: parent
-					horizontalAlignment: Qt.AlignLeft
-					verticalAlignment: Qt.AlignVCenter
-
-					opacity: delegate.swipe.complete ? 1 : 0
-					Behavior on opacity { NumberAnimation { } }
-				}
+				textOpacity: 2 * -delegate.swipe.position
 
 				SwipeDelegate.onClicked: delegate.swipe.close()
 				SwipeDelegate.onPressedChanged: undoTimer.stop()
@@ -74,7 +48,7 @@ Drawer {
 
 			Timer {
 				id: undoTimer
-				interval: 3600
+				interval: 6000 // ms
 				onTriggered: wallet.deleteFolder(index)
 			}
 

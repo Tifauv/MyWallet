@@ -35,8 +35,6 @@ Page {
 				login: model.login
 			}
 
-			onClicked: list.currentIndex = model.index
-
 			onDoubleClicked: {
 				console.log("Double click: copying password to clipboard")
 				clipboard.setTextWithTimer(model.password, 10)
