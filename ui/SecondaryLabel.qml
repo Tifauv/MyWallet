@@ -8,5 +8,5 @@ Label {
 	color: Material.color(Material.Grey)
 
 	text: "Plop"
-	font.pointSize: 8
+	font.pointSize: 9
 }
