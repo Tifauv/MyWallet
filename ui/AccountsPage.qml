@@ -33,6 +33,10 @@ Page {
 			contentItem: AccountView {
 				name: model.name
 				login: model.login
+				hovered: delegate.hovered
+
+				onRevealClicked: delegate.swipe.open(1.0);
+				onRemoveClicked: delegate.swipe.open(-1.0);
 			}
 
 			onDoubleClicked: {
