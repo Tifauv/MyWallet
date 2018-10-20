@@ -75,6 +75,8 @@ ApplicationWindow {
 
 		model: wallet
 		createDlg: createFolderDlg
+
+		onFolderSelected: loadFolder(index)
 	}
 
 	AccountsPage {
@@ -104,11 +106,31 @@ ApplicationWindow {
 		onRejected: reset()
 	}
 
-	// Autoselect the first folder
+	// Restore the previous state
 	Component.onCompleted: {
-		loadFolder(0);
+		window.width  = config.previousWidth;
+		window.height = config.previousHeight;
+
+		// Select the previous folder, or the first one
+		var index = wallet.find(config.previousFolder);
+		if (index !== -1)
+			sidebar.selectFolder(index);
+		else
+			sidebar.selectFolder(0);
+
+		// If the wallet is empty, show the folder creation dialog
 		if (wallet.count === 0)
 			createFolderDlg.open();
+	}
+
+	// Sync the config object on closing
+	onClosing: {
+		config.previousWidth  = window.width;
+		console.log("Saved previous window width: " + config.previousWidth);
+		config.previousHeight = window.height;
+		console.log("Saving previous window height: " + config.previousHeight);
+		config.previousFolder = page.folder.name;
+		console.log("Saving previous folder: " + config.previousFolder);
 	}
 
 

@@ -33,7 +33,7 @@ public slots:
 	Folder* createFolder(const QString& name, const QString& tagColor);
 	void deleteFolder(int row);
 	Folder* get(int row) const;
-
+	int find(const QString& folderName) const;
 
 protected:
 	QHash<int, QByteArray> roleNames() const override;

@@ -7,7 +7,8 @@ Drawer {
 
 	property alias model: list.model
 	property variant createDlg
-	
+	signal folderSelected(int index)
+
 	ListView {
 		id: list
 
@@ -30,10 +31,7 @@ Drawer {
 			}
 
 			highlighted: ListView.isCurrentItem
-			onClicked: {
-				list.currentIndex = model.index
-				loadFolder(model.index)
-			}
+			onClicked: selectFolder(model.index);
 
 			swipe.right: RemovedSwipeItem {
 				width: parent.width
@@ -75,11 +73,19 @@ Drawer {
 	/**
 	 * Adapts the accounts count to the number of elements in the folder.
 	 */
-	function adaptCount(count) {
-		switch (count) {
+	function adaptCount(p_count) {
+		switch (p_count) {
 		    case 0: return qsTr("Empty");
 			case 1: return qsTr("1 account");
-			default: return qsTr("%1 accounts").arg(count)
+			default: return qsTr("%1 accounts").arg(p_count)
 		}
+	}
+
+	/**
+	 * Changes the list's selected index then emits the folderSelected signal.
+	 */
+	function selectFolder(p_index) {
+		list.currentIndex = p_index;
+		folderSelected(p_index);
 	}
 }

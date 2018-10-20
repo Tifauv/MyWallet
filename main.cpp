@@ -1,12 +1,15 @@
 #include <QGuiApplication>
+#include <QQmlContext>
 #include <QQmlApplicationEngine>
+
 #include "QmlClipboardAdapter.h"
+#include "Config.h"
 #include "core/Wallet.h"
 
 int main(int p_argc, char* p_argv[]) {
 	QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 	QGuiApplication app(p_argc, p_argv);
-	app.setApplicationName("Wallets");
+	app.setApplicationName("wallets");
 	app.setApplicationDisplayName("Wallets");
 	app.setApplicationVersion("0.1");
 
@@ -14,11 +17,18 @@ int main(int p_argc, char* p_argv[]) {
 	qmlRegisterType<Wallet>(             "Wallets", 1, 0, "Wallet"   );
 	qmlRegisterType<Folder>(             "Wallets", 1, 0, "Folder"   );
 	qmlRegisterType<Account>(            "Wallets", 1, 0, "Account"  );
+	qmlRegisterType<Config>(             "Wallets", 1, 0, "Config"   );
+
+	// Load the configuration
+	Config* config = new Config();
 
 	QQmlApplicationEngine engine;
+	engine.rootContext()->setContextProperty("config", config);
 	engine.load(QUrl(QStringLiteral("qrc:/ui/main.qml")));
 	if (engine.rootObjects().isEmpty())
 		return -1;
 
-	return app.exec();
+	int rc = app.exec();
+	delete config;
+	return rc;
 }

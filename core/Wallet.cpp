@@ -10,7 +10,7 @@
  */
 Wallet::Wallet(QObject* p_parent) :
     QAbstractListModel(p_parent),
-    m_backend(new KWalletBackend(QGuiApplication::applicationName())) {
+    m_backend(new KWalletBackend("Wallets")) { //QGuiApplication::applicationName())) {
 	qDebug() << "(i) [Wallet] Created.";
 	if (m_backend) {
 		connect(m_backend.data(), &Backend::folderLoaded, this, &Wallet::addFolder);
@@ -74,6 +74,19 @@ Folder* Wallet::get(int p_row) const {
 		return nullptr;
 
 	return m_folders.at(p_row);
+}
+
+
+/**
+ * @brief Wallet::find
+ * @param p_folderName
+ * @return
+ */
+int Wallet::find(const QString& p_folderName) const {
+	for (int i=0; i < m_folders.size(); ++i)
+		if (m_folders.at(i)->name() == p_folderName)
+			return i;
+	return -1;
 }
 
 
