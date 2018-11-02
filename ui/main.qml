@@ -9,7 +9,7 @@ ApplicationWindow {
 	height: 480
 	title: qsTr("Wallets")
 
-	readonly property bool inPortrait: window.width < window.height
+	readonly property bool compactMode: window.width < 2 * sidebar.width
 
 	Wallet {
 		id: wallet
@@ -30,7 +30,7 @@ ApplicationWindow {
 			anchors.leftMargin: 8
 			anchors.verticalCenter: parent.verticalCenter
 
-			text: window.inPortrait ? page.title : qsTr("Wallets / %1").arg(page.title)
+			text: window.compactMode ? page.title : qsTr("Wallets / %1").arg(page.title)
 			font.letterSpacing: 2
 			font.weight: Font.Thin
 			font.pixelSize: 22
@@ -67,10 +67,10 @@ ApplicationWindow {
 		width: 200
 		height: window.height - windowHeader.height
 
-		modal: inPortrait
-		interactive: inPortrait
-		position: inPortrait ? 0 : 1
-		visible: !inPortrait
+		modal: compactMode
+		interactive: compactMode
+		position: compactMode ? 0 : 1
+		visible: !compactMode
 
 		model: wallet
 		createDlg: createFolderDlg
@@ -83,7 +83,7 @@ ApplicationWindow {
 
 		anchors.fill: parent
 		anchors.topMargin: windowHeader.height
-		anchors.leftMargin: !inPortrait ? sidebar.width : undefined
+		anchors.leftMargin: !compactMode ? sidebar.width : undefined
 	}
 
 	CreateFolderDialog {
