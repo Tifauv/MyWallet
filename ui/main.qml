@@ -7,7 +7,7 @@ ApplicationWindow {
 	visible: true
 	width: 640
 	height: 480
-	title: qsTr("Wallets")
+	title: qsTr("MyWallet - %1").arg(wallet.name)
 
 	readonly property bool compactMode: window.width < 2 * sidebar.width
 
@@ -30,7 +30,7 @@ ApplicationWindow {
 			anchors.leftMargin: 8
 			anchors.verticalCenter: parent.verticalCenter
 
-			text: window.compactMode ? page.title : qsTr("Wallets / %1").arg(page.title)
+			text: window.compactMode ? page.title : qsTr("%1 / %2").arg(wallet.name).arg(page.title)
 			font.letterSpacing: 2
 			font.weight: Font.Thin
 			font.pixelSize: 22

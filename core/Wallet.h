@@ -9,7 +9,8 @@
 class Wallet : public QAbstractListModel {
 	Q_OBJECT
 
-	Q_PROPERTY(int count  READ count  NOTIFY countChanged)
+	Q_PROPERTY(QString name   READ name   NOTIFY nameChanged )
+	Q_PROPERTY(int     count  READ count  NOTIFY countChanged)
 
 public:
 	enum Roles {
@@ -21,12 +22,14 @@ public:
 	explicit Wallet(QObject* parent = nullptr);
 	~Wallet() {}
 
+	const QString& name() const;
 	int count() const;
 
 	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
 signals:
+	void nameChanged(const QString&);
 	void countChanged(int);
 
 public slots:
@@ -45,6 +48,7 @@ protected slots:
 	void addFolder(Folder* wallet);
 
 private:
+	QString        m_name;
 	QList<Folder*> m_folders;
 	QSharedPointer<Backend> m_backend;
 };
