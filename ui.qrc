@@ -18,5 +18,6 @@
         <file>ui/RemovedSwipeItem.qml</file>
         <file>ui/PasswordSwipeItem.qml</file>
         <file>ui/SecondaryLabel.qml</file>
+        <file>ui/TickingTimer.qml</file>
     </qresource>
 </RCC>

@@ -7,7 +7,8 @@ Item {
 	id: control
 	
 	property double textOpacity
-	
+	property double progress: 1.0
+
 	Rectangle {
 		id: background
 		
@@ -29,6 +30,8 @@ Item {
 	}
 
 	Label {
+		id: messageLbl
+
 		text: qsTr("Cancel deletion")
 
 		padding: 6
@@ -41,5 +44,14 @@ Item {
 		verticalAlignment: Qt.AlignVCenter
 
 		opacity: textOpacity
+	}
+
+	Rectangle {
+		color: messageLbl.color
+
+		anchors.left: parent.left
+		anchors.bottom: parent.bottom
+		height: 4
+		width: parent.width * (1 - progress)
 	}
 }

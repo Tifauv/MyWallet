@@ -10,6 +10,8 @@ Page {
 	implicitHeight: 480
 
 	property variant folder: undefined
+	property int hideTimeout: 10
+	property int cancelDeleteTimeout: 8
 
 	title: folder !== undefined ? folder.name : qsTr("Folder name")
 
@@ -52,6 +54,7 @@ Page {
 				bgColor: SwipeDelegate.pressed ? Material.color(Material.BlueGrey) : Material.color(Material.Blue)
 				text: model.password
 				textOpacity: 2 * -delegate.swipe.position
+				progress: hideTimer.remaining / hideTimer.interval
 				
 				SwipeDelegate.onClicked: delegate.swipe.close()
 				SwipeDelegate.onPressedChanged: hideTimer.stop()
@@ -63,20 +66,21 @@ Page {
 
 				clip: true
 				textOpacity: 2 * delegate.swipe.position
+				progress: undoTimer.remaining / undoTimer.interval
 
 				SwipeDelegate.onClicked: delegate.swipe.close()
 				SwipeDelegate.onPressedChanged: undoTimer.stop()
 			}
 
-			Timer {
+			TickingTimer {
 				id: hideTimer
-				interval: 10000 // ms
+				interval: hideTimeout * 1000 // ms
 				onTriggered: swipe.close()
 			}
 
-			Timer {
+			TickingTimer {
 				id: undoTimer
-				interval: 6000 // ms
+				interval: cancelDeleteTimeout * 1000 // ms
 				onTriggered: folder.deleteAccount(index)
 			}
 

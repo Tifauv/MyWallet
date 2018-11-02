@@ -39,14 +39,15 @@ Drawer {
 
 				clip: true
 				textOpacity: 2 * delegate.swipe.position
+				progress: undoTimer.remaining / undoTimer.interval
 
 				SwipeDelegate.onClicked: delegate.swipe.close()
 				SwipeDelegate.onPressedChanged: undoTimer.stop()
 			}
 
-			Timer {
+			TickingTimer {
 				id: undoTimer
-				interval: 6000 // ms
+				interval: 8 * 1000 // ms
 				onTriggered: wallet.deleteFolder(index)
 			}
 
