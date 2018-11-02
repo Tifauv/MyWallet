@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=My Wallet
+Name[fr]=Mon portefeuille
+Comment=Personnal wallet
+Comment[fr]=Portefeuille personnel
+Exec=MyWallet
+Icon=kwalletmanager
+Type=Application
+Terminal=false
+X-KDE-StartupNotify=true
