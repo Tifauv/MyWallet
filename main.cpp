@@ -4,14 +4,15 @@
 
 #include "QmlClipboardAdapter.h"
 #include "Config.h"
+#include "MyWalletConfig.h"
 #include "core/Wallet.h"
 
 int main(int p_argc, char* p_argv[]) {
 	QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 	QGuiApplication app(p_argc, p_argv);
-	app.setApplicationName("wallets");
+	app.setApplicationName("eu.catwitch.mywallet");
 	app.setApplicationDisplayName("Wallets");
-	app.setApplicationVersion("0.1");
+	app.setApplicationVersion("MYWALLET_MAJOR_VERSION.MYWALLET_MINOR_VERSION");
 
 	qmlRegisterType<QmlClipboardAdapter>("Wallets", 1, 0, "Clipboard");
 	qmlRegisterType<Wallet>(             "Wallets", 1, 0, "Wallet"   );
