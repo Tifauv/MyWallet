@@ -35,8 +35,8 @@ Page {
 				login: model.login
 				hovered: delegate.hovered
 
-				onRevealClicked: delegate.swipe.open(1.0);
-				onRemoveClicked: delegate.swipe.open(-1.0);
+				onRevealClicked: delegate.swipe.open(-1.0);
+				onRemoveClicked: delegate.swipe.open(1.0);
 			}
 
 			onDoubleClicked: {
@@ -44,24 +44,25 @@ Page {
 				clipboard.setTextWithTimer(model.password, 10)
 			}
 
-			swipe.left: PasswordSwipeItem {
+			swipe.right: PasswordSwipeItem {
 				width: parent.width
 				height: parent.height
 
 				clip: true
 				bgColor: SwipeDelegate.pressed ? Material.color(Material.BlueGrey) : Material.color(Material.Blue)
 				text: model.password
-				textOpacity: 2 * delegate.swipe.position
+				textOpacity: 2 * -delegate.swipe.position
 				
 				SwipeDelegate.onClicked: delegate.swipe.close()
+				SwipeDelegate.onPressedChanged: hideTimer.stop()
 			}
 
-			swipe.right: RemovedSwipeItem {
+			swipe.left: RemovedSwipeItem {
 				width: parent.width
 				height: parent.height
 
 				clip: true
-				textOpacity: 2 * -delegate.swipe.position
+				textOpacity: 2 * delegate.swipe.position
 
 				SwipeDelegate.onClicked: delegate.swipe.close()
 				SwipeDelegate.onPressedChanged: undoTimer.stop()
@@ -81,11 +82,11 @@ Page {
 
 			swipe.onCompleted: {
 				// Swipe to reveal password
-				if (swipe.position == 1.0)
+				if (swipe.position == -1.0)
 					hideTimer.start()
 
 				// Swipe to delete
-				if (swipe.position == -1.0)
+				if (swipe.position == 1.0)
 					undoTimer.start()
 			}
 		}

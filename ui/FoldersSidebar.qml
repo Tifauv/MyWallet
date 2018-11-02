@@ -33,12 +33,12 @@ Drawer {
 			highlighted: ListView.isCurrentItem
 			onClicked: selectFolder(model.index);
 
-			swipe.right: RemovedSwipeItem {
+			swipe.left: RemovedSwipeItem {
 				width: parent.width
 				height: parent.height
 
 				clip: true
-				textOpacity: 2 * -delegate.swipe.position
+				textOpacity: 2 * delegate.swipe.position
 
 				SwipeDelegate.onClicked: delegate.swipe.close()
 				SwipeDelegate.onPressedChanged: undoTimer.stop()
