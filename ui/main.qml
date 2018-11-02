@@ -30,11 +30,10 @@ ApplicationWindow {
 			anchors.leftMargin: 8
 			anchors.verticalCenter: parent.verticalCenter
 
-			text: qsTr("Wallets / %1").arg(page.title)
+			text: window.inPortrait ? page.title : qsTr("Wallets / %1").arg(page.title)
 			font.letterSpacing: 2
 			font.weight: Font.Thin
 			font.pixelSize: 22
-
 		}
 
 		ToolButton {
