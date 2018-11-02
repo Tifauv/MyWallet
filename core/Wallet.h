@@ -33,6 +33,7 @@ signals:
 	void countChanged(int);
 
 public slots:
+	void load(const QString& name, Backend* backend);
 	Folder* createFolder(const QString& name, const QString& tagColor);
 	void deleteFolder(int row);
 	Folder* get(int row) const;
@@ -43,6 +44,7 @@ protected:
 	void appendRow(Folder* wallet);
 	void insertRow(int row, Folder* wallet);
 	Folder* removeRow(int row);
+	void clear();
 
 protected slots:
 	void addFolder(Folder* wallet);

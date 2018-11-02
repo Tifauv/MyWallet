@@ -9,14 +9,9 @@
  * @param parent
  */
 Wallet::Wallet(QObject* p_parent) :
-    QAbstractListModel(p_parent),
-    m_name("Wallets"),
-    m_backend(new KWalletBackend(m_name)) {
+    QAbstractListModel(p_parent) {
 	qDebug() << "(i) [Wallet] Created.";
-	if (m_backend) {
-		connect(m_backend.data(), &Backend::folderLoaded, this, &Wallet::addFolder);
-		m_backend->load();
-	}
+	load("Wallets", new KWalletBackend("Wallets"));
 }
 
 
@@ -40,6 +35,28 @@ int Wallet::count() const {
 
 
 // NATIVE API
+/**
+ * @brief load
+ * @param p_name
+ * @param p_backend
+ */
+void Wallet::load(const QString& p_name, Backend* p_backend) {
+	disconnect(m_backend.data(), &Backend::folderLoaded, this, &Wallet::addFolder);
+
+	// Change the backend
+	m_backend.reset(p_backend);
+	if (m_backend) {
+		connect(m_backend.data(), &Backend::folderLoaded, this, &Wallet::addFolder);
+		clear();
+		m_backend->load();
+	}
+
+	// Change the name
+	m_name = p_name;
+	emit nameChanged(m_name);
+}
+
+
 /**
  * @brief Wallet::createFolder
  * @param p_name
@@ -199,7 +216,6 @@ void Wallet::insertRow(int p_row, Folder* p_folder) {
  * @return
  */
 Folder* Wallet::removeRow(int p_row) {
-	// Upper bound check prevents removing the trash item
 	if (p_row < 0 || p_row >= rowCount())
 		return nullptr;
 
@@ -209,4 +225,17 @@ Folder* Wallet::removeRow(int p_row) {
 	emit countChanged(rowCount());
 	qDebug() << "(i) [Wallet] Folder " << folder->name() << " removed.";
 	return folder;
+}
+
+
+/**
+ * @brief Wallet::clear
+ */
+void Wallet::clear() {
+	beginRemoveRows(QModelIndex(), 0, rowCount() - 1);
+	while (rowCount() > 0)
+		delete m_folders.takeAt(0);
+	endRemoveRows();
+	emit countChanged(rowCount());
+	qDebug() << "(i) [Wallet] Folder list cleared.";
 }
