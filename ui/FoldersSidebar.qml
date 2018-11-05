@@ -28,6 +28,9 @@ Drawer {
 				color: model.color
 				text: model.name
 				secondText: adaptCount(model.accounts.count)
+				hovered: delegate.hovered
+				
+				onRemoveClicked: delegate.swipe.open(1.0)
 			}
 
 			highlighted: ListView.isCurrentItem

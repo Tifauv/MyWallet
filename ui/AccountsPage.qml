@@ -37,8 +37,8 @@ Page {
 				login: model.login
 				hovered: delegate.hovered
 
-				onRevealClicked: delegate.swipe.open(-1.0);
-				onRemoveClicked: delegate.swipe.open(1.0);
+				onRevealClicked: delegate.swipe.open(-1.0)
+				onRemoveClicked: delegate.swipe.open(1.0)
 			}
 
 			onDoubleClicked: {
