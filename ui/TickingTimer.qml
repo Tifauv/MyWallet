@@ -37,6 +37,7 @@ Item {
 
 	function stop() {
 		timer.stop();
+		widget.remaining = widget.interval;
 	}
 
 
