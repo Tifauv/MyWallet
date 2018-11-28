@@ -7,7 +7,7 @@ ApplicationWindow {
 	visible: true
 	width: 640
 	height: 480
-	title: qsTr("MyWallet - %1").arg(wallet.name)
+	title: qsTr(wallet.name)
 
 	readonly property bool compactMode: window.width < 2 * sidebar.width
 

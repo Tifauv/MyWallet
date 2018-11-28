@@ -10,8 +10,10 @@
 int main(int p_argc, char* p_argv[]) {
 	QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 	QGuiApplication app(p_argc, p_argv);
-	app.setApplicationName("eu.catwitch.mywallet");
-	app.setApplicationDisplayName("Wallets");
+	app.setOrganizationName("CatWitch");
+	app.setOrganizationDomain("catwitch.eu");
+	app.setApplicationName("mywallet");
+	app.setApplicationDisplayName("MyWallet");
 	app.setApplicationVersion("MYWALLET_MAJOR_VERSION.MYWALLET_MINOR_VERSION");
 
 	qmlRegisterType<QmlClipboardAdapter>("Wallets", 1, 0, "Clipboard");
