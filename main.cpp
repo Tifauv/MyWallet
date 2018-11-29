@@ -16,6 +16,7 @@ int main(int p_argc, char* p_argv[]) {
 	app.setApplicationDisplayName("MyWallet");
 	app.setApplicationVersion("MYWALLET_MAJOR_VERSION.MYWALLET_MINOR_VERSION");
 
+	// Register model types with the QML engine
 	qmlRegisterType<QmlClipboardAdapter>("Wallets", 1, 0, "Clipboard");
 	qmlRegisterType<Wallet>(             "Wallets", 1, 0, "Wallet"   );
 	qmlRegisterType<Folder>(             "Wallets", 1, 0, "Folder"   );
