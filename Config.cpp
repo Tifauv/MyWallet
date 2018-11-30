@@ -12,6 +12,16 @@ Config::Config(QObject* p_parent) :
 
 // GETTERS
 /**
+ * @brief Config::previousWallet
+ * @return
+ */
+const QString Config::previousWallet() const {
+	KConfigGroup previousRun(&m_kconfig, "PreviousRun");
+	return previousRun.readEntry("Wallet", QString());
+}
+
+
+/**
  * @brief Config::previousFolder
  * @return
  */
@@ -43,6 +53,17 @@ uint Config::previousHeight() const {
 
 // SETTERS
 /**
+ * @brief Config::setPreviousWallet
+ * @param p_wallet
+ */
+void Config::setPreviousWallet(const QString& p_wallet) {
+	KConfigGroup previousRun(&m_kconfig, "PreviousRun");
+	previousRun.writeEntry("Wallet", p_wallet);
+	emit previousWalletChanged(p_wallet);
+}
+
+
+/**
  * @brief Config::setPreviousFolder
  * @param p_folder
  */
@@ -64,6 +85,10 @@ void Config::setPreviousWidth(uint p_width) {
 }
 
 
+/**
+ * @brief Config::setPreviousHeight
+ * @param p_height
+ */
 void Config::setPreviousHeight(uint p_height) {
 	KConfigGroup previousRun(&m_kconfig, "PreviousRun");
 	previousRun.writeEntry("Height", p_height);
