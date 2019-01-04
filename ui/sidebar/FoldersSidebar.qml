@@ -20,42 +20,14 @@ Drawer {
 
 		clip: true
 
-		delegate: DrawerSwipeDelegate {
+		delegate: FolderSwipeItem {
 			id: delegate
 			width: parent.width
-			hoverEnabled: true
-
-			contentItem: FolderItem {
-				color: model.color
-				text: model.name
-				secondText: adaptCount(model.accounts.count)
-				hovered: delegate.hovered
-				
-				onRemoveClicked: delegate.swipe.open(1.0)
-			}
 
 			highlighted: ListView.isCurrentItem
-			onClicked: selectFolder(model.index);
+			onClicked: selectFolder(model.index)
 
-			swipe.left: RemovedSwipeItem {
-				width: parent.width
-				height: parent.height
-
-				clip: true
-				textOpacity: 2 * delegate.swipe.position
-				progress: undoTimer.remaining / undoTimer.interval
-
-				SwipeDelegate.onClicked: delegate.swipe.close()
-				SwipeDelegate.onPressedChanged: undoTimer.stop()
-			}
-
-			TickingTimer {
-				id: undoTimer
-				interval: 8 * 1000 // ms
-				onTriggered: wallet.deleteFolder(index)
-			}
-
-			swipe.onCompleted: undoTimer.start()
+			onDeleteCompleted: wallet.deleteFolder(model.index)
 		}
 
 		ScrollIndicator.vertical: ScrollIndicator { }

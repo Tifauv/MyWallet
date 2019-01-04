@@ -19,5 +19,7 @@
         <file>ui/sidebar/FolderItem.qml</file>
         <file>ui/sidebar/FoldersSidebar.qml</file>
         <file>ui/dialogs/ColorSelector.qml</file>
+        <file>ui/sidebar/FolderSwipeItem.qml</file>
+        <file>ui/sidebar/ActiveItem.qml</file>
     </qresource>
 </RCC>
