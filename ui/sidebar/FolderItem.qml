@@ -24,6 +24,8 @@ Item {
 		border.width: 0
 		anchors.left: parent.left
 		
+		z: 2
+		
 		Label {
 			id: initial
 			
@@ -36,6 +38,12 @@ Item {
 			verticalAlignment: Text.AlignVCenter
 			anchors.fill: parent
 		}
+		
+		MouseArea {
+			id: iconMouseArea
+			anchors.fill: parent
+			hoverEnabled: true
+		}
 	}
 
 	Label {
@@ -44,39 +52,72 @@ Item {
 		anchors.left: icon.right
 		anchors.leftMargin: spacing
 		anchors.top: parent.top
-		anchors.right: deleteBtn.left
+		anchors.right: parent.right
 	}
 
 	SecondaryLabel {
 		id: accountCount
 		text: "Empty"
 		anchors.left: label.left
-		anchors.right: deleteBtn.left
+		anchors.right: parent.right
 		anchors.bottom: parent.bottom
 	}
 	
-	Button {
-		id: deleteBtn
-
-		height: 32
-		width: 32
-
-		anchors.right: parent.right
-		anchors.verticalCenter: parent.verticalCenter
-
-		flat: true
-		visible: folder.hovered
-
-		onClicked: removeClicked()
+	Rectangle {
+		id: actionPanel
 		
-		PlasmaCore.IconItem {
-			source: "edit-delete"
+		z: 1
+		color: Qt.darker(folder.color, 1.6)
+		
+		height: folder.height + 2*8
+		clip: true
+		width: folder.width + 2*16
+		
+		y: 0      -8
+		x: -width -16
+		
+		Row {
+			id: layout
 			
-			width: 24
-			height: width
-
-
-			anchors.centerIn: parent
+			anchors.fill: parent
+			anchors.leftMargin: 16+icon.width+4
+			anchors.rightMargin: 4
+			layoutDirection: Qt.RightToLeft
+			
+			
+			Button {
+				id: deleteBtn
+		
+				height: 32
+				width: 32
+		
+				anchors.verticalCenter: parent.verticalCenter
+		
+				flat: true
+		
+				onClicked: removeClicked()
+				
+				PlasmaCore.IconItem {
+					source: "edit-delete"
+					
+					width: 24
+					height: width
+	
+					anchors.centerIn: parent
+				}
+			}
 		}
 	}
+	
+	states: [
+		State {
+			name: "ShowActions"
+			when: iconMouseArea.containsMouse || (folder.state === "ShowActions"  && folder.hovered)
+			
+			PropertyChanges {
+				target: actionPanel
+				x: 0 -16
+			}
+		}
+	]
 }
