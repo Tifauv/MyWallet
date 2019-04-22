@@ -8,7 +8,7 @@ Kirigami.ScrollablePage {
 
 	property alias model: list.model
 	property variant createDlg
-	property variant selectedFolder: wallet.get(list.currentIndex)
+	readonly property alias selectedFolder: list.currentFolder
 
 	mainAction: Kirigami.Action {
 		text: "Create folder"
@@ -22,6 +22,9 @@ Kirigami.ScrollablePage {
 		id: list
 
 		clip: true
+		
+		property variant currentFolder: wallet.get(list.currentIndex)
+		currentIndex: 0
 
 		delegate: SwipeDelegate {
 			id: delegate
@@ -72,5 +75,10 @@ Kirigami.ScrollablePage {
 			case 1: return qsTr("1 account");
 			default: return qsTr("%1 accounts").arg(p_count)
 		}
+	}
+
+
+	function selectFolder(p_index) {
+		list.currentIndex = p_index !== -1 ? p_index : 0;
 	}
 }

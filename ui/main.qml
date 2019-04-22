@@ -113,10 +113,7 @@ Kirigami.ApplicationWindow {
 
 		// Select the previous folder, or the first one
 		var index = wallet.find(config.previousFolder);
-		if (index !== -1)
-			foldersPage.selectFolder(index);
-		else
-			foldersPage.selectFolder(0);
+		foldersPage.selectFolder(index);
 
 		// If the wallet is empty, show the folder creation dialog
 		if (wallet.count === 0)
