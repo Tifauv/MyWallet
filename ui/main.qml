@@ -1,90 +1,70 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
+import org.kde.kirigami 2.4 as Kirigami
 import Wallets 1.0
 
-ApplicationWindow {
+Kirigami.ApplicationWindow {
 	id: window
 	visible: true
 	width: 640
 	height: 480
 	title: qsTr(wallet.name)
 
-	readonly property bool compactMode: window.width < 2 * sidebar.width
-
 	Wallet {
 		id: wallet
 	}
 
-	TitleBar {
-		id: windowHeader
-
-		z: 1
-		width: parent.width
-		parent: window.overlay
-		implicitHeight: Math.max(appName.height, menuBtn.height)
-
-		Label {
-			id: appName
-
-			anchors.left: parent.left
-			anchors.leftMargin: 8
-			anchors.verticalCenter: parent.verticalCenter
-
-			text: window.compactMode ? page.title : qsTr("%1 / %2").arg(wallet.name).arg(page.title)
-			font.letterSpacing: 2
-			font.weight: Font.Thin
-			font.pixelSize: 22
-		}
-
-		ToolButton {
-			id: menuBtn
-
-			anchors.right: parent.right
-			anchors.verticalCenter: parent.verticalCenter
-
-			text: "\u2630"
-			font.pixelSize: Qt.application.font.pixelSize * 1.6
-
-			onClicked: menu.open()
-
-			Menu {
-				id: menu
-				y: menuBtn.height
-
-				MenuItem { text: "Export wallet..." }
-				MenuItem { text: "Import wallet..." }
-				MenuItem { text: "Delete wallet"    }
-				MenuSeparator { }
-				MenuItem { text: "Settings"         }
-			}
-		}
-	}
-
-	FoldersSidebar {
-		id: sidebar
+	globalDrawer: Kirigami.GlobalDrawer {
+		title: wallet.name
 		
-		y: windowHeader.height
-		width: 200
-		height: window.height - windowHeader.height
+		actions: [
+			Kirigami.Action {
+				text: "Wallet"
+				iconName: "view-list-icons"
+				Kirigami.Action {
+					text: "Export"
+					iconName: "folder-sync"
+				}
+				Kirigami.Action {
+					text: "Import"
+					iconName: "folder-sync"
+				}
+				Kirigami.Action {
+					text: "Delete"
+					iconName: "folder-sync"
+				}
+			},
+			Kirigami.Action {
+				text: "Settings"
+				iconName: "folder-sync"
+			}
+		]
+	}
+	
+	contextDrawer: Kirigami.ContextDrawer {
+		id: contextDrawer
+	}
+	
+	pageStack.initialPage: [foldersPage, accountsPage]
 
-		modal: compactMode
-		interactive: compactMode
-		position: compactMode ? 0 : 1
-		visible: !compactMode
 
+	FoldersPage {
+		id: foldersPage
+		
+		implicitWidth: Kirigami.Units.gridUnit * 11
+		
 		model: wallet
 		createDlg: createFolderDlg
-
-		onFolderSelected: loadFolder(index)
 	}
+
 
 	AccountsPage {
-		id: page
-
-		anchors.fill: parent
-		anchors.topMargin: windowHeader.height
-		anchors.leftMargin: !compactMode ? sidebar.width : undefined
+		id: accountsPage
+		
+		model: foldersPage.selectedFolder
+		createDlg: createAccountDlg
 	}
+
 
 	CreateFolderDialog {
 		id: createFolderDlg
@@ -105,6 +85,27 @@ ApplicationWindow {
 		onRejected: reset()
 	}
 
+
+	CreateAccountDialog {
+		id: createAccountDlg
+
+		modal: true
+		focus: true
+
+		width: 220
+		height: 200
+
+		x: (parent.width - width) / 2
+		y: (parent.height - height) / 2
+
+		onAccepted: {
+			folder.createAccount(name, login, password);
+			reset();
+		}
+		onRejected: reset()
+	}
+
+
 	// Restore the previous state
 	Component.onCompleted: {
 		window.width  = config.previousWidth;
@@ -113,9 +114,9 @@ ApplicationWindow {
 		// Select the previous folder, or the first one
 		var index = wallet.find(config.previousFolder);
 		if (index !== -1)
-			sidebar.selectFolder(index);
+			foldersPage.selectFolder(index);
 		else
-			sidebar.selectFolder(0);
+			foldersPage.selectFolder(0);
 
 		// If the wallet is empty, show the folder creation dialog
 		if (wallet.count === 0)
@@ -130,17 +131,5 @@ ApplicationWindow {
 		console.log("Saving previous window height: " + config.previousHeight);
 		config.previousFolder = page.folder.name;
 		console.log("Saving previous folder: " + config.previousFolder);
-	}
-
-
-	/**
-	 * Selects the folder at the given index in the model.
-	 * If the model is empty, or the index is outside [0, model.count[, nothing is done.
-	 *
-	 * @param index  the index of the folder to select
-	 */
-	function loadFolder(index) {
-		if (wallet.count > 0 && index >= 0 && index < wallet.count)
-			page.folder = wallet.get(index)
 	}
 }

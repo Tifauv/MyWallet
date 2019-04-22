@@ -6,18 +6,14 @@
         <file>ui/AccountsPage.qml</file>
         <file>ui/AccountView.qml</file>
         <file>ui/AccountViewForm.ui.qml</file>
-        <file>ui/TitleBar.qml</file>
-        <file>ui/+material/TitleBar.qml</file>
         <file>ui/CreateFolderDialog.qml</file>
         <file>ui/SolarizedPalette.qml</file>
         <file>ui/ColorSelector.qml</file>
-        <file>ui/FoldersSidebar.qml</file>
-        <file>ui/DrawerSwipeDelegate.qml</file>
-        <file>ui/+material/DrawerSwipeDelegate.qml</file>
         <file>ui/CreateAccountDialog.qml</file>
         <file>ui/RemovedSwipeItem.qml</file>
         <file>ui/PasswordSwipeItem.qml</file>
         <file>ui/SecondaryLabel.qml</file>
         <file>ui/TickingTimer.qml</file>
+        <file>ui/FoldersPage.qml</file>
     </qresource>
 </RCC>

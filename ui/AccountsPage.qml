@@ -1,31 +1,30 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
-import QtQuick.Controls.Material 2.2
+import org.kde.kirigami 2.4 as Kirigami
 import Wallets 1.0
 
-Page {
+Kirigami.ScrollablePage {
 	id: page
+	title: model !== undefined ? "Accounts of " + model.name : "Accounts"
 
-	implicitWidth: 440
-	implicitHeight: 480
-
-	property variant folder: undefined
+	property variant createDlg
+	property alias model: list.model
+	
 	property int hideTimeout: 10
 	property int cancelDeleteTimeout: 8
 
-	title: folder !== undefined ? folder.name : qsTr("Folder name")
-
-	Clipboard {
-		id: clipboard
+	mainAction: Kirigami.Action {
+		text: "Create account"
+		iconName: "edit"
+		onTriggered: {
+			createDlg.open()
+		}
 	}
 
-	ListView {
+	mainItem: ListView {
 		id: list
 
-		anchors.fill: parent
 		clip: true
-
-		model: folder !== undefined ? folder : []
 
 		delegate: SwipeDelegate {
 			id: delegate
@@ -51,7 +50,6 @@ Page {
 				height: parent.height
 
 				clip: true
-				bgColor: SwipeDelegate.pressed ? Material.color(Material.BlueGrey) : Material.color(Material.Blue)
 				text: model.password
 				textOpacity: 2 * -delegate.swipe.position
 				progress: hideTimer.remaining / hideTimer.interval
@@ -81,7 +79,7 @@ Page {
 			TickingTimer {
 				id: undoTimer
 				interval: cancelDeleteTimeout * 1000 // ms
-				onTriggered: folder.deleteAccount(index)
+				onTriggered: page.model.deleteAccount(index)
 			}
 
 			swipe.onCompleted: {
@@ -94,41 +92,9 @@ Page {
 					undoTimer.start()
 			}
 		}
-
-		ScrollIndicator.vertical: ScrollIndicator {}
-	}
-
-	RoundButton {
-		id: createBtn
-		anchors.bottom: parent.bottom
-		anchors.bottomMargin: 4
-		anchors.right: parent.right
-		anchors.rightMargin: 4
-
-		hoverEnabled: true
-		text: "+"
-
-		visible: folder != undefined
-
-		onClicked: createAccountDlg.open()
-	}
-
-	CreateAccountDialog {
-		id: createAccountDlg
-
-		modal: true
-		focus: true
-
-		width: 220
-		height: 200
-
-		x: (parent.width - width) / 2
-		y: (parent.height - height) / 2
-
-		onAccepted: {
-			folder.createAccount(name, login, password);
-			reset();
+		
+		Clipboard {
+			id: clipboard
 		}
-		onRejected: reset()
 	}
 }
