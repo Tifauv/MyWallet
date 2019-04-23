@@ -16,7 +16,7 @@ Kirigami.ScrollablePage {
 
 	mainAction: Kirigami.Action {
 		text: "Create folder"
-		iconName: "edit"
+		iconName: "folder-new"
 		onTriggered: {
 			createDlg.open()
 		}

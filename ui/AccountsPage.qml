@@ -15,7 +15,7 @@ Kirigami.ScrollablePage {
 
 	mainAction: Kirigami.Action {
 		text: "Create account"
-		iconName: "edit"
+		iconName: "document-new"
 		onTriggered: {
 			createDlg.open()
 		}
