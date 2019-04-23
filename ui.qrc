@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>qtquickcontrols2.conf</file>
         <file>ui/main.qml</file>
         <file>ui/FolderItem.qml</file>
         <file>ui/AccountsPage.qml</file>
