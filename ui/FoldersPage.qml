@@ -10,6 +10,10 @@ Kirigami.ScrollablePage {
 	property variant createDlg
 	readonly property alias selectedFolder: list.currentFolder
 
+	Kirigami.Theme.colorSet: Kirigami.Theme.Complementary
+	Kirigami.Theme.inherit: false
+	background: Rectangle { color: Kirigami.Theme.backgroundColor }
+
 	mainAction: Kirigami.Action {
 		text: "Create folder"
 		iconName: "edit"
@@ -79,6 +83,6 @@ Kirigami.ScrollablePage {
 
 
 	function selectFolder(p_index) {
-		list.currentIndex = p_index !== -1 ? p_index : 0;
+		list.currentIndex = (p_index > -1 ? p_index : 0)
 	}
 }
