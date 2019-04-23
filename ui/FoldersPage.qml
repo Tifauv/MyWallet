@@ -27,27 +27,36 @@ Kirigami.ScrollablePage {
 
 		clip: true
 		
-		property variant currentFolder: wallet.get(list.currentIndex)
-		currentIndex: 0
+		property variant currentFolder: undefined
 
-		delegate: SwipeDelegate {
+		onCurrentIndexChanged: currentFolder = (currentIndex > -1 ? wallet.get(currentIndex) : undefined);
+
+		delegate: Kirigami.SwipeListItem {
 			id: delegate
-			width: parent.width
-			hoverEnabled: true
+			
+			separatorVisible: false
+
+			actions: [
+				 Kirigami.Action {
+					 iconName: "document-edit"
+					 onTriggered: print("Folder edition required")
+				 },
+				 Kirigami.Action {
+					 iconName: "edit-delete"
+					 onTriggered: print("Folder deletion required") // delegate.swipe.open(1.0)
+				 }
+			]
 
 			contentItem: FolderItem {
 				color: model.color
 				text: model.name
 				secondText: adaptCount(model.accounts.count)
-				hovered: delegate.hovered
-				
-				onRemoveClicked: delegate.swipe.open(1.0)
 			}
 
 			highlighted: ListView.isCurrentItem
 			onClicked: list.currentIndex = model.index
 
-			swipe.left: RemovedSwipeItem {
+/*			swipe.left: RemovedSwipeItem {
 				width: parent.width
 				height: parent.height
 
@@ -66,7 +75,7 @@ Kirigami.ScrollablePage {
 			}
 
 			swipe.onCompleted: undoTimer.start()
-		}
+*/		}
 	}
 
 
