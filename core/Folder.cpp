@@ -94,6 +94,7 @@ Folder* Folder::setTagColor(const QString& p_color) {
  */
 Folder* Folder::setBackend(const QSharedPointer<Backend> p_backend) {
 	m_backend = p_backend;
+	return this;
 }
 
 
