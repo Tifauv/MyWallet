@@ -41,7 +41,8 @@ int Wallet::count() const {
  * @param p_backend
  */
 void Wallet::load(const QString& p_name, Backend* p_backend) {
-	disconnect(m_backend.data(), &Backend::folderLoaded, this, &Wallet::addFolder);
+	if (m_backend.data() != nullptr)
+		disconnect(m_backend.data(), &Backend::folderLoaded, this, &Wallet::addFolder);
 
 	// Change the backend
 	m_backend.reset(p_backend);
@@ -67,7 +68,7 @@ Folder* Wallet::createFolder(const QString& p_name, const QString& p_tagColor) {
 	if (m_backend->hasFolder(p_name))
 		return nullptr;
 
-	auto folder = new Folder();
+	auto folder = new Folder(this);
 	folder->setName(p_name)->setTagColor(p_tagColor);
 	m_backend->createFolder(*folder);
 	addFolder(folder);
@@ -123,6 +124,7 @@ int Wallet::find(const QString& p_folderName) const {
  * @param p_folder
  */
 void Wallet::addFolder(Folder* p_folder) {
+	p_folder->setParent(this);
 	p_folder->setBackend(m_backend);
 	appendRow(p_folder);
 }
@@ -232,10 +234,12 @@ Folder* Wallet::removeRow(int p_row) {
  * @brief Wallet::clear
  */
 void Wallet::clear() {
-	beginRemoveRows(QModelIndex(), 0, rowCount() - 1);
-	while (rowCount() > 0)
-		delete m_folders.takeAt(0);
-	endRemoveRows();
-	emit countChanged(rowCount());
-	qDebug() << "(i) [Wallet] Folder list cleared.";
+	if (rowCount() > 0) {
+		beginRemoveRows(QModelIndex(), 0, rowCount() - 1);
+		while (rowCount() > 0)
+			delete m_folders.takeAt(0);
+		endRemoveRows();
+		emit countChanged(rowCount());
+		qDebug() << "(i) [Wallet] Folder list cleared.";
+	}
 }

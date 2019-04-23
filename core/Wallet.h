@@ -50,8 +50,8 @@ protected slots:
 	void addFolder(Folder* wallet);
 
 private:
-	QString        m_name;
-	QList<Folder*> m_folders;
+	QString                 m_name;
+	QVector<Folder*>        m_folders;
 	QSharedPointer<Backend> m_backend;
 };
 
