@@ -8,7 +8,7 @@ Kirigami.ApplicationWindow {
 	visible: true
 	width: 640
 	height: 480
-	title: qsTr(wallet.name)
+	title: wallet.name
 
 	readonly property int defaultSidebarWidth: Kirigami.Units.gridUnit * 12
 	readonly property int defaultContextDrawerWidth: Kirigami.Units.gridUnit * 17
