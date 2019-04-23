@@ -10,6 +10,9 @@ Kirigami.ApplicationWindow {
 	height: 480
 	title: qsTr(wallet.name)
 
+	readonly property int defaultSidebarWidth: Kirigami.Units.gridUnit * 12
+	readonly property int defaultContextDrawerWidth: Kirigami.Units.gridUnit * 17
+
 	Wallet {
 		id: wallet
 	}
@@ -45,13 +48,12 @@ Kirigami.ApplicationWindow {
 		id: contextDrawer
 	}
 	
+	pageStack.defaultColumnWidth: defaultSidebarWidth
 	pageStack.initialPage: [foldersPage, accountsPage]
 
 
 	FoldersPage {
 		id: foldersPage
-		
-		implicitWidth: Kirigami.Units.gridUnit * 11
 		
 		model: wallet
 		createDlg: createFolderDlg
