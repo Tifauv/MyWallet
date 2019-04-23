@@ -128,7 +128,7 @@ Kirigami.ApplicationWindow {
 		console.log("Saved previous window width: " + config.previousWidth);
 		config.previousHeight = window.height;
 		console.log("Saving previous window height: " + config.previousHeight);
-		config.previousFolder = page.folder.name;
+		config.previousFolder = foldersPage.selectedFolder.name;
 		console.log("Saving previous folder: " + config.previousFolder);
 	}
 }
