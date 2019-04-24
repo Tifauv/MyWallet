@@ -19,6 +19,7 @@ Kirigami.ApplicationWindow {
 
 	globalDrawer: Kirigami.GlobalDrawer {
 		title: wallet.name
+		titleIcon: "kwalletmanager"
 		
 		actions: [
 			Kirigami.Action {
