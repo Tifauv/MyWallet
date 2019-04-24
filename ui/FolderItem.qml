@@ -1,6 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
 import org.kde.plasma.core 2.1 as PlasmaCore
+import org.kde.kirigami 2.4 as Kirigami
 
 Item {
 	id: folder
@@ -14,17 +15,17 @@ Item {
 
 	Rectangle {
 		id: icon
-		width: height
-		radius: height / 2
-		anchors.top: label.top
-		anchors.bottom: accountCount.bottom
+		width: Kirigami.Units.iconSizes.medium
+		height: width
+		radius: width / 2
+		anchors.verticalCenter: parent.verticalCenter
 		border.width: 0
 		anchors.left: parent.left
 		
 		Label {
 			id: initial
 			
-			text: label.text.charAt(0)
+			text: label.text.charAt(0).toUpperCase() + label.text.charAt(1).toLowerCase()
 			color: Qt.lighter(icon.color, 1.6)
 			
 			font.pointSize: 12
@@ -37,7 +38,7 @@ Item {
 
 	Label {
 		id: label
-		text: "Folder name"
+		text: qsTr("Folder name")
 		anchors.left: icon.right
 		anchors.leftMargin: spacing
 		anchors.top: parent.top
@@ -46,7 +47,7 @@ Item {
 
 	SecondaryLabel {
 		id: accountCount
-		text: "Empty"
+		text: qsTr("Empty")
 		anchors.left: label.left
 		anchors.right: parent.right
 		anchors.bottom: parent.bottom

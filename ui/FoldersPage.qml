@@ -4,7 +4,7 @@ import org.kde.kirigami 2.4 as Kirigami
 import Wallets 1.0
 
 Kirigami.ScrollablePage {
-	title: "Folders"
+	title: qsTr("Folders")
 
 	property alias model: list.model
 	property variant createDlg
@@ -15,7 +15,7 @@ Kirigami.ScrollablePage {
 	background: Rectangle { color: Kirigami.Theme.backgroundColor }
 
 	mainAction: Kirigami.Action {
-		text: "Create folder"
+		text: qsTr("Create folder")
 		iconName: "folder-new"
 		onTriggered: {
 			createDlg.open()
@@ -51,6 +51,8 @@ Kirigami.ScrollablePage {
 				color: model.color
 				text: model.name
 				secondText: adaptCount(model.accounts.count)
+				
+				spacing: delegate.leftPadding
 			}
 
 			highlighted: ListView.isCurrentItem
