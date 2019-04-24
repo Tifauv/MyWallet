@@ -4,11 +4,15 @@ import org.kde.kirigami 2.4 as Kirigami
 import Wallets 1.0
 
 Kirigami.ScrollablePage {
+	id: page
 	title: qsTr("Folders")
 
 	property alias model: list.model
 	property variant createDlg
 	readonly property alias selectedFolder: list.currentFolder
+	
+	signal edit(int p_index)
+	signal confirmDelete(int p_index)
 
 	Kirigami.Theme.colorSet: Kirigami.Theme.Complementary
 	Kirigami.Theme.inherit: false
@@ -39,45 +43,28 @@ Kirigami.ScrollablePage {
 			actions: [
 				 Kirigami.Action {
 					 iconName: "document-edit"
-					 onTriggered: print("Folder edition required")
+					 onTriggered: page.edit(model.index)
 				 },
 				 Kirigami.Action {
 					 iconName: "edit-delete"
-					 onTriggered: print("Folder deletion required") // delegate.swipe.open(1.0)
+					 onTriggered: page.confirmDelete(model.index)
 				 }
 			]
 
 			contentItem: FolderItem {
 				color: model.color
-				text: model.name
+				mainText: model.name
+				mainTextColor: delegate.textColor
 				secondText: adaptCount(model.accounts.count)
+				secondTextColor: Qt.darker(delegate.textColor, 1.2)
+				
 				
 				spacing: delegate.leftPadding
 			}
 
 			highlighted: ListView.isCurrentItem
 			onClicked: list.currentIndex = model.index
-
-/*			swipe.left: RemovedSwipeItem {
-				width: parent.width
-				height: parent.height
-
-				clip: true
-				textOpacity: 2 * delegate.swipe.position
-				progress: undoTimer.remaining / undoTimer.interval
-
-				SwipeDelegate.onClicked: delegate.swipe.close()
-				SwipeDelegate.onPressedChanged: undoTimer.stop()
-			}
-
-			TickingTimer {
-				id: undoTimer
-				interval: 8 * 1000 // ms
-				onTriggered: wallet.deleteFolder(index)
-			}
-
-			swipe.onCompleted: undoTimer.start()
-*/		}
+		}
 	}
 
 

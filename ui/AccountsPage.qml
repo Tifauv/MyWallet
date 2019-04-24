@@ -5,13 +5,14 @@ import Wallets 1.0
 
 Kirigami.ScrollablePage {
 	id: page
-	title: model !== undefined ? "Accounts of " + model.name : "Accounts"
+	title: qsTr("Accounts")
 
 	property variant createDlg
 	property alias model: list.model
 	
-	property int hideTimeout: 10
-	property int cancelDeleteTimeout: 8
+	signal showPassword(string p_accountName, string p_password)
+	signal copyPassword(string p_accountName, string p_password)
+	signal confirmDelete(int p_index, string p_accountName)
 
 	mainAction: Kirigami.Action {
 		text: "Create account"
@@ -26,75 +27,36 @@ Kirigami.ScrollablePage {
 
 		clip: true
 
-		delegate: SwipeDelegate {
+		delegate: Kirigami.SwipeListItem {
 			id: delegate
-			width: parent.width
-			hoverEnabled: true
 
+			separatorVisible: false
+			backgroundColor: Kirigami.Theme.backgroundColor
+
+			actions: [
+				Kirigami.Action {
+					iconName: "quickview"
+					onTriggered: page.showPassword(model.name, model.password)
+				},
+				Kirigami.Action {
+					iconName: "edit-copy"
+					onTriggered: page.copyPassword(model.name, model.password)
+				},
+				Kirigami.Action {
+					iconName: "document-edit"
+					onTriggered: console.log("Account edition requested") // Open an edit page
+				},
+				Kirigami.Action {
+					iconName: "edit-delete"
+					onTriggered: page.confirmDelete(model.index, model.name)
+				}
+
+			]
+			
 			contentItem: AccountView {
 				name: model.name
 				login: model.login
-				hovered: delegate.hovered
-
-				onRevealClicked: delegate.swipe.open(-1.0)
-				onRemoveClicked: delegate.swipe.open(1.0)
 			}
-
-			onDoubleClicked: {
-				console.log("Double click: copying password to clipboard")
-				clipboard.setTextWithTimer(model.password, 10)
-			}
-
-			swipe.right: PasswordSwipeItem {
-				width: parent.width
-				height: parent.height
-
-				clip: true
-				text: model.password
-				textOpacity: 2 * -delegate.swipe.position
-				progress: hideTimer.remaining / hideTimer.interval
-				
-				SwipeDelegate.onClicked: delegate.swipe.close()
-				SwipeDelegate.onPressedChanged: hideTimer.stop()
-			}
-
-			swipe.left: RemovedSwipeItem {
-				width: parent.width
-				height: parent.height
-
-				clip: true
-				textOpacity: 2 * delegate.swipe.position
-				progress: undoTimer.remaining / undoTimer.interval
-
-				SwipeDelegate.onClicked: delegate.swipe.close()
-				SwipeDelegate.onPressedChanged: undoTimer.stop()
-			}
-
-			TickingTimer {
-				id: hideTimer
-				interval: hideTimeout * 1000 // ms
-				onTriggered: swipe.close()
-			}
-
-			TickingTimer {
-				id: undoTimer
-				interval: cancelDeleteTimeout * 1000 // ms
-				onTriggered: page.model.deleteAccount(index)
-			}
-
-			swipe.onCompleted: {
-				// Swipe to reveal password
-				if (swipe.position == -1.0)
-					hideTimer.start()
-
-				// Swipe to delete
-				if (swipe.position == 1.0)
-					undoTimer.start()
-			}
-		}
-		
-		Clipboard {
-			id: clipboard
 		}
 	}
 }

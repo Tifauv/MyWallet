@@ -9,8 +9,6 @@
         <file>ui/SolarizedPalette.qml</file>
         <file>ui/ColorSelector.qml</file>
         <file>ui/CreateAccountDialog.qml</file>
-        <file>ui/RemovedSwipeItem.qml</file>
-        <file>ui/PasswordSwipeItem.qml</file>
         <file>ui/SecondaryLabel.qml</file>
         <file>ui/TickingTimer.qml</file>
         <file>ui/FoldersPage.qml</file>

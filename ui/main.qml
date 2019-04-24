@@ -10,12 +10,9 @@ Kirigami.ApplicationWindow {
 	height: 480
 	title: wallet.name
 
-	readonly property int defaultSidebarWidth: Kirigami.Units.gridUnit * 12
+	readonly property int defaultSidebarWidth: Kirigami.Units.gridUnit * 14
 	readonly property int defaultContextDrawerWidth: Kirigami.Units.gridUnit * 17
-
-	Wallet {
-		id: wallet
-	}
+	property int copyTimeout: 10 // seconds
 
 	globalDrawer: Kirigami.GlobalDrawer {
 		title: wallet.name
@@ -58,14 +55,40 @@ Kirigami.ApplicationWindow {
 		
 		model: wallet
 		createDlg: createFolderDlg
+		//editDlg:
+		
+		onEdit: {
+			window.showPassiveNotification(qsTr("Folder edition not yet implemented."))
+		}
+		
+		onConfirmDelete: window.showPassiveNotification(
+							 qsTr("Delete folder \"%1\"?").arg(wallet.get(p_index).name),
+							 "long",
+							 qsTr("Delete"),
+							 function(){wallet.deleteFolder(p_index)});
 	}
-
 
 	AccountsPage {
 		id: accountsPage
 		
 		model: foldersPage.selectedFolder
 		createDlg: createAccountDlg
+		//editDlg: 
+		
+		onShowPassword: window.showPassiveNotification(
+							qsTr("Password for \"%1\" is \"%2\"").arg(p_accountName).arg(p_password),
+							"long")
+		onCopyPassword: {
+			clipboard.setTextWithTimer(p_password, copyTimeout);
+			window.showPassiveNotification(
+						qsTr("Password for \"%1\" copied to clipboard.").arg(p_accountName),
+						copyTimeout * 1000 /* milliseconds */)
+		}
+		onConfirmDelete: window.showPassiveNotification(
+							 qsTr("Delete account \"%1\"?").arg(p_accountName),
+							 "long",
+							 qsTr("Delete"),
+							 function(){model.deleteAccount(p_index)});
 	}
 
 
@@ -102,10 +125,18 @@ Kirigami.ApplicationWindow {
 		y: (parent.height - height) / 2
 
 		onAccepted: {
-			folder.createAccount(name, login, password);
+			accountsPage.model.createAccount(name, login, password);
 			reset();
 		}
 		onRejected: reset()
+	}
+
+	Wallet {
+		id: wallet
+	}
+	
+	Clipboard {
+		id: clipboard
 	}
 
 

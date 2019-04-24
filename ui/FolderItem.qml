@@ -9,8 +9,10 @@ Item {
 	implicitHeight: label.height + accountCount.height
 	
 	property alias color: icon.color
-	property alias text: label.text
+	property alias mainText: label.text
+	property alias mainTextColor: label.color
 	property alias secondText: accountCount.text
+	property alias secondTextColor: accountCount.color
 	property int spacing: 8
 
 	Rectangle {
@@ -39,6 +41,7 @@ Item {
 	Label {
 		id: label
 		text: qsTr("Folder name")
+		verticalAlignment: Text.AlignBottom
 		anchors.left: icon.right
 		anchors.leftMargin: spacing
 		anchors.top: parent.top
@@ -48,6 +51,7 @@ Item {
 	SecondaryLabel {
 		id: accountCount
 		text: qsTr("Empty")
+		verticalAlignment: Text.AlignTop
 		anchors.left: label.left
 		anchors.right: parent.right
 		anchors.bottom: parent.bottom
