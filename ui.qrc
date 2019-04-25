@@ -2,15 +2,16 @@
     <qresource prefix="/">
         <file>ui/main.qml</file>
         <file>ui/FolderItem.qml</file>
-        <file>ui/AccountsPage.qml</file>
+        <file>ui/FolderItemForm.ui.qml</file>
+        <file>ui/FoldersPage.qml</file>
         <file>ui/AccountItem.qml</file>
         <file>ui/AccountItemForm.ui.qml</file>
+        <file>ui/AccountsPage.qml</file>
         <file>ui/CreateFolderDialog.qml</file>
+        <file>ui/CreateAccountDialog.qml</file>
         <file>ui/SolarizedPalette.qml</file>
         <file>ui/ColorSelector.qml</file>
-        <file>ui/CreateAccountDialog.qml</file>
         <file>ui/SecondaryLabel.qml</file>
         <file>ui/TickingTimer.qml</file>
-        <file>ui/FoldersPage.qml</file>
     </qresource>
 </RCC>

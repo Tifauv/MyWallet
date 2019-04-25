@@ -52,11 +52,11 @@ Kirigami.ScrollablePage {
 			]
 
 			contentItem: FolderItem {
-				color: model.color
-				mainText: model.name
-				mainTextColor: delegate.textColor
-				secondText: adaptCount(model.accounts.count)
-				secondTextColor: Qt.darker(delegate.textColor, 1.2)
+				iconColor: model.color
+				folderName: model.name
+				folderNameColor: delegate.textColor
+				accountCount: adaptCount(model.accounts.count)
+				accountCountColor: Qt.darker(delegate.textColor, 1.2)
 				
 				
 				spacing: delegate.leftPadding
