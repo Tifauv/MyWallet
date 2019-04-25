@@ -3,8 +3,8 @@
         <file>ui/main.qml</file>
         <file>ui/FolderItem.qml</file>
         <file>ui/AccountsPage.qml</file>
-        <file>ui/AccountView.qml</file>
-        <file>ui/AccountViewForm.ui.qml</file>
+        <file>ui/AccountItem.qml</file>
+        <file>ui/AccountItemForm.ui.qml</file>
         <file>ui/CreateFolderDialog.qml</file>
         <file>ui/SolarizedPalette.qml</file>
         <file>ui/ColorSelector.qml</file>

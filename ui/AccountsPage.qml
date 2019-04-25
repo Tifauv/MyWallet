@@ -53,7 +53,7 @@ Kirigami.ScrollablePage {
 
 			]
 			
-			contentItem: AccountView {
+			contentItem: AccountItem {
 				name: model.name
 				login: model.login
 			}

@@ -1,6 +1,6 @@
 import QtQuick 2.9
 
-AccountViewForm {
+AccountItemForm {
 	id: view
 
 	property string name: "Account name"
