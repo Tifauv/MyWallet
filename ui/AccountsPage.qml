@@ -11,6 +11,7 @@ Kirigami.ScrollablePage {
 	property alias model: list.model
 	
 	signal copyPassword(string p_accountName, string p_password)
+	signal edit(int p_index)
 	signal confirmDelete(int p_index, string p_accountName)
 
 	mainAction: Kirigami.Action {
@@ -34,18 +35,22 @@ Kirigami.ScrollablePage {
 
 			actions: [
 				Kirigami.Action {
+					text: accountItem.passwordVisible ? qsTr("Hide password") : qsTr("Show password")
 					iconName: accountItem.passwordVisible ? "password-show-off" : "password-show-on"
 					onTriggered: accountItem.passwordVisible = !accountItem.passwordVisible
 				},
 				Kirigami.Action {
+					text: qsTr("Copy the password to the clipboard")
 					iconName: "edit-copy"
 					onTriggered: page.copyPassword(model.name, model.password)
 				},
 				Kirigami.Action {
+					text: qsTr("Edit this account")
 					iconName: "document-edit"
-					onTriggered: console.log("Account edition requested") // Open an edit page
+					onTriggered: page.edit(model.index)
 				},
 				Kirigami.Action {
+					text: qsTr("Delete this account")
 					iconName: "edit-delete"
 					onTriggered: page.confirmDelete(model.index, model.name)
 				}

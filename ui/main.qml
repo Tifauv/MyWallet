@@ -57,9 +57,9 @@ Kirigami.ApplicationWindow {
 		createDlg: createFolderDlg
 		//editDlg:
 		
-		onEdit: {
-			window.showPassiveNotification(qsTr("Folder edition not yet implemented."))
-		}
+		onEdit: window.showPassiveNotification(
+					qsTr("Folder edition not yet implemented."),
+					"short")
 		
 		onConfirmDelete: window.showPassiveNotification(
 							 qsTr("Delete folder \"%1\"?").arg(wallet.get(p_index).name),
@@ -81,6 +81,10 @@ Kirigami.ApplicationWindow {
 						qsTr("Password for \"%1\" copied to clipboard.").arg(p_accountName),
 						copyTimeout * 1000 /* milliseconds */)
 		}
+		
+		onEdit: window.showPassiveNotification(
+					qsTr("Account edition not yet implemented."),
+					"short")
 		
 		onConfirmDelete: window.showPassiveNotification(
 							 qsTr("Delete account \"%1\"?").arg(p_accountName),

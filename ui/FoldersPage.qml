@@ -42,12 +42,14 @@ Kirigami.ScrollablePage {
 
 			actions: [
 				 Kirigami.Action {
-					 iconName: "document-edit"
-					 onTriggered: page.edit(model.index)
+					text: qsTr("Edit this folder")
+					iconName: "document-edit"
+					onTriggered: page.edit(model.index)
 				 },
 				 Kirigami.Action {
-					 iconName: "edit-delete"
-					 onTriggered: page.confirmDelete(model.index)
+					text: qsTr("Delete this folder")
+					iconName: "edit-delete"
+					onTriggered: page.confirmDelete(model.index)
 				 }
 			]
 
