@@ -75,15 +75,13 @@ Kirigami.ApplicationWindow {
 		createDlg: createAccountDlg
 		//editDlg: 
 		
-		onShowPassword: window.showPassiveNotification(
-							qsTr("Password for \"%1\" is \"%2\"").arg(p_accountName).arg(p_password),
-							"long")
 		onCopyPassword: {
 			clipboard.setTextWithTimer(p_password, copyTimeout);
 			window.showPassiveNotification(
 						qsTr("Password for \"%1\" copied to clipboard.").arg(p_accountName),
 						copyTimeout * 1000 /* milliseconds */)
 		}
+		
 		onConfirmDelete: window.showPassiveNotification(
 							 qsTr("Delete account \"%1\"?").arg(p_accountName),
 							 "long",

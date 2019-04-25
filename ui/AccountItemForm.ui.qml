@@ -1,13 +1,15 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
+import org.kde.kirigami 2.4 as Kirigami
 
 Item {
     id: account
     implicitWidth: 440
-    implicitHeight: 48
+    implicitHeight: 53
 
     property alias nameTxt: accountName
     property alias loginTxt: accountLogin
+    property alias passwordTxt: accountPassword
 
     Label {
         id: accountName
@@ -16,27 +18,88 @@ Item {
 
         verticalAlignment: Text.AlignVCenter
 
-        anchors.topMargin: 6
         anchors.top: parent.top
+        anchors.topMargin: Kirigami.Units.smallSpacing
         anchors.left: parent.left
-        anchors.leftMargin: 8
+        anchors.leftMargin: Kirigami.Units.largeSpacing
         anchors.right: parent.right
-        anchors.rightMargin: 6
+        anchors.rightMargin: Kirigami.Units.largeSpacing
     }
 
-    SecondaryLabel {
-        id: accountLogin
-        text: qsTr("Login")
+    Row {
+        id: loginLayout
 
-        verticalAlignment: Text.AlignVCenter
+        height: Kirigami.Units.gridUnit
+        width: childrenRect.width
+        spacing: Kirigami.Units.smallSpacing
 
         anchors.top: accountName.bottom
-        anchors.topMargin: 2
-        anchors.bottomMargin: 6
+        anchors.topMargin: Kirigami.Units.smallSpacing
         anchors.bottom: parent.bottom
+        anchors.bottomMargin: Kirigami.Units.smallSpacing
         anchors.left: accountName.left
-        anchors.leftMargin: 12
-        anchors.right: parent.right
-        anchors.rightMargin: 6
+        anchors.leftMargin: Kirigami.Units.largeSpacing * 2
+
+        //anchors.right: accountName.horizontalCenter
+        //anchors.rightMargin: Kirigami.Units.largeSpacing
+        Kirigami.Icon {
+            id: loginIcon
+
+            source: "im-user"
+
+            width: Kirigami.Units.gridUnit
+            height: width
+        }
+
+        SecondaryLabel {
+            id: accountLogin
+            text: qsTr("Login")
+
+            verticalAlignment: Text.AlignVCenter
+        }
     }
+
+    Row {
+        id: passwordLayout
+
+        visible: false
+
+        height: Kirigami.Units.gridUnit
+        spacing: Kirigami.Units.smallSpacing
+
+        anchors.top: accountName.bottom
+        anchors.topMargin: Kirigami.Units.smallSpacing
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: Kirigami.Units.smallSpacing
+        anchors.left: loginLayout.right
+        anchors.leftMargin: Kirigami.Units.largeSpacing * 2
+        anchors.right: parent.right
+        anchors.rightMargin: Kirigami.Units.largeSpacing
+
+        Kirigami.Icon {
+            id: passwordIcon
+
+            source: "lock"
+
+            width: Kirigami.Units.gridUnit
+            height: width
+        }
+
+        SecondaryLabel {
+            id: accountPassword
+            text: qsTr("********")
+
+            verticalAlignment: Text.AlignVCenter
+        }
+    }
+    states: [
+        State {
+            name: "ShowPassword"
+
+            PropertyChanges {
+                target: passwordLayout
+                visible: true
+            }
+        }
+    ]
 }

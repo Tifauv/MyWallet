@@ -10,7 +10,6 @@ Kirigami.ScrollablePage {
 	property variant createDlg
 	property alias model: list.model
 	
-	signal showPassword(string p_accountName, string p_password)
 	signal copyPassword(string p_accountName, string p_password)
 	signal confirmDelete(int p_index, string p_accountName)
 
@@ -35,8 +34,8 @@ Kirigami.ScrollablePage {
 
 			actions: [
 				Kirigami.Action {
-					iconName: "quickview"
-					onTriggered: page.showPassword(model.name, model.password)
+					iconName: accountItem.passwordVisible ? "password-show-off" : "password-show-on"
+					onTriggered: accountItem.passwordVisible = !accountItem.passwordVisible
 				},
 				Kirigami.Action {
 					iconName: "edit-copy"
@@ -50,12 +49,13 @@ Kirigami.ScrollablePage {
 					iconName: "edit-delete"
 					onTriggered: page.confirmDelete(model.index, model.name)
 				}
-
 			]
 			
 			contentItem: AccountItem {
+				id: accountItem
 				name: model.name
 				login: model.login
+				password: model.password
 			}
 		}
 	}
