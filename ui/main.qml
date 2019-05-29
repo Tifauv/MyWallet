@@ -55,7 +55,6 @@ Kirigami.ApplicationWindow {
 		
 		model: wallet
 		createDlg: createFolderDlg
-		//editDlg:
 		
 		onEdit: window.showPassiveNotification(
 					qsTr("Folder edition not yet implemented."),
@@ -73,7 +72,6 @@ Kirigami.ApplicationWindow {
 		
 		model: foldersPage.selectedFolder
 		createDlg: createAccountDlg
-		//editDlg: 
 		
 		onCopyPassword: {
 			clipboard.setTextWithTimer(p_password, copyTimeout);

@@ -14,10 +14,6 @@ Kirigami.ScrollablePage {
 	signal edit(int p_index)
 	signal confirmDelete(int p_index)
 
-	Kirigami.Theme.colorSet: Kirigami.Theme.Complementary
-	Kirigami.Theme.inherit: false
-	background: Rectangle { color: Kirigami.Theme.backgroundColor }
-
 	mainAction: Kirigami.Action {
 		text: qsTr("Create folder")
 		iconName: "folder-new"
@@ -58,8 +54,7 @@ Kirigami.ScrollablePage {
 				folderName: model.name
 				folderNameColor: delegate.textColor
 				accountCount: adaptCount(model.accounts.count)
-				accountCountColor: Qt.darker(delegate.textColor, 1.2)
-				
+				accountCountColor: Qt.lighter(delegate.textColor, 1.8)
 				
 				spacing: delegate.leftPadding
 			}

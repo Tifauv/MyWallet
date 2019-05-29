@@ -31,7 +31,6 @@ Kirigami.ScrollablePage {
 			id: delegate
 
 			separatorVisible: false
-			backgroundColor: Kirigami.Theme.backgroundColor
 
 			actions: [
 				Kirigami.Action {
@@ -47,7 +46,10 @@ Kirigami.ScrollablePage {
 				Kirigami.Action {
 					text: qsTr("Edit this account")
 					iconName: "document-edit"
-					onTriggered: page.edit(model.index)
+					onTriggered: {
+						list.currentIndex = model.index;
+						page.edit(model.index)
+					}
 				},
 				Kirigami.Action {
 					text: qsTr("Delete this account")
@@ -62,6 +64,8 @@ Kirigami.ScrollablePage {
 				login: model.login
 				password: model.password
 			}
+
+			highlighted: ListView.isCurrentItem
 		}
 	}
 }
