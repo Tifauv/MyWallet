@@ -80,9 +80,14 @@ Kirigami.ApplicationWindow {
 						copyTimeout * 1000 /* milliseconds */)
 		}
 		
-		onEdit: window.showPassiveNotification(
-					qsTr("Account edition not yet implemented."),
-					"short")
+		onEdit: {
+			/*window.showPassiveNotification(
+						qsTr("Account edition not yet implemented."),
+						"short");*/
+			window.pageStack.push(
+						"qrc:/ui/AccountEditorPage.qml",
+						{model: accountsPage.model.get(p_index)});
+		}
 		
 		onConfirmDelete: window.showPassiveNotification(
 							 qsTr("Delete account \"%1\"?").arg(p_accountName),

@@ -105,7 +105,7 @@ Folder* Folder::setBackend(const QSharedPointer<Backend> p_backend) {
  * @param p_login
  */
 Account* Folder::createAccount(const QString& p_name, const QString& p_login, const QString& p_password) {
-	auto account = new Account(p_name, p_login);
+	auto account = new Account(p_name, p_login, this);
 	m_backend->createAccount(name(), *account, p_password);
 	addAccount(account);
 	return account;
@@ -128,12 +128,26 @@ void Folder::deleteAccount(int p_row) {
 }
 
 
+/**
+ * @brief Folder::get
+ * @param p_row
+ * @return 
+ */
+Account* Folder::get(int p_row) const {
+	if (p_row < 0 || p_row >= rowCount())
+		return nullptr;
+	
+	return m_accounts.at(p_row);
+}
+
+
 // PRIVATE BACKEND API
 /**
  * @brief Folder::addAccount
  * @param p_account
  */
 void Folder::addAccount(Account* p_account) {
+	p_account->setParent(this);
 	appendRow(p_account);
 }
 

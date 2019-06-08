@@ -13,5 +13,8 @@
         <file>ui/ColorSelector.qml</file>
         <file>ui/SecondaryLabel.qml</file>
         <file>ui/TickingTimer.qml</file>
+        <file>ui/AccountEditor.qml</file>
+        <file>ui/AccountEditorForm.ui.qml</file>
+        <file>ui/AccountEditorPage.qml</file>
     </qresource>
 </RCC>

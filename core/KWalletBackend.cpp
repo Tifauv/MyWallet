@@ -257,3 +257,35 @@ const QString KWalletBackend::retrievePassword(const QString& p_folder, const QS
 
 	return password;
 }
+
+
+const QMap<QString, QString> KWalletBackend::retrievePasswordHistory(const QString& p_folder, const QString& p_account) const {
+/*	// Set the current folder
+	if (!m_kwallet->setFolder(p_folder)) {
+		qDebug() << "/i\\ [Folder] No folder named '" << p_folder << "'!";
+		return QString::null;
+	}
+
+	// Retrieve the account data
+	QMap<QString, QString> accountData;
+	if (m_kwallet->readMap(p_account, accountData) != 0) {
+		qDebug() << "/i\\ [Folder] No account named '" << p_account << "' in folder '" << p_folder << "'!";
+		return QString::null;
+	}
+
+	// Get the current password identifier
+	const QString& currentPwdId = accountData.value("password");
+	if (currentPwdId.isEmpty()) {
+		qDebug() << "/!\\ [Folder] Account '" << p_account << "' has no current password identifier!";
+		return QString::null;
+	}
+
+	// Retrieve all password entries whose name begin with "<p_account>-"
+	QMap<QString, QString> history;
+	if (m_kwallet->readPasswordList(p_account+"-*", history) != 0) {
+		
+	}
+	*/
+	
+	return QMap<QString,QString>();
+}

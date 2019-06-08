@@ -50,6 +50,7 @@ public slots:
 	Account* createAccount(const QString& name, const QString& login, const QString& password);
 	void addAccount(Account* account);
 	void deleteAccount(int row);
+	Account* get(int p_row) const;
 
 protected:
 	QHash<int, QByteArray> roleNames() const override;
