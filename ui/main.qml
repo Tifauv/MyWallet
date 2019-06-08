@@ -20,23 +20,23 @@ Kirigami.ApplicationWindow {
 		
 		actions: [
 			Kirigami.Action {
-				text: "Wallet"
+				text: qsTr("Wallet")
 				iconName: "view-list-icons"
 				Kirigami.Action {
-					text: "Export"
+					text: qsTr("Export")
 					iconName: "folder-sync"
 				}
 				Kirigami.Action {
-					text: "Import"
+					text: qsTr("Import")
 					iconName: "folder-sync"
 				}
 				Kirigami.Action {
-					text: "Delete"
+					text: qsTr("Delete")
 					iconName: "folder-sync"
 				}
 			},
 			Kirigami.Action {
-				text: "Settings"
+				text: qsTr("Settings")
 				iconName: "folder-sync"
 			}
 		]

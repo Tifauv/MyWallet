@@ -5,9 +5,9 @@ FolderItemForm {
 	id: idem
 	
 	property color iconColor: icon.color
-	property string folderName: "Folder name"
+	property string folderName: qsTr("Folder name")
 	property color folderNameColor
-	property string accountCount: "Empty"
+	property string accountCount: qsTr("Empty")
 	property color accountCountColor
 
 	iconCircle.color: iconColor
