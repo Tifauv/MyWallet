@@ -39,26 +39,26 @@ int KWalletBackend::load() const {
 
 	// Open our wallet
 	if (m_kwallet == nullptr) {
-		qDebug() << "/!\\ [KWalletBackend] Wallet '" << m_walletName <<  "' could not be opened!";
+		qDebug() << "/!\\ [KWalletBackend] Wallet " << m_walletName <<  " could not be opened!";
 		return 2;
 	}
-	qDebug() << "(i) [KWalletBackend] Wallet '" << m_walletName << "' is now opened.";
+	qDebug() << "(i) [KWalletBackend] Wallet " << m_walletName << " is now opened.";
 
 	// Remove the default folders
 	if (m_kwallet->hasFolder(KWallet::Wallet::FormDataFolder())) {
 		m_kwallet->removeFolder(KWallet::Wallet::FormDataFolder());
-		qDebug() << "(i) [KWalletBackend] Removed default folder '" << qPrintable(KWallet::Wallet::FormDataFolder()) << "' from wallet '" << m_walletName << "'.";
+		qDebug() << "(i) [KWalletBackend] Removed default folder " << qPrintable(KWallet::Wallet::FormDataFolder()) << " from wallet " << m_walletName << ".";
 	}
 	if (m_kwallet->hasFolder(KWallet::Wallet::PasswordFolder())) {
 		m_kwallet->removeFolder(KWallet::Wallet::PasswordFolder());
-		qDebug() << "(i) [KWalletBackend] Removed default folder '" << qPrintable(KWallet::Wallet::PasswordFolder()) << "' from wallet '" << m_walletName << "'.";
+		qDebug() << "(i) [KWalletBackend] Removed default folder " << qPrintable(KWallet::Wallet::PasswordFolder()) << " from wallet " << m_walletName << ".";
 	}
 
 	// Retrieve the folders
 	qDebug() << "(i) [KWalletBackend] Listing existing folders:";
 	auto backendFolders = m_kwallet->folderList();
 	foreach (QString backendFolder, backendFolders) {
-		qDebug() << "(i) [KWalletBackend] Folder '" << backendFolder << "' found.";
+		qDebug() << "(i) [KWalletBackend] Folder " << backendFolder << " found.";
 		m_kwallet->setFolder(backendFolder);
 
 		// Create our model object
@@ -70,13 +70,13 @@ int KWalletBackend::load() const {
 			QByteArray colorData;
 			m_kwallet->readEntry("tagColor", colorData);
 			folder->setTagColor(colorData);
-			qDebug() << "(i) [KWalletBackend]   has tag color '" << colorData << "'.";
+			qDebug() << "(i) [KWalletBackend]   has tag color " << colorData << ".";
 		}
 		else
 			qDebug() << "/!\\ [KWalletBackend]   !! has no tag color entry!";
 
 		// Load the accounts
-		qDebug() << "(i) [KWalletBackend] Loading accounts of folder '" << backendFolder << "'...";
+		qDebug() << "(i) [KWalletBackend] Loading accounts of folder " << backendFolder << "...";
 		QMap<QString, QMap<QString, QString>> accounts;
 		m_kwallet->readMapList("*", accounts);
 		qDebug() << "(i) [KWalletBackend] " << accounts.count() << " accounts found:";
@@ -88,7 +88,7 @@ int KWalletBackend::load() const {
 			auto login = accountIter.value().value("login");
 
 			folder->addAccount(new Account(accountName, login));
-			qDebug() << "(i) [KWalletBackend]   Account '" << accountName << "' with login '" << login << "' added.";
+			qDebug() << "(i) [KWalletBackend]   Account " << accountName << " with login " << login << " added.";
 		}
 
 		// Signal the new folder
@@ -114,20 +114,20 @@ bool KWalletBackend::hasFolder(const QString& p_name) const {
  */
 void KWalletBackend::createFolder(const Folder& p_folder) const {
 	if (hasFolder(p_folder.name())) {
-		qDebug() << "/!\\ [KWalletBackend] Cannot create folder '" << p_folder.name() << "' because on already exist.";
+		qDebug() << "/!\\ [KWalletBackend] Cannot create folder " << p_folder.name() << " because on already exist.";
 		return;
 	}
 
 	if (!m_kwallet->createFolder(p_folder.name())) {
-		qDebug() << "/!\\ [KWalletBackend] Failed to create folder '" << p_folder.name() << "'.";
+		qDebug() << "/!\\ [KWalletBackend] Failed to create folder " << p_folder.name() << ".";
 		return;
 	}
-	qDebug() << "(i) [KWalletBackend] Folder '" << p_folder.name() << "' created.";
+	qDebug() << "(i) [KWalletBackend] Folder " << p_folder.name() << " created.";
 
 	m_kwallet->setFolder(p_folder.name());
 	QByteArray value(p_folder.tagColor().toUtf8());
 	m_kwallet->writeEntry("tagColor", value, KWallet::Wallet::Stream);
-	qDebug() << "(i) [KWalletBackend] Tag color '" << p_folder.tagColor() << "' stored for folder '" << p_folder.name() << "'.";
+	qDebug() << "(i) [KWalletBackend] Tag color " << p_folder.tagColor() << " stored for folder " << p_folder.name() << ".";
 }
 
 
@@ -168,29 +168,30 @@ bool KWalletBackend::hasAccount(const QString& p_folder, const QString& p_name) 
  * @param account
  */
 void KWalletBackend::createAccount(const QString& p_folder, const Account& p_account, const QString& p_password) const {
-	if (m_kwallet->setFolder(p_folder)) {
-		if (m_kwallet->hasEntry(p_account.name())) {
-			qDebug() << "/!\\ [KWalletBackend] Cannot create account '" << p_account.name() << "' in folder '" << p_folder << "' because one already exist.";
-			return;
-		}
-
-		// Write the password
-		QString currentPwdId = p_account.name() + "-0001";
-		if (m_kwallet->hasEntry(currentPwdId)) {
-			m_kwallet->removeEntry(currentPwdId);
-			qDebug() << "(i) [KWalletBackend] Removed the orphaned password '" << currentPwdId << "' in folder '" << p_folder << "'.";
-		}
-		m_kwallet->writePassword(currentPwdId, p_password);
-
-		// Write the account
-		QMap<QString, QString> accountData;
-		accountData["login"] = p_account.login();
-		accountData["password"] = currentPwdId;
-		m_kwallet->writeMap(p_account.name(), accountData);
-		qDebug() << "(i) [KWalletBackend] Account '" << p_account.name() << "' created in folder '" << p_folder << "'.";
+	if (!m_kwallet->setFolder(p_folder)) {
+		qDebug() << "/!\\ [KWalletBackend] Folder " << p_folder << " does not exist, cannot create account " << p_account.name() << " in it.";
+		return;
 	}
-	else
-		qDebug() << "/!\\ [KWalletBackend] Folder '" << p_folder << "' does not exist, cannot create account '" << p_account.name() << "' in it.";
+
+	if (m_kwallet->hasEntry(p_account.name())) {
+		qDebug() << "/!\\ [KWalletBackend] Cannot create account " << p_account.name() << " in folder " << p_folder << " because one already exist.";
+		return;
+	}
+
+	// Write the password
+	QString currentPwdId = p_account.name() + "-0001";
+	if (m_kwallet->hasEntry(currentPwdId)) {
+		m_kwallet->removeEntry(currentPwdId);
+		qDebug() << "(i) [KWalletBackend] Removed the orphaned password " << currentPwdId << " in folder " << p_folder << ".";
+	}
+	m_kwallet->writePassword(currentPwdId, p_password);
+
+	// Write the account
+	QMap<QString, QString> accountData;
+	accountData["login"] = p_account.login();
+	accountData["password"] = currentPwdId;
+	m_kwallet->writeMap(p_account.name(), accountData);
+	qDebug() << "(i) [KWalletBackend] Account " << p_account.name() << " created in folder " << p_folder << ".";
 }
 
 
@@ -201,7 +202,7 @@ void KWalletBackend::createAccount(const QString& p_folder, const Account& p_acc
  */
 void KWalletBackend::removeAccount(const QString& p_folder, const QString& p_name) const {
 	if (!hasAccount(p_folder, p_name)) {
-		qDebug() << "/!\\ [KWalletBackend] Cannot remove account '" << p_name << "' from folder '" << p_folder << "' because it does not exist.";
+		qDebug() << "/!\\ [KWalletBackend] Cannot remove account " << p_name << " from folder " << p_folder << " because it does not exist.";
 	}
 
 	// Retrieve all entries (account data & password history)
@@ -214,9 +215,9 @@ void KWalletBackend::removeAccount(const QString& p_folder, const QString& p_nam
 		dataIter.next();
 
 		if (m_kwallet->removeEntry(dataIter.key()) == 0)
-			qDebug() << "(i) [KWalletBackend] Removed entry '" << dataIter.key() << "' from folder '" << p_folder << "'.";
+			qDebug() << "(i) [KWalletBackend] Removed entry " << dataIter.key() << " from folder " << p_folder << ".";
 		else
-			qDebug() << "/!\\ [KWalletBackend] Failed to remove entry '" << dataIter.key() << "' from folder '" << p_folder << "'.";
+			qDebug() << "/!\\ [KWalletBackend] Failed to remove entry " << dataIter.key() << " from folder " << p_folder << ".";
 	}
 }
 
@@ -230,30 +231,93 @@ void KWalletBackend::removeAccount(const QString& p_folder, const QString& p_nam
 const QString KWalletBackend::retrievePassword(const QString& p_folder, const QString& p_account) const {
 	// Set the current folder
 	if (!m_kwallet->setFolder(p_folder)) {
-		qDebug() << "/i\\ [Folder] No folder named '" << p_folder << "'!";
-		return QString::null;
+		qDebug() << "/!\\ [KWalletBackend] No folder named " << p_folder << "!";
+		return QString();
 	}
 
 	// Retrieve the account data
 	QMap<QString, QString> accountData;
 	if (m_kwallet->readMap(p_account, accountData) != 0) {
-		qDebug() << "/i\\ [Folder] No account named '" << p_account << "' in folder '" << p_folder << "'!";
-		return QString::null;
+		qDebug() << "/!\\ [KWalletBackend] No account named " << p_account << " in folder " << p_folder << "!";
+		return QString();
 	}
 
 	// Get the current password identifier
 	const QString& currentPwdId = accountData.value("password");
 	if (currentPwdId.isEmpty()) {
-		qDebug() << "/!\\ [Folder] Account '" << p_account << "' has no current password identifier!";
-		return QString::null;
+		qDebug() << "/!\\ [KWalletBackend] Account " << p_account << " has no current password identifier!";
+		return QString();
 	}
 
 	// Get the current password
 	QString password;
 	if (m_kwallet->readPassword(currentPwdId, password) != 0) {
-		qDebug() << "/!\\ [Folder] No password with id '" << currentPwdId << "'!";
-		return QString::null;
+		qDebug() << "/!\\ [KWalletBackend] No password with id " << currentPwdId << "!";
+		return QString();
 	}
 
 	return password;
+}
+
+
+bool KWalletBackend::renewPassword(const QString& p_folder, const QString& p_account, const QString& p_password) const {
+	// Set the current folder
+	if (!m_kwallet->setFolder(p_folder)) {
+		qDebug() << "/!\\ [KWalletBackend] No folder named " << p_folder << "!";
+		return false;
+	}
+
+	// Retrieve the account data
+	QMap<QString, QString> accountData;
+	if (m_kwallet->readMap(p_account, accountData) != 0) {
+		qDebug() << "/!\\ [KWalletBackend] No account named " << p_account << " in folder " << p_folder << "!";
+		return false;
+	}
+
+	// Retrieve all the password identifiers
+	QMap<QString, QString> passwordsList;
+	if (m_kwallet->readPasswordList(p_account + "*", passwordsList) != 0) {
+		qDebug() << "/!\\ [KWalletBackend] Could not retrieve existing passwords for account " << p_account << " in folder " << p_folder << "!";
+		return false;
+	}
+
+	// Extract the latest password identifier to build the name of the new one
+	uint maxId = 0;
+	QMapIterator<QString, QString> passwordIter(passwordsList);
+	while (passwordIter.hasNext()) {
+		passwordIter.next();
+
+		// Extract the numerical identifier from the 4 last characters of the name
+		QString passwordId = passwordIter.key();
+		bool ok;
+		uint currentId = passwordId.rightRef(4).toUInt(&ok, 10);
+		if (!ok) {
+			qDebug() << "/!\\ [KWalletBackend] Skipping malformed password id " << passwordId << " because the numerical id is not an unsigned int.";
+			continue;
+		}
+
+		// Set the new maximum identifier
+		if (currentId > maxId)
+			maxId = currentId;
+	}
+
+	// And the new password id is...
+	maxId++;
+
+	// Overflow case : restart at '0000'
+	if (maxId > 9999)
+		maxId = 0;
+
+	QString currentPwdId = p_account + "-" + QString::number(maxId, 10).rightJustified(4, '0');
+	if (m_kwallet->hasEntry(currentPwdId)) {
+		m_kwallet->removeEntry(currentPwdId);
+		qDebug() << "(i) [KWalletBackend] Removed the old password " << currentPwdId << " in folder " << p_folder << ".";
+	}
+	m_kwallet->writePassword(currentPwdId, p_password);
+
+	// Update the account
+	accountData["password"] = currentPwdId;
+	m_kwallet->writeMap(p_account, accountData);
+
+	return true;
 }
