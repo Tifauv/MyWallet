@@ -1,5 +1,5 @@
 import QtQuick 2.9
-import QtQuick.Controls 2.2
+import QtQuick.Controls 2.4
 import org.kde.kirigami 2.4 as Kirigami
 
 Item {
@@ -40,14 +40,12 @@ Item {
         anchors.left: accountName.left
         anchors.leftMargin: Kirigami.Units.largeSpacing * 2
 
-        //anchors.right: accountName.horizontalCenter
-        //anchors.rightMargin: Kirigami.Units.largeSpacing
         Kirigami.Icon {
             id: loginIcon
 
-            source: "im-user"
+            source: "user"
 
-            width: Kirigami.Units.gridUnit
+            width: Kirigami.Units.iconSizes.small
             height: width
         }
 
@@ -81,7 +79,7 @@ Item {
 
             source: "lock"
 
-            width: Kirigami.Units.gridUnit
+            width: Kirigami.Units.iconSizes.small
             height: width
         }
 
