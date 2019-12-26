@@ -10,7 +10,7 @@ class Account : public QObject {
 	Q_PROPERTY(QString login  READ login  WRITE setLogin  NOTIFY loginChanged  DESIGNABLE false)
 
 public:
-	explicit Account(const QString& name = QString::null, const QString& login = QString::null, QObject* parent = nullptr);
+	explicit Account(const QString& name = QString(), const QString& login = QString(), QObject* parent = nullptr);
 	explicit Account(const Account&);
 	~Account() {}
 
