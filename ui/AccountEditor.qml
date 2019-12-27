@@ -6,7 +6,7 @@ AccountEditorForm {
 	property string login: "Login"
 	property string password: "********"
 	
-	headingTxt.text: name
+	nameTxt.text: name
 	loginTxt.text: login
-	passwordTxt.text: password
+	//passwordTxt.text: password
 }

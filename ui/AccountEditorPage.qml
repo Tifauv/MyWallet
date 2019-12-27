@@ -4,7 +4,7 @@ import org.kde.kirigami 2.4 as Kirigami
 
 Kirigami.Page {
 	id: page
-	title: qsTr("Account")
+	title: qsTr("Account editor")
 	
 	property variant model
 	
