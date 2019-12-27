@@ -14,8 +14,8 @@ public:
 	explicit Account(const Account&);
 	~Account() {}
 
-	const QString& name()     const;
-	const QString& login()    const;
+	const QString& name()  const;
+	const QString& login() const;
 
 	Account* setName(const QString& name);
 	Account* setLogin(const QString& login);

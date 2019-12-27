@@ -20,23 +20,23 @@ Kirigami.ApplicationWindow {
 		
 		actions: [
 			Kirigami.Action {
-				text: "Wallet"
+				text: qsTr("Wallet")
 				iconName: "view-list-icons"
 				Kirigami.Action {
-					text: "Export"
+					text: qsTr("Export")
 					iconName: "folder-sync"
 				}
 				Kirigami.Action {
-					text: "Import"
+					text: qsTr("Import")
 					iconName: "folder-sync"
 				}
 				Kirigami.Action {
-					text: "Delete"
+					text: qsTr("Delete")
 					iconName: "folder-sync"
 				}
 			},
 			Kirigami.Action {
-				text: "Settings"
+				text: qsTr("Settings")
 				iconName: "folder-sync"
 			}
 		]
@@ -80,9 +80,14 @@ Kirigami.ApplicationWindow {
 						copyTimeout * 1000 /* milliseconds */)
 		}
 		
-		onEdit: window.showPassiveNotification(
-					qsTr("Account edition not yet implemented."),
-					"short")
+		onEdit: {
+			/*window.showPassiveNotification(
+						qsTr("Account edition not yet implemented."),
+						"short");*/
+			window.pageStack.push(
+						"qrc:/ui/AccountEditorPage.qml",
+						{model: accountsPage.model.get(p_index)});
+		}
 		
 		onConfirmDelete: window.showPassiveNotification(
 							 qsTr("Delete account \"%1\"?").arg(p_accountName),

@@ -27,6 +27,7 @@ public:
 	void removeAccount(const QString& folder, const QString& name) const override;
 
 	const QString retrievePassword(const QString& folder, const QString& account) const override;
+	const QMap<QString,QString> retrievePasswordHistory(const QString& p_folder, const QString& p_account) const override;
 	bool renewPassword(const QString& p_folder, const QString& p_account, const QString& p_password) const override;
 
 private:

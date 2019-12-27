@@ -10,8 +10,9 @@ set (CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Find dependencies
 find_package (Qt5 COMPONENTS Core Quick REQUIRED)
-find_package (KF5Wallet)
-find_package (KF5Config)
+find_package (KF5Kirigami2 REQUIRED)
+find_package (KF5Wallet    REQUIRED)
+find_package (KF5Config    REQUIRED)
 
 # Configure a header file to pass some CMake settings to the source code
 configure_file (
@@ -42,16 +43,16 @@ target_link_libraries (MyWallet
 )
 
 install (TARGETS MyWallet DESTINATION bin)
-install (
-	FILES
-		core/Account.h
-		core/Folder.h
-		core/Wallet.h
-		core/Backend.h
-		core/KWalletBackend.h
-		QmlClipboardAdapter.h
-		Config.h
-	DESTINATION include)
+#install (
+#	FILES
+#		core/Account.h
+#		core/Folder.h
+#		core/Wallet.h
+#		core/Backend.h
+#		core/KWalletBackend.h
+#		QmlClipboardAdapter.h
+#		Config.h
+#	DESTINATION include)
 install (
 	FILES eu.catwitch.mywallet.desktop
 	DESTINATION share/applications)

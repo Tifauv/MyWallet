@@ -27,6 +27,7 @@ public:
 	virtual void removeAccount(const QString& folder, const QString& name) const = 0;
 
 	virtual const QString retrievePassword(const QString& folderName, const QString& accountName) const = 0;
+	virtual const QMap<QString,QString> retrievePasswordHistory(const QString& p_folder, const QString& p_account) const = 0;
 	virtual bool renewPassword(const QString& p_folder, const QString& p_account, const QString& p_password) const = 0;
 
 signals:

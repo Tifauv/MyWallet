@@ -260,6 +260,48 @@ const QString KWalletBackend::retrievePassword(const QString& p_folder, const QS
 }
 
 
+/**
+ * @brief KWalletBackend::retrievePasswordHistory
+ * @param p_folder
+ * @param p_account
+ * @return 
+ */
+const QMap<QString, QString> KWalletBackend::retrievePasswordHistory(const QString& p_folder, const QString& p_account) const {
+	// Set the current folder
+	if (!m_kwallet->setFolder(p_folder)) {
+		qDebug() << "/i\\ [KWalletBackend] No folder named " << p_folder << "!";
+		return QMap<QString,QString>();
+	}
+
+	// Retrieve the account data
+	QMap<QString, QString> accountData;
+	if (m_kwallet->readMap(p_account, accountData) != 0) {
+		qDebug() << "/i\\ [KWalletBackend] No account named " << p_account << " in folder " << p_folder << "!";
+		return QMap<QString,QString>();
+	}
+
+	// Get the current password identifier
+	const QString& currentPwdId = accountData.value("password");
+	if (currentPwdId.isEmpty()) {
+		qDebug() << "/!\\ [KWalletBackend] Account " << p_account << " has no current password identifier!";
+		return QMap<QString,QString>();
+	}
+
+	// Retrieve all password entries whose name begin with "<p_account>-"
+	QMap<QString, QString> history;
+	if (m_kwallet->readPasswordList(p_account+"-*", history) != 0) {
+		qDebug() << "/!\\ [KWalletBackend] Account " << p_account << " has no passwords!";
+	}
+	return history;
+}
+
+
+/**
+ * @brief KWalletBackend::renewPassword
+ * @param p_folder
+ * @param p_account
+ * @param p_password
+ */
 bool KWalletBackend::renewPassword(const QString& p_folder, const QString& p_account, const QString& p_password) const {
 	// Set the current folder
 	if (!m_kwallet->setFolder(p_folder)) {
