@@ -7,7 +7,23 @@ Kirigami.Page {
 	title: qsTr("Account editor")
 	
 	property variant model
+
+    signal saveAccount()
+    signal closePage()
 	
+    mainAction: Kirigami.Action {
+        text: qsTr("Save")
+        iconName: "document-save"
+        onTriggered: saveAccount()
+    }
+    contextualActions: [
+        Kirigami.Action {
+            text: qsTr("Close")
+            iconName: "tab-close"
+            onTriggered: closePage()
+        }
+    ]
+
 	AccountEditor {
 		id: editor
 		

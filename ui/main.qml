@@ -8,45 +8,26 @@ Kirigami.ApplicationWindow {
 	visible: true
 	width: 640
 	height: 480
-	title: wallet.name
+    title: qsTr("MyWallet")
 
 	readonly property int defaultSidebarWidth: Kirigami.Units.gridUnit * 14
-	readonly property int defaultContextDrawerWidth: Kirigami.Units.gridUnit * 17
 	property int copyTimeout: 10 // seconds
 
 	globalDrawer: Kirigami.GlobalDrawer {
-		title: wallet.name
+        title: qsTr("MyWallet")
 		titleIcon: "kwalletmanager"
 		
 		actions: [
 			Kirigami.Action {
-				text: qsTr("Wallet")
-				iconName: "view-list-icons"
-				Kirigami.Action {
-					text: qsTr("Export")
-					iconName: "folder-sync"
-				}
-				Kirigami.Action {
-					text: qsTr("Import")
-					iconName: "folder-sync"
-				}
-				Kirigami.Action {
-					text: qsTr("Delete")
-					iconName: "folder-sync"
-				}
-			},
-			Kirigami.Action {
-				text: qsTr("Settings")
-				iconName: "folder-sync"
+                text: qsTr("Quit")
+                iconName: "application-exit"
+                shortcut: StandardKey.Quit
+                onTriggered: Qt.quit()
 			}
 		]
 	}
 	
-	contextDrawer: Kirigami.ContextDrawer {
-		id: contextDrawer
-	}
-	
-	pageStack.defaultColumnWidth: defaultSidebarWidth
+    pageStack.defaultColumnWidth: defaultSidebarWidth
 	pageStack.initialPage: [foldersPage, accountsPage]
 
 
@@ -80,21 +61,30 @@ Kirigami.ApplicationWindow {
 						copyTimeout * 1000 /* milliseconds */)
 		}
 		
-		onEdit: {
-			/*window.showPassiveNotification(
-						qsTr("Account edition not yet implemented."),
-						"short");*/
-			window.pageStack.push(
-						"qrc:/ui/AccountEditorPage.qml",
-						{model: accountsPage.model.get(p_index)});
-		}
+        onEdit: pageStack.push(accountEditPage,
+                        {model: accountsPage.model.get(p_index)})
 		
 		onConfirmDelete: window.showPassiveNotification(
 							 qsTr("Delete account \"%1\"?").arg(p_accountName),
 							 "long",
 							 qsTr("Delete"),
-							 function(){model.deleteAccount(p_index)});
+                             function(){model.deleteAccount(p_index)})
 	}
+
+    Component {
+        id: accountEditPage
+
+        AccountEditorPage {
+            onSaveAccount: {
+                window.showPassiveNotification(
+                            qsTr("Account modification is not implemented yet."),
+                            "short");
+                pageStack.pop()
+            }
+
+            onClosePage: pageStack.pop()
+        }
+    }
 
 
 	CreateFolderDialog {
