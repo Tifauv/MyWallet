@@ -24,15 +24,13 @@ int main(int p_argc, char* p_argv[]) {
 	qmlRegisterType<Config>(             "Wallets", 1, 0, "Config"   );
 
 	// Load the configuration
-	Config* config = new Config();
+	Config config;
 
 	QQmlApplicationEngine engine;
-	engine.rootContext()->setContextProperty("config", config);
+	engine.rootContext()->setContextProperty("config", &config);
 	engine.load(QUrl(QStringLiteral("qrc:/ui/main.qml")));
 	if (engine.rootObjects().isEmpty())
 		return -1;
 
-	int rc = app.exec();
-	delete config;
-	return rc;
+	return app.exec();
 }
