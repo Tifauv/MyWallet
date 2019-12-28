@@ -1,5 +1,5 @@
-import QtQuick 2.9
-import QtQuick.Controls 2.2
+import QtQuick 2.12
+import QtQuick.Controls 2.5
 import org.kde.kirigami 2.4 as Kirigami
 import Wallets 1.0
 
@@ -8,26 +8,26 @@ Kirigami.ApplicationWindow {
 	visible: true
 	width: 640
 	height: 480
-    title: qsTr("MyWallet")
+	title: qsTr("MyWallet")
 
 	readonly property int defaultSidebarWidth: Kirigami.Units.gridUnit * 14
 	property int copyTimeout: 10 // seconds
 
 	globalDrawer: Kirigami.GlobalDrawer {
-        title: qsTr("MyWallet")
+		title: qsTr("MyWallet")
 		titleIcon: "kwalletmanager"
 		
 		actions: [
 			Kirigami.Action {
-                text: qsTr("Quit")
-                iconName: "application-exit"
-                shortcut: StandardKey.Quit
-                onTriggered: Qt.quit()
+				text: qsTr("Quit")
+				iconName: "application-exit"
+				shortcut: StandardKey.Quit
+				onTriggered: Qt.quit()
 			}
 		]
 	}
 	
-    pageStack.defaultColumnWidth: defaultSidebarWidth
+	pageStack.defaultColumnWidth: defaultSidebarWidth
 	pageStack.initialPage: [foldersPage, accountsPage]
 
 
@@ -61,31 +61,29 @@ Kirigami.ApplicationWindow {
 						copyTimeout * 1000 /* milliseconds */)
 		}
 		
-        onEdit: pageStack.push(accountEditPage,
-                        {model: accountsPage.model.get(p_index)})
+		onEdit: pageStack.push(accountEditPage, {model: accountsPage.model.get(p_index)})
 		
 		onConfirmDelete: window.showPassiveNotification(
-							 qsTr("Delete account \"%1\"?").arg(p_accountName),
-							 "long",
-							 qsTr("Delete"),
-                             function(){model.deleteAccount(p_index)})
+							qsTr("Delete account \"%1\"?").arg(p_accountName),
+							"long",
+							qsTr("Delete"),
+							function(){model.deleteAccount(p_index)})
 	}
 
-    Component {
-        id: accountEditPage
+	Component {
+		id: accountEditPage
 
-        AccountEditorPage {
-            onSaveAccount: {
-                window.showPassiveNotification(
-                            qsTr("Account modification is not implemented yet."),
-                            "short");
-                pageStack.pop()
-            }
+		AccountEditorPage {
+			onSaveAccount: {
+				window.showPassiveNotification(
+							qsTr("Account modification is not implemented yet."),
+							"short");
+				pageStack.pop()
+			}
 
-            onClosePage: pageStack.pop()
-        }
-    }
-
+			onClosePage: pageStack.pop()
+		}
+	}
 
 	CreateFolderDialog {
 		id: createFolderDlg
@@ -105,7 +103,6 @@ Kirigami.ApplicationWindow {
 		}
 		onRejected: reset()
 	}
-
 
 	CreateAccountDialog {
 		id: createAccountDlg
@@ -129,7 +126,7 @@ Kirigami.ApplicationWindow {
 	Wallet {
 		id: wallet
 	}
-	
+
 	Clipboard {
 		id: clipboard
 	}
