@@ -1,6 +1,7 @@
 #include <QGuiApplication>
-#include <QQmlContext>
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
+#include <QIcon>
 
 #include "QmlClipboardAdapter.h"
 #include "Config.h"
@@ -8,7 +9,7 @@
 #include "core/Wallet.h"
 
 int main(int p_argc, char* p_argv[]) {
-	QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+	QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 	QGuiApplication app(p_argc, p_argv);
 	app.setOrganizationName("CatWitch");
 	app.setOrganizationDomain("catwitch.eu");
@@ -23,6 +24,11 @@ int main(int p_argc, char* p_argv[]) {
 	qmlRegisterType<Account>(            "Wallets", 1, 0, "Account"  );
 	qmlRegisterType<Config>(             "Wallets", 1, 0, "Config"   );
 
+	// Set the default icon theme name
+	if (QIcon::themeName().isEmpty()) {
+		QIcon::setThemeName("breeze");
+	}
+	
 	// Load the configuration
 	Config config;
 
