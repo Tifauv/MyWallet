@@ -35,7 +35,6 @@ Kirigami.ApplicationWindow {
 		id: foldersPage
 		
 		model: wallet
-		createDlg: createFolderDlg
 		
 		onEdit: window.showPassiveNotification(
 					qsTr("Folder edition not yet implemented."),
@@ -99,25 +98,6 @@ Kirigami.ApplicationWindow {
 
 		onAccepted: {
 			wallet.createFolder(name, tagColor);
-			reset();
-		}
-		onRejected: reset()
-	}
-
-	CreateAccountDialog {
-		id: createAccountDlg
-
-		modal: true
-		focus: true
-
-		width: 220
-		height: 200
-
-		x: (parent.width - width) / 2
-		y: (parent.height - height) / 2
-
-		onAccepted: {
-			accountsPage.model.createAccount(name, login, password);
 			reset();
 		}
 		onRejected: reset()

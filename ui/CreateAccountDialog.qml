@@ -1,52 +1,48 @@
 import QtQuick 2.12
-import QtQuick.Controls 2.5
+import QtQuick.Layouts 1.12
+import QtQuick.Controls 2.5 as Controls
+import org.kde.kirigami 2.4 as Kirigami
 
-Dialog {
-	id: dialog
+Kirigami.OverlaySheet {
+	id: sheet
+	
+	/* The parent's folder model. */
+	property var folderModel: undefined
 
-	implicitWidth: 220
-	implicitHeight: nameTxt.height + loginTxt.height + passwordTxt.height + (2 * padding)
-
-	standardButtons: Dialog.Save | Dialog.Cancel
-	closePolicy: Dialog.CloseOnEscape | Dialog.CloseOnPressOutside
-
-	property alias name: nameTxt.text
-	property alias login: loginTxt.text
-	property alias password: passwordTxt.text
-
-	Column {
-		id: layout
-
-		anchors.fill: parent
-
-		TextField {
-			id: nameTxt
-			width: parent.width
-
-			placeholderText: qsTr("Account name")
+	header: Kirigami.Heading {
+		id: heading
+		text: qsTr("New Account")
+	}
+	
+	footer: RowLayout {
+		Controls.Button {
+			id: submitBtn
+			
+			Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+			
+			text: qsTr("Create")
 			focus: true
-		}
-
-		TextField {
-			id: loginTxt
-			width: parent.width
-
-			placeholderText: qsTr("Login")
-		}
-
-		TextField {
-			id: passwordTxt
-			width: parent.width
-
-			placeholderText: qsTr("Password")
-			echoMode: "Password"
+			enabled: form.isValid
+			
+			onClicked: form.submit()
 		}
 	}
-
-	function reset() {
-		name = "";
-		login = "";
-		password = "";
-		nameTxt.focus = true;
+	
+	AccountCreate {
+		id: form
+		Layout.preferredWidth: Kirigami.Units.gridUnit * 20
+		focus: true
+		
+		onAccepted: form.submit()
+		
+		function submit() {
+			sheet.createAccount();
+			sheet.close()
+		}
+	}
+	
+	function createAccount() {
+		folderModel.createAccount(form.accountName, form.accountLogin, form.accountPassword);
+		form.reset();
 	}
 }
