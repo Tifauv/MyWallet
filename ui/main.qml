@@ -51,7 +51,6 @@ Kirigami.ApplicationWindow {
 		id: accountsPage
 		
 		model: foldersPage.selectedFolder
-		createDlg: createAccountDlg
 		
 		onCopyPassword: {
 			clipboard.setTextWithTimer(p_password, copyTimeout);
@@ -121,6 +120,9 @@ Kirigami.ApplicationWindow {
 		window.width  = config.previousWidth;
 		window.height = config.previousHeight;
 
+		// Load the previous wallet, or default to "Wallets"
+		wallet.name = config.previousWallet.length > 0 ? config.previousWallet.isEmpty() : "Wallets";
+
 		// Select the previous folder, or the first one
 		var index = wallet.find(config.previousFolder);
 		foldersPage.selectFolder(index);
@@ -136,6 +138,8 @@ Kirigami.ApplicationWindow {
 		console.log("Saved previous window width: " + config.previousWidth);
 		config.previousHeight = window.height;
 		console.log("Saving previous window height: " + config.previousHeight);
+		config.previousWallet = wallet.name;
+		console.log("Saving previous wallet: " + config.previousWallet);
 		config.previousFolder = foldersPage.selectedFolder.name;
 		console.log("Saving previous folder: " + config.previousFolder);
 	}

@@ -11,7 +11,6 @@
 Wallet::Wallet(QObject* p_parent) :
     QAbstractListModel(p_parent) {
 	qDebug() << "(i) [Wallet] Created.";
-	load("Wallets", new KWalletBackend("Wallets"));
 }
 
 
@@ -55,6 +54,15 @@ void Wallet::load(const QString& p_name, Backend* p_backend) {
 	// Change the name
 	m_name = p_name;
 	emit nameChanged(m_name);
+}
+
+
+/**
+ * @brief Wallet::load
+ * @param p_name
+ */
+void Wallet::loadKWallet(const QString& p_name) {
+	load(p_name, new KWalletBackend(p_name));
 }
 
 

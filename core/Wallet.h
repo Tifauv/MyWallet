@@ -9,8 +9,8 @@
 class Wallet : public QAbstractListModel {
 	Q_OBJECT
 
-	Q_PROPERTY(QString name   READ name   NOTIFY nameChanged )
-	Q_PROPERTY(int     count  READ count  NOTIFY countChanged)
+	Q_PROPERTY(QString name   READ name   WRITE loadKWallet  NOTIFY nameChanged )
+	Q_PROPERTY(int     count  READ count                     NOTIFY countChanged)
 
 public:
 	enum Roles {
@@ -20,7 +20,7 @@ public:
 	};
 
 	explicit Wallet(QObject* parent = nullptr);
-	~Wallet() {}
+	~Wallet() override {}
 
 	const QString& name() const;
 	int count() const;
@@ -34,6 +34,7 @@ signals:
 
 public slots:
 	void load(const QString& name, Backend* backend);
+	void loadKWallet(const QString& p_name);
 	Folder* createFolder(const QString& name, const QString& tagColor);
 	void deleteFolder(int row);
 	Folder* get(int row) const;
