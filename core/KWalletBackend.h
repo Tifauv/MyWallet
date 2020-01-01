@@ -11,7 +11,7 @@ class KWalletBackend : public Backend {
 
 public:
 	explicit KWalletBackend(const QString& walletName, QObject* parent = nullptr);
-	~KWalletBackend();
+	~KWalletBackend() override;
 
 	// Initial loading
 	int load() const override;

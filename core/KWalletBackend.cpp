@@ -1,6 +1,8 @@
 #include "KWalletBackend.h"
 #include "Folder.h"
 #include <QDebug>
+#include <QGuiApplication>
+#include <QWindow>
 
 // CONSTRUCTORS
 /**
@@ -11,7 +13,8 @@
 KWalletBackend::KWalletBackend(const QString& p_walletName, QObject* p_parent) :
     Backend(p_parent),
     m_walletName(p_walletName),
-    m_kwallet(KWallet::Wallet::openWallet(p_walletName, 0)) {
+	// TODO open the wallet asynchronously to avoid blocking the UI
+    m_kwallet(KWallet::Wallet::openWallet(p_walletName, qGuiApp->topLevelWindows().first()->winId())) {
 	qDebug() << "(i) [KWalletBackend] Created.";
 }
 

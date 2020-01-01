@@ -2,6 +2,7 @@
 #include "KWalletBackend.h"
 #include <QGuiApplication>
 #include <QtDebug>
+#include <QWindow>
 
 // CONSTRUCTORS
 /**

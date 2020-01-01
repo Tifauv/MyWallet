@@ -2,6 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QIcon>
+#include <QWindow>
 
 #include "QmlClipboardAdapter.h"
 #include "Config.h"

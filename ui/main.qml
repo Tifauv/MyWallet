@@ -121,7 +121,7 @@ Kirigami.ApplicationWindow {
 		window.height = config.previousHeight;
 
 		// Load the previous wallet, or default to "Wallets"
-		wallet.name = config.previousWallet.length > 0 ? config.previousWallet.isEmpty() : "Wallets";
+		wallet.name = config.previousWallet.length > 0 ? config.previousWallet : "Wallets";
 
 		// Select the previous folder, or the first one
 		var index = wallet.find(config.previousFolder);
