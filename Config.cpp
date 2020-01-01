@@ -37,7 +37,7 @@ const QString Config::previousFolder() const {
  */
 uint Config::previousWidth() const {
 	KConfigGroup previousRun(&m_kconfig, "PreviousRun");
-	return previousRun.readEntry("Width", 640);
+	return previousRun.readEntry("Width", 640u);
 }
 
 
@@ -47,7 +47,7 @@ uint Config::previousWidth() const {
  */
 uint Config::previousHeight() const {
 	KConfigGroup previousRun(&m_kconfig, "PreviousRun");
-	return previousRun.readEntry("Height", 480);
+	return previousRun.readEntry("Height", 480u);
 }
 
 
