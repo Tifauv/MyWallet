@@ -43,16 +43,6 @@ target_link_libraries (MyWallet
 )
 
 install (TARGETS MyWallet DESTINATION bin)
-#install (
-#	FILES
-#		core/Account.h
-#		core/Folder.h
-#		core/Wallet.h
-#		core/Backend.h
-#		core/KWalletBackend.h
-#		QmlClipboardAdapter.h
-#		Config.h
-#	DESTINATION include)
 install (
 	FILES eu.catwitch.mywallet.desktop
 	DESTINATION share/applications)
