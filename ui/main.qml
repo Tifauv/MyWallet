@@ -102,6 +102,10 @@ Kirigami.ApplicationWindow {
 		}
 		onRejected: reset()
 	}
+	
+	Config {
+		id: config
+	}
 
 	Wallet {
 		id: wallet

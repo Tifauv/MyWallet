@@ -19,21 +19,17 @@ int main(int p_argc, char* p_argv[]) {
 
 	// Register model types with the QML engine
 	qmlRegisterType<QmlClipboardAdapter>("Wallets", 1, 0, "Clipboard");
+	qmlRegisterType<Config>(             "Wallets", 1, 0, "Config"   );
 	qmlRegisterType<Wallet>(             "Wallets", 1, 0, "Wallet"   );
 	qmlRegisterType<Folder>(             "Wallets", 1, 0, "Folder"   );
 	qmlRegisterType<Account>(            "Wallets", 1, 0, "Account"  );
-	qmlRegisterType<Config>(             "Wallets", 1, 0, "Config"   );
 
 	// Set the default icon theme name
 	if (QIcon::themeName().isEmpty()) {
 		QIcon::setThemeName("breeze");
 	}
-	
-	// Load the configuration
-	Config config;
 
 	QQmlApplicationEngine engine;
-	engine.rootContext()->setContextProperty("config", &config);
 	engine.load(QUrl(QStringLiteral("qrc:/ui/main.qml")));
 	if (engine.rootObjects().isEmpty())
 		return -1;
