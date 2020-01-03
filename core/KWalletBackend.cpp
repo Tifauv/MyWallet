@@ -13,8 +13,7 @@
 KWalletBackend::KWalletBackend(const QString& p_walletName, QObject* p_parent) :
     Backend(p_parent),
     m_walletName(p_walletName),
-	// TODO open the wallet asynchronously to avoid blocking the UI
-    m_kwallet(KWallet::Wallet::openWallet(p_walletName, qGuiApp->topLevelWindows().first()->winId())) {
+    m_kwallet(nullptr) {
 	qDebug() << "(i) [KWalletBackend] Created.";
 }
 
@@ -34,17 +33,25 @@ KWalletBackend::~KWalletBackend() {
  * @brief KWalletBackend::load
  * @return
  */
-int KWalletBackend::load() const {
+void KWalletBackend::load() {
 	if (!KWallet::Wallet::isEnabled()) {
 		qDebug() << "/!\\ [KWalletBackend] KWallet subsystem is disabled!";
-		return 1;
+		emit openFailed();
 	}
 
 	// Open our wallet
-	if (m_kwallet == nullptr) {
+	m_kwallet.reset(KWallet::Wallet::openWallet(m_walletName, qGuiApp->topLevelWindows().first()->winId(), KWallet::Wallet::Asynchronous));
+	connect(m_kwallet.get(), &KWallet::Wallet::walletOpened, this, &KWalletBackend::loadWalletContent);
+}
+
+
+void KWalletBackend::loadWalletContent(bool p_openedSuccessfully) {
+	if (!p_openedSuccessfully) {
 		qDebug() << "/!\\ [KWalletBackend] Wallet " << m_walletName <<  " could not be opened!";
-		return 2;
+		emit openFailed();
+		return;
 	}
+
 	qDebug() << "(i) [KWalletBackend] Wallet " << m_walletName << " is now opened.";
 
 	// Remove the default folders
@@ -97,7 +104,8 @@ int KWalletBackend::load() const {
 		// Signal the new folder
 		emit folderLoaded(folder);
 	}
-	return 0;
+	
+	emit opened();
 }
 
 

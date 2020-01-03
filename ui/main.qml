@@ -108,6 +108,20 @@ Kirigami.ApplicationWindow {
 
 	Wallet {
 		id: wallet
+		
+		onLoaded: {
+			// Select the previous folder, or the first one
+			var index = wallet.find(config.previousFolder);
+			foldersPage.selectFolder(index);
+	
+			// If the wallet is empty, show the folder creation dialog
+			if (wallet.count === 0)
+				createFolderDlg.open();
+		}
+		
+		onLoadFailed: {
+			
+		}
 	}
 
 	Clipboard {
@@ -122,14 +136,6 @@ Kirigami.ApplicationWindow {
 
 		// Load the previous wallet, or default to "Wallets"
 		wallet.name = config.previousWallet.length > 0 ? config.previousWallet : "Wallets";
-
-		// Select the previous folder, or the first one
-		var index = wallet.find(config.previousFolder);
-		foldersPage.selectFolder(index);
-
-		// If the wallet is empty, show the folder creation dialog
-		if (wallet.count === 0)
-			createFolderDlg.open();
 	}
 
 	// Sync the config object on closing

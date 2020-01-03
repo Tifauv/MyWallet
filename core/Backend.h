@@ -14,7 +14,7 @@ public:
 	~Backend() {}
 
 	// Initial loading
-	virtual int load() const = 0;
+	virtual void load() = 0;
 
 	// Folder management
 	virtual bool hasFolder(const QString& name) const = 0;
@@ -31,6 +31,8 @@ public:
 	virtual bool renewPassword(const QString& p_folder, const QString& p_account, const QString& p_password) const = 0;
 
 signals:
+	void opened();
+	void openFailed();
 	void folderLoaded(Folder*) const;
 };
 

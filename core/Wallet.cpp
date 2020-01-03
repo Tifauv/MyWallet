@@ -41,15 +41,17 @@ int Wallet::count() const {
  * @param p_backend
  */
 void Wallet::load(const QString& p_name, Backend* p_backend) {
-	if (m_backend.data() != nullptr)
-		disconnect(m_backend.data(), &Backend::folderLoaded, this, &Wallet::addFolder);
+	if (m_backend.get() != nullptr)
+		disconnect(m_backend.get(), &Backend::folderLoaded, this, &Wallet::addFolder);
 
 	// Change the backend
 	m_backend.reset(p_backend);
 	if (m_backend) {
-		connect(m_backend.data(), &Backend::folderLoaded, this, &Wallet::addFolder);
+		connect(m_backend.get(), &Backend::folderLoaded, this, &Wallet::addFolder);
 		clear();
 		m_backend->load();
+		connect(m_backend.get(), &Backend::opened, this, &Wallet::loaded);
+		connect(m_backend.get(), &Backend::openFailed, this, &Wallet::loadFailed);
 	}
 
 	// Change the name
