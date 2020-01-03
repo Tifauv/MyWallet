@@ -4,7 +4,7 @@ import org.kde.kirigami 2.8 as Kirigami
 
 Item {
     implicitWidth: 300
-    implicitHeight: 400
+    implicitHeight: 140
 
     property alias nameTxt: nameTxt
     property alias loginTxt: loginTxt
@@ -40,3 +40,11 @@ Item {
         }
     }
 }
+
+
+
+
+/*##^## Designer {
+    D{i:0;autoSize:true;height:480;width:640}
+}
+ ##^##*/

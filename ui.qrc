@@ -8,7 +8,7 @@
         <file>ui/AccountItemForm.ui.qml</file>
         <file>ui/AccountsPage.qml</file>
         <file>ui/CreateFolderDialog.qml</file>
-        <file>ui/CreateAccountDialog.qml</file>
+        <file>ui/AccountCreationSheet.qml</file>
         <file>ui/SolarizedPalette.qml</file>
         <file>ui/ColorSelector.qml</file>
         <file>ui/SecondaryLabel.qml</file>
@@ -16,7 +16,7 @@
         <file>ui/AccountEditor.qml</file>
         <file>ui/AccountEditorForm.ui.qml</file>
         <file>ui/AccountEditorPage.qml</file>
-        <file>ui/AccountCreate.qml</file>
-        <file>ui/AccountCreateForm.ui.qml</file>
+        <file>ui/AccountCreation.qml</file>
+        <file>ui/AccountCreationForm.ui.qml</file>
     </qresource>
 </RCC>

@@ -1,6 +1,6 @@
 import QtQuick 2.12
 
-AccountCreateForm {
+AccountCreationForm {
 	id: form
 	
 	property string accountName: nameTxt.text

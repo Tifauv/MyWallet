@@ -75,7 +75,7 @@ Kirigami.ScrollablePage {
 		}
 	}
 	
-	CreateAccountDialog {
+	AccountCreationSheet {
 		id: createDlg
 		
 		folderModel: page.model

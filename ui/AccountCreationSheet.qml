@@ -28,7 +28,7 @@ Kirigami.OverlaySheet {
 		}
 	}
 	
-	AccountCreate {
+	AccountCreation {
 		id: form
 		Layout.preferredWidth: Kirigami.Units.gridUnit * 20
 		focus: true
