@@ -29,8 +29,9 @@ public:
 	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
 signals:
+	void opened();
+	void openFailed();
 	void loaded();
-	void loadFailed();
 	void nameChanged(const QString&);
 	void countChanged(int);
 

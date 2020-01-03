@@ -34,6 +34,7 @@ signals:
 	void opened();
 	void openFailed();
 	void folderLoaded(Folder*) const;
+	void loaded();
 };
 
 #endif

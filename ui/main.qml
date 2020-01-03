@@ -30,9 +30,18 @@ Kirigami.ApplicationWindow {
 	}
 	
 	pageStack.defaultColumnWidth: defaultSidebarWidth
-	pageStack.initialPage: [foldersPage, accountsPage]
+	pageStack.initialPage: walletPage//[foldersPage, accountsPage]
 
-
+	WalletPage {
+		id: walletPage
+		
+		walletName: wallet.name
+		
+		onRetryOpenWallet: {
+			wallet.loadKWallet(config.previousWallet.length > 0 ? config.previousWallet : "Wallets")
+		}
+	}
+	
 	FoldersPage {
 		id: foldersPage
 		
@@ -112,6 +121,17 @@ Kirigami.ApplicationWindow {
 	Wallet {
 		id: wallet
 		
+		onOpened: {
+			walletPage.state = "Success";
+			pageStack.pop();
+			pageStack.push(foldersPage)
+			pageStack.push(accountsPage)
+		}
+		
+		onOpenFailed: {
+			walletPage.state = "Retry"
+		}
+		
 		onLoaded: {
 			// Select the previous folder, or the first one
 			var index = wallet.find(config.previousFolder);
@@ -120,10 +140,6 @@ Kirigami.ApplicationWindow {
 			// If the wallet is empty, show the folder creation dialog
 			if (wallet.count === 0)
 				createFolderDlg.open();
-		}
-		
-		onLoadFailed: {
-			
 		}
 	}
 

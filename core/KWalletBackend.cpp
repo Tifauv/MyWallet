@@ -53,6 +53,7 @@ void KWalletBackend::loadWalletContent(bool p_openedSuccessfully) {
 	}
 
 	qDebug() << "(i) [KWalletBackend] Wallet " << m_walletName << " is now opened.";
+	emit opened();
 
 	// Remove the default folders
 	if (m_kwallet->hasFolder(KWallet::Wallet::FormDataFolder())) {
@@ -105,7 +106,7 @@ void KWalletBackend::loadWalletContent(bool p_openedSuccessfully) {
 		emit folderLoaded(folder);
 	}
 	
-	emit opened();
+	emit loaded();
 }
 
 

@@ -18,5 +18,6 @@
         <file>ui/ColorSelector.qml</file>
         <file>ui/SecondaryLabel.qml</file>
         <file>ui/TickingTimer.qml</file>
+        <file>ui/WalletPage.qml</file>
     </qresource>
 </RCC>
