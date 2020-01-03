@@ -1,10 +1,10 @@
 <RCC>
     <qresource prefix="/">
         <file>ui/main.qml</file>
-        <file>ui/FolderItem.qml</file>
-        <file>ui/FolderItemForm.ui.qml</file>
-        <file>ui/FoldersPage.qml</file>
-        <file>ui/CreateFolderDialog.qml</file>
+        <file>ui/folder/FolderItem.qml</file>
+        <file>ui/folder/FolderItemForm.ui.qml</file>
+        <file>ui/folder/FoldersPage.qml</file>
+        <file>ui/folder/CreateFolderDialog.qml</file>
         <file>ui/account/AccountItem.qml</file>
         <file>ui/account/AccountItemForm.ui.qml</file>
         <file>ui/account/AccountsPage.qml</file>

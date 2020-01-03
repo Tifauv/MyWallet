@@ -2,6 +2,7 @@ import QtQuick 2.12
 import QtQuick.Controls 2.5
 import org.kde.kirigami 2.4 as Kirigami
 import Wallets 1.0
+import "folder"
 import "account"
 
 Kirigami.ApplicationWindow {
@@ -36,6 +37,7 @@ Kirigami.ApplicationWindow {
 		id: foldersPage
 		
 		model: wallet
+		createDlg: createFolderDlg
 		
 		onEdit: window.showPassiveNotification(
 					qsTr("Folder edition not yet implemented."),
