@@ -4,19 +4,19 @@
         <file>ui/FolderItem.qml</file>
         <file>ui/FolderItemForm.ui.qml</file>
         <file>ui/FoldersPage.qml</file>
-        <file>ui/AccountItem.qml</file>
-        <file>ui/AccountItemForm.ui.qml</file>
-        <file>ui/AccountsPage.qml</file>
         <file>ui/CreateFolderDialog.qml</file>
-        <file>ui/AccountCreationSheet.qml</file>
+        <file>ui/account/AccountItem.qml</file>
+        <file>ui/account/AccountItemForm.ui.qml</file>
+        <file>ui/account/AccountsPage.qml</file>
+        <file>ui/account/AccountCreationSheet.qml</file>
+        <file>ui/account/AccountEditor.qml</file>
+        <file>ui/account/AccountEditorForm.ui.qml</file>
+        <file>ui/account/AccountEditorPage.qml</file>
+        <file>ui/account/AccountCreation.qml</file>
+        <file>ui/account/AccountCreationForm.ui.qml</file>
         <file>ui/SolarizedPalette.qml</file>
         <file>ui/ColorSelector.qml</file>
         <file>ui/SecondaryLabel.qml</file>
         <file>ui/TickingTimer.qml</file>
-        <file>ui/AccountEditor.qml</file>
-        <file>ui/AccountEditorForm.ui.qml</file>
-        <file>ui/AccountEditorPage.qml</file>
-        <file>ui/AccountCreation.qml</file>
-        <file>ui/AccountCreationForm.ui.qml</file>
     </qresource>
 </RCC>
