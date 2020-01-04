@@ -29,10 +29,10 @@ add_executable (MyWallet
 	core/Wallet.cpp
 	core/Backend.cpp
 	core/KWalletBackend.cpp
-	QmlClipboardAdapter.cpp
-	Config.cpp
-	main.cpp
-	ui.qrc
+	app/QmlClipboardAdapter.cpp
+	app/Config.cpp
+	app/main.cpp
+	app/ui.qrc
 )
 
 target_link_libraries (MyWallet
@@ -44,5 +44,5 @@ target_link_libraries (MyWallet
 
 install (TARGETS MyWallet DESTINATION bin)
 install (
-	FILES eu.catwitch.mywallet.desktop
+	FILES app/eu.catwitch.mywallet.desktop
 	DESTINATION share/applications)
