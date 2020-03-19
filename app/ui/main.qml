@@ -30,7 +30,7 @@ Kirigami.ApplicationWindow {
 	}
 	
 	pageStack.defaultColumnWidth: defaultSidebarWidth
-	pageStack.initialPage: walletPage//[foldersPage, accountsPage]
+	pageStack.initialPage: walletPage
 
 	WalletPage {
 		id: walletPage
@@ -63,21 +63,29 @@ Kirigami.ApplicationWindow {
 		id: accountsPage
 		
 		model: foldersPage.selectedFolder
+		createDlg: createAccountDlg
+	}
+
+	AccountViewPage {
+		id: accountViewPage
 		
+		model: accountsPage.selectedAccount
+
+		onCopyString: clipboard.setText(p_string)
 		onCopyPassword: {
-			clipboard.setTextWithTimer(p_password, copyTimeout);
+			clipboard.setSecretTextWithTimer(p_password, copyTimeout);
 			window.showPassiveNotification(
-						qsTr("Password for \"%1\" copied to clipboard.").arg(p_accountName),
-						copyTimeout * 1000 /* milliseconds */)
+					qsTr("Password for \"%1\" copied to clipboard.").arg(model.name),
+					copyTimeout * 1000 /* milliseconds */)
 		}
 		
-		onEdit: pageStack.push(accountEditPage, {model: accountsPage.model.get(p_index)})
-		
+		onEdit: pageStack.push(accountEditPage, {model: accountViewPage.model})
+
 		onConfirmDelete: window.showPassiveNotification(
-							qsTr("Delete account \"%1\"?").arg(p_accountName),
+							qsTr("Delete account \"%1\"?").arg(model.name),
 							"long",
 							qsTr("Delete"),
-							function(){model.deleteAccount(p_index)})
+							function(){accountsPage.model.deleteAccount(accountsPage.selectedIndex)})
 	}
 
 	Component {
@@ -85,6 +93,10 @@ Kirigami.ApplicationWindow {
 
 		AccountEditorPage {
 			onSaveAccount: {
+				if (editor.newPassword.lrngth > 0) {
+					//wallet.addNewPassword(foldersPage.selectedFolder.name, editor.name, editor.newPassword);
+				}
+				
 				window.showPassiveNotification(
 							qsTr("Account modification is not implemented yet."),
 							"short");
@@ -113,7 +125,13 @@ Kirigami.ApplicationWindow {
 		}
 		onRejected: reset()
 	}
-	
+
+	AccountCreationSheet {
+		id: createAccountDlg
+		
+		folderModel: accountsPage.model
+	}
+
 	Config {
 		id: config
 	}
@@ -126,6 +144,7 @@ Kirigami.ApplicationWindow {
 			pageStack.pop();
 			pageStack.push(foldersPage)
 			pageStack.push(accountsPage)
+			pageStack.push(accountViewPage)
 		}
 		
 		onOpenFailed: {

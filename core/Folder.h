@@ -21,14 +21,16 @@ class Folder : public QAbstractListModel {
 
 public:
 	enum Roles {
-		NameRole = Qt::UserRole + 1,
+		AccountRole = Qt::UserRole + 1,
+		NameRole,
 		LoginRole,
-		PasswordRole
+		WebsiteRole,
+		NotesRole
 	};
 
 	explicit Folder(QObject* parent = nullptr);
 	explicit Folder(const Folder&);
-	~Folder() {}
+	~Folder() override {}
 
 	const QString& name()     const;
 	const QString& tagColor() const;
@@ -47,7 +49,7 @@ signals:
 	void countChanged(int);
 
 public slots:
-	Account* createAccount(const QString& name, const QString& login, const QString& password);
+	Account* createAccount(const QString& name, const QString& login, const QString& website, const QString& notes, const QString& password);
 	void addAccount(Account* account);
 	void deleteAccount(int row);
 	Account* get(int p_row) const;

@@ -1,104 +1,59 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
-import org.kde.kirigami 2.4 as Kirigami
+import QtQuick.Layouts 1.3
+import org.kde.kirigami 2.8 as Kirigami
 import ".."
 
 Item {
     id: account
-    implicitWidth: 440
-    implicitHeight: 53
+    implicitWidth: 200
+    implicitHeight: childrenRect.height + rootLayout.anchors.topMargin
+                    + rootLayout.anchors.bottomMargin
 
     property alias nameTxt: accountName
     property alias loginTxt: accountLogin
-    property alias passwordTxt: accountPassword
 
-    Label {
-        id: accountName
-        text: qsTr("Account name")
-        font.pixelSize: 16
+    Column {
+        id: rootLayout
 
-        verticalAlignment: Text.AlignVCenter
-
-        anchors.top: parent.top
-        anchors.topMargin: Kirigami.Units.smallSpacing
-        anchors.left: parent.left
-        anchors.leftMargin: Kirigami.Units.largeSpacing
-        anchors.right: parent.right
-        anchors.rightMargin: Kirigami.Units.largeSpacing
-    }
-
-    Row {
-        id: loginLayout
-
-        height: Kirigami.Units.gridUnit
-        width: childrenRect.width
+        Layout.fillWidth: true
+        height: accountName.height + spacing + loginLayout.height
         spacing: Kirigami.Units.smallSpacing
 
-        anchors.top: accountName.bottom
-        anchors.topMargin: Kirigami.Units.smallSpacing
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: Kirigami.Units.smallSpacing
-        anchors.left: accountName.left
-        anchors.leftMargin: Kirigami.Units.largeSpacing * 2
-
-        Kirigami.Icon {
-            id: loginIcon
-
-            source: "user"
-
-            width: Kirigami.Units.iconSizes.small
-            height: width
+        anchors {
+            leftMargin: Kirigami.Units.largeSpacing
+            rightMargin: Kirigami.Units.largeSpacing
+            topMargin: Kirigami.Units.smallSpacing
+            bottomMargin: Kirigami.Units.smallSpacing
         }
 
-        SecondaryLabel {
-            id: accountLogin
-            text: qsTr("Login")
+        Label {
+            id: accountName
+            text: qsTr("Account name")
+            Layout.fillWidth: true
 
             verticalAlignment: Text.AlignVCenter
         }
-    }
 
-    Row {
-        id: passwordLayout
+        Row {
+            id: loginLayout
 
-        visible: false
+            height: Kirigami.Units.gridUnit
+            spacing: Kirigami.Units.smallSpacing
+            leftPadding: Kirigami.Units.largeSpacing
 
-        height: Kirigami.Units.gridUnit
-        spacing: Kirigami.Units.smallSpacing
+            Kirigami.Icon {
+                source: "user"
+                width: Kirigami.Units.iconSizes.small
+                height: width
+            }
 
-        anchors.top: accountName.bottom
-        anchors.topMargin: Kirigami.Units.smallSpacing
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: Kirigami.Units.smallSpacing
-        anchors.left: loginLayout.right
-        anchors.leftMargin: Kirigami.Units.largeSpacing * 2
-        anchors.right: parent.right
-        anchors.rightMargin: Kirigami.Units.largeSpacing
+            SecondaryLabel {
+                id: accountLogin
+                text: qsTr("Login")
 
-        Kirigami.Icon {
-            id: passwordIcon
-
-            source: "lock"
-
-            width: Kirigami.Units.iconSizes.small
-            height: width
-        }
-
-        SecondaryLabel {
-            id: accountPassword
-            text: qsTr("********")
-
-            verticalAlignment: Text.AlignVCenter
-        }
-    }
-    states: [
-        State {
-            name: "ShowPassword"
-
-            PropertyChanges {
-                target: passwordLayout
-                visible: true
+                verticalAlignment: Text.AlignVCenter
             }
         }
-    ]
+    }
 }

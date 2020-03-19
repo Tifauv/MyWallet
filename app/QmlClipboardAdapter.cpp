@@ -23,16 +23,37 @@ QObject(p_parent) {
 void QmlClipboardAdapter::setText(const QString& p_text) {
 	QMimeData* mimeData = new QMimeData();
 	mimeData->setText(p_text);
-	mimeData->setData("x-kde-passwordManagerHint", QString("secret").toUtf8());
 	m_clipboard->setMimeData(mimeData, QClipboard::Clipboard);
 	qDebug() << "(i) [QmlClipboardAdapter] Text copied to Clipboard.";
 
 	if (m_clipboard->supportsSelection()) {
 		QMimeData* mimeData = new QMimeData();
 		mimeData->setText(p_text);
-		mimeData->setData("x-kde-passwordManagerHint", QString("secret").toUtf8());
 		m_clipboard->setMimeData(mimeData, QClipboard::Selection);
 		qDebug() << "(i) [QmlClipboardAdapter] Text copied to Selection.";
+	}
+}
+
+
+/**
+ * @brief Copies some text to the clipboard.
+ *
+ * @param p_text
+ *            the text to copy to the clipboard
+ */
+void QmlClipboardAdapter::setSecretText(const QString& p_text) {
+	QMimeData* mimeData = new QMimeData();
+	mimeData->setText(p_text);
+	mimeData->setData("x-kde-passwordManagerHint", QString("secret").toUtf8());
+	m_clipboard->setMimeData(mimeData, QClipboard::Clipboard);
+	qDebug() << "(i) [QmlClipboardAdapter] Secret text copied to Clipboard.";
+
+	if (m_clipboard->supportsSelection()) {
+		QMimeData* mimeData = new QMimeData();
+		mimeData->setText(p_text);
+		mimeData->setData("x-kde-passwordManagerHint", QString("secret").toUtf8());
+		m_clipboard->setMimeData(mimeData, QClipboard::Selection);
+		qDebug() << "(i) [QmlClipboardAdapter] Secret text copied to Selection.";
 	}
 }
 
@@ -60,4 +81,20 @@ void QmlClipboardAdapter::setTextWithTimer(const QString& p_text, uint p_seconds
 	setText(p_text);
 	m_timer->start(p_seconds * 1000);
 	qDebug() << "(i) [QmlClipboardAdapter] Text will be cleared in" << p_seconds << "seconds.";
+}
+
+
+
+/**
+ * @brief Copies some text to the clipboard for a limited duration only.
+ *
+ * @param p_text
+ *            the text to copy to the clipboard
+ * @param p_seconds
+ *            the number of seconds after which the clipboard is cleared
+ */
+void QmlClipboardAdapter::setSecretTextWithTimer(const QString& p_text, uint p_seconds) {
+	setSecretText(p_text);
+	m_timer->start(p_seconds * 1000);
+	qDebug() << "(i) [QmlClipboardAdapter] Secret text will be cleared in" << p_seconds << "seconds.";
 }

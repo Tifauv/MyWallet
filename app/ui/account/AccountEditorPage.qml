@@ -8,27 +8,25 @@ Kirigami.Page {
 	
 	property variant model
 
-    signal saveAccount()
+    signal saveAccount(var editor)
     signal closePage()
 	
     mainAction: Kirigami.Action {
         text: qsTr("Save")
         iconName: "document-save"
-        onTriggered: saveAccount()
+        onTriggered: saveAccount(editor)
     }
-    contextualActions: [
-        Kirigami.Action {
+	leftAction: Kirigami.Action {
             text: qsTr("Close")
             iconName: "tab-close"
             onTriggered: closePage()
-        }
-    ]
+    }
 
 	AccountEditor {
 		id: editor
 		
 		name: model.name
 		login: model.login
-		//password: model.password
+		newPassword: ""
 	}
 }

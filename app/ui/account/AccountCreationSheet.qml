@@ -1,7 +1,7 @@
 import QtQuick 2.12
+import QtQuick.Controls 2.12 as Controls
 import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.5 as Controls
-import org.kde.kirigami 2.4 as Kirigami
+import org.kde.kirigami 2.10 as Kirigami
 
 Kirigami.OverlaySheet {
 	id: sheet
@@ -42,7 +42,7 @@ Kirigami.OverlaySheet {
 	}
 	
 	function createAccount() {
-		folderModel.createAccount(form.accountName, form.accountLogin, form.accountPassword);
+		folderModel.createAccount(form.accountName, form.accountLogin, form.website, form.notes, form.accountPassword);
 		form.reset();
 	}
 }

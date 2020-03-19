@@ -36,6 +36,11 @@ private slots:
 private:
 	QString m_walletName;
 	QScopedPointer<KWallet::Wallet> m_kwallet;
+	
+	const QString LOGIN_KEY = "login";
+	const QString PASSWORD_KEY = "password";
+	const QString WEBSITE_KEY = "website";
+	const QString NOTES_KEY = "notes";
 };
 
 #endif

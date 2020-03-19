@@ -4,9 +4,9 @@ AccountEditorForm {
 	
 	property string name: "Account name"
 	property string login: "Login"
-	property string password: "********"
+	property string newPassword: ""
 	
 	nameTxt.text: name
 	loginTxt.text: login
-	//passwordTxt.text: password
+	newPasswordTxt.text: newPassword
 }

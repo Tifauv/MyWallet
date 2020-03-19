@@ -94,6 +94,9 @@ Folder* Folder::setTagColor(const QString& p_color) {
  */
 Folder* Folder::setBackend(const QSharedPointer<Backend> p_backend) {
 	m_backend = p_backend;
+	foreach (auto account, m_accounts)
+		account->setBackend(m_backend);
+	
 	return this;
 }
 
@@ -104,8 +107,8 @@ Folder* Folder::setBackend(const QSharedPointer<Backend> p_backend) {
  * @param p_name
  * @param p_login
  */
-Account* Folder::createAccount(const QString& p_name, const QString& p_login, const QString& p_password) {
-	auto account = new Account(p_name, p_login, this);
+Account* Folder::createAccount(const QString& p_name, const QString& p_login, const QString& p_website, const QString& p_notes, const QString& p_password) {
+	auto account = new Account(p_name, p_login, p_website, p_notes, this);
 	m_backend->createAccount(name(), *account, p_password);
 	addAccount(account);
 	return account;
@@ -147,7 +150,10 @@ Account* Folder::get(int p_row) const {
  * @param p_account
  */
 void Folder::addAccount(Account* p_account) {
+	Q_ASSERT(p_account);
+	
 	p_account->setParent(this);
+	p_account->setBackend(m_backend);
 	appendRow(p_account);
 }
 
@@ -159,7 +165,7 @@ void Folder::addAccount(Account* p_account) {
  * @return
  */
 int Folder::rowCount(const QModelIndex& p_parent) const {
-	Q_UNUSED(p_parent);
+	Q_UNUSED(p_parent)
 	return m_accounts.count();
 }
 
@@ -177,12 +183,16 @@ QVariant Folder::data(const QModelIndex& p_index, int p_role) const {
 
 	auto account = m_accounts.at(p_index.row());
 	switch (p_role) {
+	case AccountRole:
+		return QVariant::fromValue(account);
 	case NameRole:
 		return account->name();
 	case LoginRole:
 		return account->login();
-	case PasswordRole:
-		return m_backend->retrievePassword(name(), account->name());
+	case WebsiteRole:
+		return account->website();
+	case NotesRole:
+		return account->notes();
 	}
 
 	return QVariant();
@@ -195,9 +205,11 @@ QVariant Folder::data(const QModelIndex& p_index, int p_role) const {
  */
 QHash<int, QByteArray> Folder::roleNames() const {
 	QHash<int, QByteArray> names;
+	names[AccountRole]  = "account";
 	names[NameRole]     = "name";
 	names[LoginRole]    = "login";
-	names[PasswordRole] = "password";
+	names[WebsiteRole]  = "website";
+	names[NotesRole]    = "notes";
 	return names;
 }
 
@@ -207,6 +219,8 @@ QHash<int, QByteArray> Folder::roleNames() const {
  * @param p_account
  */
 void Folder::appendRow(Account* p_account) {
+	Q_ASSERT(p_account);
+	
 	insertRow(rowCount(), p_account);
 }
 
@@ -220,8 +234,10 @@ void Folder::insertRow(int p_row, Account* p_account) {
 	Q_ASSERT(p_account);
 
 	beginInsertRows(QModelIndex(), p_row, p_row);
-	connect(p_account, SIGNAL(nameChanged(QString)),  SLOT(handleDataChanged()));
-	connect(p_account, SIGNAL(loginChanged(QString)), SLOT(handleDataChanged()));
+	connect(p_account, SIGNAL(nameChanged(QString)),    SLOT(handleDataChanged()));
+	connect(p_account, SIGNAL(loginChanged(QString)),   SLOT(handleDataChanged()));
+	connect(p_account, SIGNAL(websiteChanged(QString)), SLOT(handleDataChanged()));
+	connect(p_account, SIGNAL(notesChanged(QString)),   SLOT(handleDataChanged()));
 	m_accounts.insert(p_row, p_account);
 	endInsertRows();
 	emit countChanged(rowCount());

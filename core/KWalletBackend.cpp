@@ -96,10 +96,12 @@ void KWalletBackend::loadWalletContent(bool p_openedSuccessfully) {
 			accountIter.next();
 
 			auto accountName = accountIter.key();
-			auto login = accountIter.value().value("login");
+			auto login   = accountIter.value().value(LOGIN_KEY);
+			auto website = accountIter.value().value(WEBSITE_KEY);
+			auto notes   = accountIter.value().value(NOTES_KEY);
 
-			folder->addAccount(new Account(accountName, login));
-			qDebug() << "(i) [KWalletBackend]   Account " << accountName << " with login " << login << " added.";
+			folder->addAccount(new Account(accountName, login, website, notes));
+			qDebug() << "(i) [KWalletBackend]   Account " << accountName << " with login " << login << " loaded.";
 		}
 
 		// Signal the new folder
@@ -200,8 +202,10 @@ void KWalletBackend::createAccount(const QString& p_folder, const Account& p_acc
 
 	// Write the account
 	QMap<QString, QString> accountData;
-	accountData["login"] = p_account.login();
-	accountData["password"] = currentPwdId;
+	accountData[LOGIN_KEY]    = p_account.login();
+	accountData[PASSWORD_KEY] = currentPwdId;
+	accountData[WEBSITE_KEY]  = p_account.website();
+	accountData[NOTES_KEY]    = p_account.notes();
 	m_kwallet->writeMap(p_account.name(), accountData);
 	qDebug() << "(i) [KWalletBackend] Account " << p_account.name() << " created in folder " << p_folder << ".";
 }
@@ -255,7 +259,7 @@ const QString KWalletBackend::retrievePassword(const QString& p_folder, const QS
 	}
 
 	// Get the current password identifier
-	const QString& currentPwdId = accountData.value("password");
+	const QString& currentPwdId = accountData.value(PASSWORD_KEY);
 	if (currentPwdId.isEmpty()) {
 		qDebug() << "/!\\ [KWalletBackend] Account " << p_account << " has no current password identifier!";
 		return QString();
@@ -293,7 +297,7 @@ const QMap<QString, QString> KWalletBackend::retrievePasswordHistory(const QStri
 	}
 
 	// Get the current password identifier
-	const QString& currentPwdId = accountData.value("password");
+	const QString& currentPwdId = accountData.value(PASSWORD_KEY);
 	if (currentPwdId.isEmpty()) {
 		qDebug() << "/!\\ [KWalletBackend] Account " << p_account << " has no current password identifier!";
 		return QMap<QString,QString>();
@@ -370,7 +374,7 @@ bool KWalletBackend::renewPassword(const QString& p_folder, const QString& p_acc
 	m_kwallet->writePassword(currentPwdId, p_password);
 
 	// Update the account
-	accountData["password"] = currentPwdId;
+	accountData[PASSWORD_KEY] = currentPwdId;
 	m_kwallet->writeMap(p_account, accountData);
 
 	return true;

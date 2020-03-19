@@ -1,17 +1,21 @@
 import QtQuick 2.12
-import QtQuick.Controls 2.5 as Controls
-import org.kde.kirigami 2.8 as Kirigami
+import QtQuick.Controls 2.12 as Controls
+import QtQuick.Layouts 1.12
+import org.kde.kirigami 2.10 as Kirigami
 
 Item {
-    implicitWidth: 300
-    implicitHeight: 140
+    implicitWidth: form.implicitWidth
+    implicitHeight: form.implicitHeight
 
     property alias nameTxt: nameTxt
+    property alias websiteTxt: websiteTxt
     property alias loginTxt: loginTxt
     property alias passwordTxt: passwordTxt
+    property alias notesTxt: notesTxt
 
     Kirigami.FormLayout {
-        clip: true
+        id: form
+
         anchors.fill: parent
 
         Controls.TextField {
@@ -20,6 +24,14 @@ Item {
             Kirigami.FormData.label: qsTr("Name")
             selectByMouse: true
             maximumLength: 36
+            focus: true
+        }
+        Controls.TextField {
+            id: websiteTxt
+            placeholderText: qsTr("https://example.org")
+            Kirigami.FormData.label: qsTr("Website")
+            selectByMouse: true
+            maximumLength: 128
             focus: true
         }
         Controls.TextField {
@@ -36,6 +48,15 @@ Item {
             Kirigami.FormData.label: qsTr("Password")
             selectByMouse: true
             maximumLength: 48
+            focus: true
+        }
+        Controls.TextArea {
+            id: notesTxt
+            placeholderText: qsTr("Notes about this account...")
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Kirigami.FormData.label: qsTr("Notes")
+            selectByMouse: true
             focus: true
         }
     }
