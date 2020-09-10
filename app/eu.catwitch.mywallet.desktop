@@ -3,7 +3,7 @@ Name=My Wallet
 Name[fr]=Mon portefeuille
 Comment=Personnal wallet
 Comment[fr]=Portefeuille personnel
-Exec=MyWallet
+Exec=QT_QUICK_CONTROLS_STYLE='org.kde.desktop' MyWallet
 Icon=kwalletmanager
 Type=Application
 Terminal=false
