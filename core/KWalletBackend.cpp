@@ -88,20 +88,25 @@ void KWalletBackend::loadWalletContent(bool p_openedSuccessfully) {
 
 		// Load the accounts
 		qDebug() << "(i) [KWalletBackend] Loading accounts of folder " << backendFolder << "...";
-		QMap<QString, QMap<QString, QString>> accounts;
-		m_kwallet->readMapList("*", accounts);
-		qDebug() << "(i) [KWalletBackend] " << accounts.count() << " accounts found:";
-		QMapIterator<QString, QMap<QString, QString>> accountIter(accounts);
-		while (accountIter.hasNext()) {
-			accountIter.next();
+		bool accountsRetrieved;
+		auto accounts = m_kwallet->mapList(&accountsRetrieved);
+		if (accountsRetrieved) {
+			qDebug() << "(i) [KWalletBackend] " << accounts.count() << " accounts found:";
+			QMapIterator<QString, QMap<QString, QString>> accountIter(accounts);
+			while (accountIter.hasNext()) {
+				accountIter.next();
 
-			auto accountName = accountIter.key();
-			auto login   = accountIter.value().value(LOGIN_KEY);
-			auto website = accountIter.value().value(WEBSITE_KEY);
-			auto notes   = accountIter.value().value(NOTES_KEY);
+				auto accountName = accountIter.key();
+				auto login   = accountIter.value().value(LOGIN_KEY);
+				auto website = accountIter.value().value(WEBSITE_KEY);
+				auto notes   = accountIter.value().value(NOTES_KEY);
 
-			folder->addAccount(new Account(accountName, login, website, notes));
-			qDebug() << "(i) [KWalletBackend]   Account " << accountName << " with login " << login << " loaded.";
+				folder->addAccount(new Account(accountName, login, website, notes));
+				qDebug() << "(i) [KWalletBackend]   Account " << accountName << " with login " << login << " loaded.";
+			}
+		}
+		else {
+			qDebug() << "/!\\ [KWalletBackend] Failed to retrieve the accounts.";
 		}
 
 		// Signal the new folder
