@@ -47,23 +47,11 @@ Item {
             Layout.fillWidth: true
         }
 
-        Kirigami.FormLayout {
+        FieldItem {
+            id: notes
+            name: qsTr("Notes")
+            showCopyAction: false
             Layout.fillWidth: true
-
-            Kirigami.Separator {
-                Kirigami.FormData.label: qsTr("Password History")
-                Kirigami.FormData.isSection: true
-            }
-
-            Kirigami.Separator {
-                Kirigami.FormData.label: qsTr("Notes")
-                Kirigami.FormData.isSection: true
-            }
-
-            Label {
-                id: notes
-                text: "This is a test acccount designed to check the global behaviour of the viewer and editor."
-            }
         }
     }
 }

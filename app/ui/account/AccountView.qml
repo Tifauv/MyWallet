@@ -16,7 +16,7 @@ AccountViewForm {
 	loginLbl.value: login
 	passwordLbl.value: password
 	websiteLbl.value: website
-	notesLbl.text: notes
+	notesLbl.value: notes
 	
 	websiteLbl.onCopyValue: view.copyString(p_value)
 	loginLbl.onCopyValue: view.copyString(p_value)
