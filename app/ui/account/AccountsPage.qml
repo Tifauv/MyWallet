@@ -4,7 +4,7 @@ import org.kde.kirigami 2.4 as Kirigami
 
 Kirigami.ScrollablePage {
 	id: page
-	title: qsTr("Accounts")
+	title: qsTr("%1").arg(model.name)
 
 	property alias model: list.model
 	property variant createDlg
