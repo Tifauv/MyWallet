@@ -52,7 +52,7 @@ Item {
         }
         Controls.TextArea {
             id: notesTxt
-            placeholderText: qsTr("Notes about this account...")
+            placeholderText: qsTr("Notes about this account...\n\n\n")
             Layout.fillWidth: true
             Layout.fillHeight: true
             Kirigami.FormData.label: qsTr("Notes")
