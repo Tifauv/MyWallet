@@ -42,7 +42,7 @@ Kirigami.OverlaySheet {
 	}
 	
 	function createAccount() {
-		folderModel.createAccount(form.accountName, form.accountLogin, form.website, form.notes, form.accountPassword);
+		folderModel.createAccount(form.accountName, form.accountLogin, form.accountWebsite, form.accountNotes, form.accountPassword);
 		form.reset();
 	}
 }
