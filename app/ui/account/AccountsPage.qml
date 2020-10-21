@@ -37,6 +37,9 @@ Kirigami.ScrollablePage {
 			}
 
 			highlighted: ListView.isCurrentItem
+			onHighlightedChanged: {
+				list.currentAccount = model.account
+			}
 			onClicked: {
 				list.currentIndex = model.index;
 				list.currentAccount = model.account
