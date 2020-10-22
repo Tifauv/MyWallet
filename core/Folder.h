@@ -42,6 +42,9 @@ public:
 
 	int rowCount(const QModelIndex& parent = QModelIndex()) const override;
 	QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+	bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
+
+	Qt::ItemFlags flags(const QModelIndex &index) const override;
 
 signals:
 	void nameChanged(const QString&);
@@ -51,6 +54,7 @@ signals:
 public slots:
 	Account* createAccount(const QString& name, const QString& login, const QString& website, const QString& notes, const QString& password);
 	void addAccount(Account* account);
+	bool modifyAccount(int, const QString& login, const QString& website, const QString& notes);
 	void deleteAccount(int row);
 	Account* get(int p_row) const;
 

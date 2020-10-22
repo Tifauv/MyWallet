@@ -221,14 +221,14 @@ void KWalletBackend::createAccount(const QString& p_folder, const Account& p_acc
  * @param folder
  * @param name
  */
-void KWalletBackend::removeAccount(const QString& p_folder, const QString& p_name) const {
-	if (!hasAccount(p_folder, p_name)) {
-		qDebug() << "/!\\ [KWalletBackend] Cannot remove account " << p_name << " from folder " << p_folder << " because it does not exist.";
+void KWalletBackend::removeAccount(const QString& p_folder, const QString& p_accountName) const {
+	if (!hasAccount(p_folder, p_accountName)) {
+		qDebug() << "/!\\ [KWalletBackend] Cannot remove account " << p_accountName << " from folder " << p_folder << " because it does not exist.";
 	}
 
 	// Retrieve all entries (account data & password history)
 	QMap<QString, QByteArray> data;
-	m_kwallet->readEntryList(p_name + "*", data);
+	m_kwallet->readEntryList(p_accountName + "*", data);
 
 	// Remove all entries
 	QMapIterator<QString, QByteArray> dataIter(data);
@@ -240,6 +240,93 @@ void KWalletBackend::removeAccount(const QString& p_folder, const QString& p_nam
 		else
 			qDebug() << "/!\\ [KWalletBackend] Failed to remove entry " << dataIter.key() << " from folder " << p_folder << ".";
 	}
+}
+
+
+/**
+ * @brief KWalletBackend::modifyAccountLogin
+ * @param p_folder
+ * @param p_account
+ * @param p_login
+ * @return 
+ */
+bool KWalletBackend::modifyAccountLogin(const QString& p_folder, const QString& p_accountName, const QString& p_login) const {
+	// Set the current folder
+	if (!m_kwallet->setFolder(p_folder)) {
+		qDebug() << "/!\\ [KWalletBackend] No folder named " << p_folder << "!";
+		return false;
+	}
+
+	// Retrieve the account data
+	QMap<QString, QString> accountData;
+	if (m_kwallet->readMap(p_accountName, accountData) != 0) {
+		qDebug() << "/!\\ [KWalletBackend] No account named " << p_accountName << " in folder " << p_folder << "!";
+		return false;
+	}
+
+	// Update the account
+	accountData.insert(LOGIN_KEY, p_login);
+	m_kwallet->writeMap(p_accountName, accountData);
+	qDebug() << "(i) [KWalletBackend] Modified account " << p_accountName << " from folder " << p_folder << ": login is now " << p_login << ".";
+	return true;
+}
+
+
+/**
+ * @brief KWalletBackend::modifyAccountWebsite
+ * @param p_folder
+ * @param p_account
+ * @param p_login
+ * @return 
+ */
+bool KWalletBackend::modifyAccountWebsite(const QString& p_folder, const QString& p_accountName, const QString& p_website) const {
+	// Set the current folder
+	if (!m_kwallet->setFolder(p_folder)) {
+		qDebug() << "/!\\ [KWalletBackend] No folder named " << p_folder << "!";
+		return false;
+	}
+
+	// Retrieve the account data
+	QMap<QString, QString> accountData;
+	if (m_kwallet->readMap(p_accountName, accountData) != 0) {
+		qDebug() << "/!\\ [KWalletBackend] No account named " << p_accountName << " in folder " << p_folder << "!";
+		return false;
+	}
+
+	// Update the account
+	accountData.insert(WEBSITE_KEY, p_website);
+	m_kwallet->writeMap(p_accountName, accountData);
+	qDebug() << "(i) [KWalletBackend] Modified account " << p_accountName << " from folder " << p_folder << ": website is now " << p_website << ".";
+	return true;
+}
+
+
+/**
+ * @brief KWalletBackend::modifyAccountLogin
+ * @param p_folder
+ * @param p_account
+ * @param p_login
+ * @return 
+ */
+bool KWalletBackend::modifyAccountNotes(const QString& p_folder, const QString& p_accountName, const QString& p_notes) const {
+	// Set the current folder
+	if (!m_kwallet->setFolder(p_folder)) {
+		qDebug() << "/!\\ [KWalletBackend] No folder named " << p_folder << "!";
+		return false;
+	}
+
+	// Retrieve the account data
+	QMap<QString, QString> accountData;
+	if (m_kwallet->readMap(p_accountName, accountData) != 0) {
+		qDebug() << "/!\\ [KWalletBackend] No account named " << p_accountName << " in folder " << p_folder << "!";
+		return false;
+	}
+
+	// Update the account
+	accountData.insert(NOTES_KEY, p_notes);
+	m_kwallet->writeMap(p_accountName, accountData);
+	qDebug() << "(i) [KWalletBackend] Modified account " << p_accountName << " from folder " << p_folder << ": notes is now " << p_notes << ".";
+	return true;
 }
 
 
@@ -379,7 +466,7 @@ bool KWalletBackend::renewPassword(const QString& p_folder, const QString& p_acc
 	m_kwallet->writePassword(currentPwdId, p_password);
 
 	// Update the account
-	accountData[PASSWORD_KEY] = currentPwdId;
+	accountData.insert(PASSWORD_KEY, currentPwdId);
 	m_kwallet->writeMap(p_account, accountData);
 
 	return true;

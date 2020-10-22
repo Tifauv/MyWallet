@@ -26,6 +26,11 @@ public:
 	virtual void createAccount(const QString& folder, const Account& account, const QString& password) const = 0;
 	virtual void removeAccount(const QString& folder, const QString& name) const = 0;
 
+	virtual bool modifyAccountLogin(const QString& folder, const QString& name, const QString& login) const = 0;
+	virtual bool modifyAccountWebsite(const QString& folder, const QString& name, const QString& website) const = 0;
+	virtual bool modifyAccountNotes(const QString& folder, const QString& name, const QString& notes) const = 0;
+	
+	// Password management
 	virtual const QString retrievePassword(const QString& folderName, const QString& accountName) const = 0;
 	virtual const QMap<QString,QString> retrievePasswordHistory(const QString& p_folder, const QString& p_account) const = 0;
 	virtual bool renewPassword(const QString& p_folder, const QString& p_account, const QString& p_password) const = 0;

@@ -15,9 +15,7 @@ Kirigami.ScrollablePage {
 		text: qsTr("Create account")
 		iconName: "list-add-user"
 		shortcut: StandardKey.New
-		onTriggered: {
-			createDlg.open()
-		}
+		onTriggered: createDlg.open()
 	}
 
 	mainItem: ListView {

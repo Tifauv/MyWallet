@@ -7,16 +7,19 @@ Kirigami.ScrollablePage {
 	title: qsTr("Account")
 	
 	property variant model
+	property variant editDlg
 	
 	signal copyString(string p_string)
 	signal copyPassword(string p_password)
-    signal edit()
 	signal confirmDelete()
 	
     mainAction: Kirigami.Action {
         text: qsTr("Edit")
         iconName: "document-edit"
-        onTriggered: page.edit()
+		onTriggered: {
+			editDlg.reset(model);
+			editDlg.open();
+		}
     }
 	
 	contextualActions: [

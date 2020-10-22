@@ -7,10 +7,8 @@ Item {
     implicitWidth: form.implicitWidth
     implicitHeight: form.implicitHeight
 
-    property alias nameTxt: nameTxt
     property alias websiteTxt: websiteTxt
     property alias loginTxt: loginTxt
-    property alias passwordTxt: passwordTxt
     property alias notesTxt: notesTxt
 
     Kirigami.FormLayout {
@@ -18,14 +16,6 @@ Item {
 
         anchors.fill: parent
 
-        Controls.TextField {
-            id: nameTxt
-            placeholderText: qsTr("Account name")
-            Kirigami.FormData.label: qsTr("Name")
-            selectByMouse: true
-            maximumLength: 36
-            focus: true
-        }
         Controls.TextField {
             id: websiteTxt
             placeholderText: qsTr("https://example.org")
@@ -40,14 +30,6 @@ Item {
             Kirigami.FormData.label: qsTr("Login")
             selectByMouse: true
             maximumLength: 128
-            focus: true
-        }
-        Kirigami.PasswordField {
-            id: passwordTxt
-            placeholderText: qsTr("Account password")
-            Kirigami.FormData.label: qsTr("Password")
-            selectByMouse: true
-            maximumLength: 48
             focus: true
         }
         Controls.TextArea {
@@ -66,4 +48,3 @@ Designer {
     D{i:0;autoSize:true;height:480;width:640}
 }
 ##^##*/
-

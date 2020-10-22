@@ -116,6 +116,22 @@ Account* Folder::createAccount(const QString& p_name, const QString& p_login, co
 
 
 /**
+ * @brief Folder::modifyAccount
+ * @param p_name
+ * @param p_login
+ */
+bool Folder::modifyAccount(int p_row, const QString& p_login, const QString& p_website, const QString& p_notes) {
+	// Retrieve the account
+	auto account = get(p_row);
+	if (account == nullptr)
+		return false;
+
+	auto index = createIndex(p_row, 0);
+	return setData(index, p_login, LoginRole) || setData(index, p_website, WebsiteRole) || setData(index, p_notes, NotesRole);
+}
+
+
+/**
  * @brief Folder::deleteAccount
  * @param p_row
  */
@@ -196,6 +212,65 @@ QVariant Folder::data(const QModelIndex& p_index, int p_role) const {
 	}
 
 	return QVariant();
+}
+
+
+/**
+ * @brief Folder::setData
+ * @param index
+ * @param value
+ * @param role
+ * @return 
+ */
+bool Folder::setData(const QModelIndex& p_index, const QVariant& p_value, int p_role) {
+	qDebug() << "(i) [Folder] Modify data for role " << p_role << " of account at row " << p_index.row();
+	if (p_index.row() < 0 || p_index.row() >= rowCount())
+		return false;
+
+	auto account = m_accounts.at(p_index.row());
+	switch (p_role) {
+	case LoginRole:
+		if (account->login() != p_value
+				&& m_backend->modifyAccountLogin(name(), account->name(), p_value.toString())) {
+			account->setLogin(p_value.toString());
+			emit dataChanged(p_index, p_index);
+			return true;
+		}
+		break;
+	case WebsiteRole:
+		if (account->website() != p_value
+				&& m_backend->modifyAccountWebsite(name(), account->name(), p_value.toString())) {
+			account->setWebsite(p_value.toString());
+			emit dataChanged(p_index, p_index);
+			return true;
+		}
+		break;
+	case NotesRole:
+		if (account->notes() != p_value
+				&& m_backend->modifyAccountNotes(name(), account->name(), p_value.toString())) {
+			account->setNotes(p_value.toString());
+			emit dataChanged(p_index, p_index);
+			return true;
+		}
+		break;
+	}
+
+	return false;
+}
+
+
+/**
+ * @brief Reimplement QAbstractListItem::flags to also return Qt::ItemIsEditable for all items
+ * @param p_index
+ * @return 
+ */
+Qt::ItemFlags Folder::flags(const QModelIndex& p_index) const {
+	qDebug() << "(i) [Folder] Query flags for account at row " << p_index.row();
+	if (p_index.row() < 0 || p_index.row() >= rowCount())
+		return Qt::NoItemFlags;
+
+	auto defaultFlags = QAbstractListModel::flags(p_index);
+	return defaultFlags | Qt::ItemIsEditable;
 }
 
 

@@ -70,6 +70,7 @@ Kirigami.ApplicationWindow {
 		id: accountViewPage
 		
 		model: accountsPage.selectedAccount
+		editDlg: editAccountDlg
 
 		onCopyString: clipboard.setText(p_string)
 		onCopyPassword: {
@@ -78,33 +79,12 @@ Kirigami.ApplicationWindow {
 					qsTr("Password for \"%1\" copied to clipboard.").arg(model.name),
 					copyTimeout * 1000 /* milliseconds */)
 		}
-		
-		onEdit: pageStack.push(accountEditPage, {model: accountViewPage.model})
 
 		onConfirmDelete: window.showPassiveNotification(
 							qsTr("Delete account \"%1\"?").arg(model.name),
 							"long",
 							qsTr("Delete"),
 							function(){accountsPage.model.deleteAccount(accountsPage.selectedIndex)})
-	}
-
-	Component {
-		id: accountEditPage
-
-		AccountEditorPage {
-			onSaveAccount: {
-				if (editor.newPassword.lrngth > 0) {
-					//wallet.addNewPassword(foldersPage.selectedFolder.name, editor.name, editor.newPassword);
-				}
-				
-				window.showPassiveNotification(
-							qsTr("Account modification is not implemented yet."),
-							"short");
-				pageStack.pop()
-			}
-
-			onClosePage: pageStack.pop()
-		}
 	}
 
 	CreateFolderDialog {
@@ -130,6 +110,12 @@ Kirigami.ApplicationWindow {
 		id: createAccountDlg
 		
 		folderModel: accountsPage.model
+	}
+	
+	AccountEditionSheet {
+		id: editAccountDlg
+		
+		onModifyAccount: accountsPage.model.modifyAccount(accountsPage.selectedIndex, login, website, notes)
 	}
 
 	Config {
