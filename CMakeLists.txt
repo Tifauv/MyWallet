@@ -1,3 +1,9 @@
+#
+#  SPDX-FileCopyrightText: 2018 Olivier Serve <tifauv@gmail.com>
+#
+#  SPDX-License-Identifier: LGPL-2.0-or-later
+#
+
 cmake_minimum_required (VERSION 3.1)
 
 project (MyWallet  VERSION 0.2  LANGUAGES CXX)
@@ -10,8 +16,9 @@ set (CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Find dependencies
 find_package (Qt5 COMPONENTS Core Quick REQUIRED)
-find_package (KF5Wallet)
-find_package (KF5Config)
+find_package (KF5Kirigami2 REQUIRED)
+find_package (KF5Wallet    REQUIRED)
+find_package (KF5Config    REQUIRED)
 
 # Configure a header file to pass some CMake settings to the source code
 configure_file (
@@ -28,10 +35,10 @@ add_executable (MyWallet
 	core/Wallet.cpp
 	core/Backend.cpp
 	core/KWalletBackend.cpp
-	QmlClipboardAdapter.cpp
-	Config.cpp
-	main.cpp
-	ui.qrc
+	app/QmlClipboardAdapter.cpp
+	app/Config.cpp
+	app/main.cpp
+	app/ui.qrc
 )
 
 target_link_libraries (MyWallet
@@ -43,15 +50,5 @@ target_link_libraries (MyWallet
 
 install (TARGETS MyWallet DESTINATION bin)
 install (
-	FILES
-		core/Account.h
-		core/Folder.h
-		core/Wallet.h
-		core/Backend.h
-		core/KWalletBackend.h
-		QmlClipboardAdapter.h
-		Config.h
-	DESTINATION include)
-install (
-	FILES eu.catwitch.mywallet.desktop
+	FILES app/eu.catwitch.mywallet.desktop
 	DESTINATION share/applications)

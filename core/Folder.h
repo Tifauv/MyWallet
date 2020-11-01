@@ -1,3 +1,9 @@
+/*
+ *  SPDX-FileCopyrightText: 2018 Olivier Serve <tifauv@gmail.com>
+ *
+ *  SPDX-License-Identifier: LGPL-2.0-or-later
+ */
+
 #ifndef Folder_H
 #define Folder_H
 
@@ -21,14 +27,16 @@ class Folder : public QAbstractListModel {
 
 public:
 	enum Roles {
-		NameRole = Qt::UserRole + 1,
+		AccountRole = Qt::UserRole + 1,
+		NameRole,
 		LoginRole,
-		PasswordRole
+		WebsiteRole,
+		NotesRole
 	};
 
 	explicit Folder(QObject* parent = nullptr);
 	explicit Folder(const Folder&);
-	~Folder() {}
+	~Folder() override {}
 
 	const QString& name()     const;
 	const QString& tagColor() const;
@@ -40,6 +48,9 @@ public:
 
 	int rowCount(const QModelIndex& parent = QModelIndex()) const override;
 	QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+	bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
+
+	Qt::ItemFlags flags(const QModelIndex &index) const override;
 
 signals:
 	void nameChanged(const QString&);
@@ -47,9 +58,11 @@ signals:
 	void countChanged(int);
 
 public slots:
-	Account* createAccount(const QString& name, const QString& login, const QString& password);
+	Account* createAccount(const QString& name, const QString& login, const QString& website, const QString& notes, const QString& password);
 	void addAccount(Account* account);
+	bool modifyAccount(int, const QString& login, const QString& website, const QString& notes);
 	void deleteAccount(int row);
+	Account* get(int p_row) const;
 
 protected:
 	QHash<int, QByteArray> roleNames() const override;

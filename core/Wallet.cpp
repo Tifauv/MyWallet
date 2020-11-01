@@ -1,7 +1,14 @@
+/*
+ *  SPDX-FileCopyrightText: 2018 Olivier Serve <tifauv@gmail.com>
+ *
+ *  SPDX-License-Identifier: LGPL-2.0-or-later
+ */
+
 #include "Wallet.h"
 #include "KWalletBackend.h"
 #include <QGuiApplication>
 #include <QtDebug>
+#include <QWindow>
 
 // CONSTRUCTORS
 /**
@@ -11,7 +18,6 @@
 Wallet::Wallet(QObject* p_parent) :
     QAbstractListModel(p_parent) {
 	qDebug() << "(i) [Wallet] Created.";
-	load("Wallets", new KWalletBackend("Wallets"));
 }
 
 
@@ -41,12 +47,20 @@ int Wallet::count() const {
  * @param p_backend
  */
 void Wallet::load(const QString& p_name, Backend* p_backend) {
-	disconnect(m_backend.data(), &Backend::folderLoaded, this, &Wallet::addFolder);
+	if (m_backend.get() != nullptr) {
+		disconnect(m_backend.get(), &Backend::loaded,       this, &Wallet::loaded);
+		disconnect(m_backend.get(), &Backend::folderLoaded, this, &Wallet::addFolder);
+		disconnect(m_backend.get(), &Backend::openFailed,   this, &Wallet::openFailed);
+		disconnect(m_backend.get(), &Backend::opened,       this, &Wallet::opened);
+	}
 
 	// Change the backend
 	m_backend.reset(p_backend);
 	if (m_backend) {
-		connect(m_backend.data(), &Backend::folderLoaded, this, &Wallet::addFolder);
+		connect(m_backend.get(), &Backend::opened,       this, &Wallet::opened);
+		connect(m_backend.get(), &Backend::openFailed,   this, &Wallet::openFailed);
+		connect(m_backend.get(), &Backend::folderLoaded, this, &Wallet::addFolder);
+		connect(m_backend.get(), &Backend::loaded,       this, &Wallet::loaded);
 		clear();
 		m_backend->load();
 	}
@@ -54,6 +68,15 @@ void Wallet::load(const QString& p_name, Backend* p_backend) {
 	// Change the name
 	m_name = p_name;
 	emit nameChanged(m_name);
+}
+
+
+/**
+ * @brief Wallet::load
+ * @param p_name
+ */
+void Wallet::loadKWallet(const QString& p_name) {
+	load(p_name, new KWalletBackend(p_name));
 }
 
 
@@ -67,7 +90,7 @@ Folder* Wallet::createFolder(const QString& p_name, const QString& p_tagColor) {
 	if (m_backend->hasFolder(p_name))
 		return nullptr;
 
-	auto folder = new Folder();
+	auto folder = new Folder(this);
 	folder->setName(p_name)->setTagColor(p_tagColor);
 	m_backend->createFolder(*folder);
 	addFolder(folder);
@@ -123,6 +146,7 @@ int Wallet::find(const QString& p_folderName) const {
  * @param p_folder
  */
 void Wallet::addFolder(Folder* p_folder) {
+	p_folder->setParent(this);
 	p_folder->setBackend(m_backend);
 	appendRow(p_folder);
 }
@@ -232,10 +256,12 @@ Folder* Wallet::removeRow(int p_row) {
  * @brief Wallet::clear
  */
 void Wallet::clear() {
-	beginRemoveRows(QModelIndex(), 0, rowCount() - 1);
-	while (rowCount() > 0)
-		delete m_folders.takeAt(0);
-	endRemoveRows();
-	emit countChanged(rowCount());
-	qDebug() << "(i) [Wallet] Folder list cleared.";
+	if (rowCount() > 0) {
+		beginRemoveRows(QModelIndex(), 0, rowCount() - 1);
+		while (rowCount() > 0)
+			delete m_folders.takeAt(0);
+		endRemoveRows();
+		emit countChanged(rowCount());
+		qDebug() << "(i) [Wallet] Folder list cleared.";
+	}
 }
