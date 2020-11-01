@@ -4,8 +4,10 @@ import QtQuick.Controls 2.5
 GridView {
 	id: selector
 
-	implicitHeight: cellHeight * Math.ceil( (model.count * cellWidth) / width )
+	implicitHeight: cellHeight * rows
+	implicitWidth: cellWidth * (model.count / rows)
 
+	property int rows: 2
 	property int padSize: 32
 	property int padding: 2
 	property string selectedColor: currentIndex >= 0 ? model.get(currentIndex).colorCode : "white"

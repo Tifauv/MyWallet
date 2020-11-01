@@ -87,23 +87,10 @@ Kirigami.ApplicationWindow {
 							function(){accountsPage.model.deleteAccount(accountsPage.selectedIndex)})
 	}
 
-	CreateFolderDialog {
+	FolderCreationSheet {
 		id: createFolderDlg
-
-		modal: true
-		focus: true
-
-		width: 220
-		height: 200
-
-		x: (parent.width - width) / 2
-		y: (parent.height - height) / 2
-
-		onAccepted: {
-			wallet.createFolder(name, tagColor);
-			reset();
-		}
-		onRejected: reset()
+		
+		walletModel: wallet
 	}
 
 	AccountCreationSheet {

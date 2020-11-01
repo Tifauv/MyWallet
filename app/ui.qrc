@@ -24,5 +24,8 @@
         <file>ui/account/AccountEdition.qml</file>
         <file>ui/account/AccountEditionForm.ui.qml</file>
         <file>ui/account/AccountEditionSheet.qml</file>
+        <file>ui/folder/FolderCreation.qml</file>
+        <file>ui/folder/FolderCreationForm.ui.qml</file>
+        <file>ui/folder/FolderCreationSheet.qml</file>
     </qresource>
 </RCC>
