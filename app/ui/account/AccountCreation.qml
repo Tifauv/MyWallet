@@ -1,3 +1,9 @@
+/*
+ *  SPDX-FileCopyrightText: 2020 Olivier Serve <tifauv@gmail.com>
+ *
+ *  SPDX-License-Identifier: LGPL-2.0-or-later
+ */
+
 import QtQuick 2.12
 
 AccountCreationForm {

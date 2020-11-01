@@ -1,3 +1,9 @@
+/*
+ *  SPDX-FileCopyrightText: 2018 Olivier Serve <tifauv@gmail.com>
+ *
+ *  SPDX-License-Identifier: LGPL-2.0-or-later
+ */
+
 #include "Account.h"
 #include "Folder.h"
 #include "Backend.h"

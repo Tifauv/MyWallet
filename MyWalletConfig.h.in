@@ -1,3 +1,9 @@
+/*
+ *  SPDX-FileCopyrightText: 2018 Olivier Serve <tifauv@gmail.com>
+ *
+ *  SPDX-License-Identifier: LGPL-2.0-or-later
+ */
+
 // The configured options and settings for MyWallet
 #define MYWALLET_VERSION_MAJOR @MyWallet_VERSION_MAJOR@
 #define MYWALLET_VERSION_MINOR @MyWallet_VERSION_MINOR@
